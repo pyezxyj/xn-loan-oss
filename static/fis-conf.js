@@ -1,9 +1,9 @@
 fis.match('*', {
-  release: '/oss/static/$0'
+  release: '/static/$0'
 });
 
 fis.match('*.html', {
-  release: '/oss/$0'
+  release: '/$0'
 });
 
 fis.match('::package', {

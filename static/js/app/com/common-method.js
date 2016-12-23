@@ -993,7 +993,7 @@ function buildList(options) {
 	}
 	tableEl.bootstrapTable({
 		method : "post",
-		url : urlDispatch(options.pageCode),
+		url : urlDispatch(options.pageCode) + "/api",
 		striped : true,
 		sortName: sortName,
 		sortOrder: sortOrder,
