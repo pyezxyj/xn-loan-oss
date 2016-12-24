@@ -1600,7 +1600,22 @@ function buildDetail(options) {
 						$('#city').val(data.city);
 						$('#city').trigger('change');
 						$('#area').val(data.area);
-					} else {
+					} else if (item.type == "o2m" && item.editTable) {
+                        $('#' + item.field).html(
+                            '<div class="tools">'+
+                            '<ul class="toolbar">'+
+                            '<li style="display:block;" id="addBtn-o2m"><span><img src="/static/images/t01.png"></span>新增</li>'+
+                            '</ul>'+
+                            '</div><table id="' + item.field + 'List"  data-editable-emptytext="无"></table>');
+                        addEditTableListener("#addBtn-o2m", '#' + item.field + 'List', item.columns);
+                        $('#' + item.field + 'List').bootstrapTable({
+                            striped: true,
+                            clickToSelect: true,
+                            singleSelect: true,
+                            columns: item.columns,
+                            data: displayValue || []
+                        });
+                    } else {
 						$('#' + item.field).val(item.amount ? moneyFormat(displayValue) : displayValue);
 					}
 				}
@@ -1886,5 +1901,43 @@ function confirm(msg) {
 		});
 		d.showModal();
 	}));
+
+}
+function addEditTableListener(btnId, tableId, columns){
+    window.operateEvents = {
+        'click .remove': function (e, value, row, index) {
+            $(tableId).bootstrapTable('remove', {
+                field: 'code',
+                values: [row.code]
+            });
+        }
+    };
+    function operateFormatter(value, row, index) {
+        return [
+            '<a class="remove" href="javascript:void(0)" title="Remove">',
+            '<i class="glyphicon glyphicon-remove"></i>',
+            '</a>'
+        ].join('');
+    }
+
+	var count = 0;
+    for(var i = 0; i < columns.length; i++){
+        columns[i].editable = columns[i].editable1;
+    }
+    columns.push({
+        field: '操作',
+        title: '操作',
+        align: 'center',
+        events: operateEvents,
+        formatter: operateFormatter
+    });
+	$(btnId).on("click", function () {
+		var fields = {"":""};
+		for(var i = 0; i < columns.length; i++){
+			fields[ columns[i].field ] = "";
+		}
+		fields["code"] = "emptyCode" + (count++);
+		$(tableId).bootstrapTable('append', fields);
+    });
 
 }
