@@ -20,7 +20,7 @@ $(function(){
 	});
 	
 	// 设置根目录
-	window.parentCode = 'SM201600001000000000';
+	window.parentCode = 'CCDSM201600001000000000';
 	
 	var data={"parentCode":window.parentCode,"type":"1", 'roleCode': sessionStorage.getItem('roleCode')};
 	reqApi({
