@@ -1129,13 +1129,15 @@ function buildDetail(options) {
 				html += '<select '+(item.multiple? 'multiple' : '')+' id="'+item.field+'" name="'+item.field+'" class="control-def"></select></li>';
 			} else if (item.type == 'img') {
 				imgList.push(item);
-				html += '<div class="btn-file"><span>选择图片</span>' +
+				html += '<div class="btn-file"><span>选择文件</span>' +
 			    	'<input type="file" tabindex="1" id="'+item.field+'Img" name="'+item.field+'Img" />' +
 			    	'</div><div id="'+item.field+'" style="margin-left: 195px;"></div></li>';
-			} else if (item.type == 'textarea') {
+			} else if (item.type == 'textarea' && !item.normalArea) {
 				textareaList.push({field: item.field});
 				html += '<div style="width:800px;float:left;"><textarea style="height:300px;" id="'+item.field+'" name="'+item.field+'"></textarea></div></li>';
-			} else if (item.type == 'citySelect') {
+			} else if (item.type == 'textarea' && item.normalArea){
+                html += '<div style="width:400px;float:left;"><textarea style="height:200px;width: 320px;border: 1px solid #e0e0e0;" id="'+item.field+'" name="'+item.field+'"></textarea></div></li>';
+            } else if (item.type == 'citySelect') {
 				html += '<div id="city-group"><select id="province" name="province" class="control-def prov"></select>' +
 				    '<select id="city" name="city" class="control-def city"></select>' +
 				    '<select id="area" name="area" class="control-def dist"></select></div></li>';
@@ -1148,6 +1150,8 @@ function buildDetail(options) {
 			} else if (item.type == 'datetime' || item.type == 'date') {
 				dateTimeList.push(item);
 				html += '<input id="'+item.field+'" name="'+item.field+'" class="lay-input"/></li>';
+			} else if(item.type == "o2m"){
+				html += '<div id="'+item.field+'" style="display: inline-block;"></div>';
 			} else {
 				html += '<input id="'+item.field+'" name="'+item.field+'" class="control-def" '+(item.placeholder ? ('placeholder="'+item.placeholder+'"') : '')+'/></li>';
 			}
@@ -1467,13 +1471,24 @@ function buildDetail(options) {
 						} else if (realValue == 0) {
 							$('#' + item.field).html(item.defaultOption);
 						} else {
-							(function(i) {
+							(function(i, displayValue) {
 								reqApi({
 									code: i.detailCode || i.listCode,
 									json: params
 								}).then(function(d) {
-									var data = (d && d.list && d.list[0]) || d[0] || d;
-									$('#' + i.field).html(data[i.valueName] || i.valueName.temp(data) || i.defaultOption);
+									var data;
+									if(displayValue){
+                                        data = (d && d.list) || d[0] && d || [d];
+                                        for(var j = 0; j < data.length; j++){
+                                            if(data[j][i.keyName] == displayValue){
+                                                $('#' + i.field).html(data[j][i.valueName]);
+											}
+										}
+									}else {
+                                        data = (d && d.list && d.list[0]) || d[0] || d;
+                                        $('#' + i.field).html(data[i.valueName] || i.valueName.temp(data) || i.defaultOption);
+									}
+
 									$('#' + i.field).attr('data-value', data[i.keyName]);
 								});
 //								ajaxGet(i.url, params).then(function(res) {
@@ -1481,7 +1496,7 @@ function buildDetail(options) {
 //									$('#' + i.field).html(data[i.valueName] || i.defaultOption);
 //									$('#' + i.field).attr('data-value', data[i.keyName]);
 //								});
-							})(item);
+							})(item, displayValue);
 						}
 						
 						
@@ -1494,7 +1509,7 @@ function buildDetail(options) {
 							});
 							$('#' + item.field).html(imgHtml);
 						} else {
-							var sp = realValue.split('||');
+							var sp = realValue && realValue.split('||') || [];
 							var imgsHtml = '';
 							var suffixMap = {
 								'docx': __uri('../images/word.png'),
@@ -1503,7 +1518,7 @@ function buildDetail(options) {
 								'xlsx': __uri('../images/excel.png'),
 								'pdf': __uri('../images/pdf.png')
 							};
-							sp.forEach(function(item) {
+							sp.length && sp.forEach(function(item) {
 								var suffix = item.slice(item.lastIndexOf('.') + 1);
 								var src = (realValue.indexOf('http://') > -1? item : (OSS.picBaseUrl + '/' + item));
 								if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' || suffix == 'xls' || suffix == 'xlsx') {
@@ -1550,7 +1565,7 @@ function buildDetail(options) {
 				} else {
 					if (item.type == 'img') {
 						var realValue = data[item['[value]']] || displayValue || '';
-						var sp = realValue.split('||');
+						var sp = realValue && realValue.split('||') || [];
 						var imgsHtml = '';
 						var suffixMap = {
 							'docx': __uri('../images/word.png'),
@@ -1559,7 +1574,7 @@ function buildDetail(options) {
 							'xlsx': __uri('../images/excel.png'),
 							'pdf': __uri('../images/pdf.png')
 						};
-						sp.forEach(function(item) {
+						sp.length && sp.forEach(function(item) {
 							var suffix = item.slice(item.lastIndexOf('.') + 1);
 							var src = (realValue.indexOf('http://') > -1? item : (OSS.picBaseUrl + '/' + item));
 							if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' || suffix == 'xls' || suffix == 'xlsx') {
@@ -1582,13 +1597,15 @@ function buildDetail(options) {
 						});
 					} else if (item.type == 'radio') {
 						$('input[name='+item.field+'][value='+displayValue+']').prop('checked', true);
-					} else if (item.type == 'textarea') {
+					} else if (item.type == 'textarea' && !item.normalArea) {
 //						(function(f) {
 //							UE.getEditor(f).ready(function() {
 //								UE.getEditor(f).setContent(data[f]);
 //							});
 //						})(item.field);
 						$('#' + item.field)[0].editor.$txt.html(data[item.field]);
+					} else if (item.type == 'textarea' && item.normalArea) {
+                        $('#' + item.field).val(data[item.field]);
 					} else if (item.type == 'citySelect') {
 						if (data.province == data.city && data.city == data.area) {
 							
@@ -1601,13 +1618,24 @@ function buildDetail(options) {
 						$('#city').trigger('change');
 						$('#area').val(data.area);
 					} else if (item.type == "o2m" && item.editTable) {
-                        $('#' + item.field).html(
-                            '<div class="tools">'+
-                            '<ul class="toolbar">'+
-                            '<li style="display:block;" id="addBtn-o2m"><span><img src="/static/images/t01.png"></span>新增</li>'+
-                            '</ul>'+
-                            '</div><table id="' + item.field + 'List"  data-editable-emptytext="无"></table>');
-                        addEditTableListener("#addBtn-o2m", '#' + item.field + 'List', item.columns);
+						if(item.addeditTable){
+                            $('#' + item.field).html(
+                                '<div class="tools">'+
+                                '<ul class="toolbar">'+
+                                '<li id="addBtn-o2m" style="display: inline-block;float: none;"><span><img src="/static/images/t01.png"></span>新增</li>'+
+                                '<li id="removeBtn-o2m" style="display: inline-block;float: none;"><span><img src="/static/images/t01.png"></span>删除</li>'+
+                                // '<li class="clearfix" id="uploadBtn">'+
+                                // 	'<div class="btn-file"><span>选择图片</span>' +
+                                // 		'<input type="file" tabindex="1" id="'+item.field+'Img" name="'+item.field+'Img" />' +
+                                // 	'</div><div id="'+item.field+'" style="margin-left: 195px;"></div></li>'+
+                                '</ul>'+
+                                '</div><table id="' + item.field + 'List"  data-editable-emptytext="无"></table>');
+                            addEditTableListener("#addBtn-o2m", "#removeBtn-o2m", '#' + item.field + 'List', item.columns, item.addeditTable);
+						}else{
+                            $('#' + item.field).html('<table id="' + item.field + 'List"  data-editable-emptytext="无"></table>');
+                            addEditTableListener("", "", '#' + item.field + 'List', item.columns);
+						}
+
                         $('#' + item.field + 'List').bootstrapTable({
                             striped: true,
                             clickToSelect: true,
@@ -1663,6 +1691,32 @@ function buildDetail(options) {
 //				
 //			}
 //		});
+	}else{
+        for (var i = 0, len = fields.length; i < len; i++) {
+            var item = fields[i];
+            var value = item.value;
+        	if (item.type == "o2m" && item.editTable) {
+                $('#' + item.field).html(
+                    '<div class="tools clearfix">'+
+                    '<ul class="toolbar" style="height: auto;">'+
+                    '<li style="display:inline-block;float: none;" id="addBtn-o2m"><span><img src="/static/images/t01.png"></span>新增</li>'+
+                    '<li id="removeBtn-o2m" style="display: inline-block;float: none;"><span><img src="/static/images/t01.png"></span>删除</li>'+
+					// '<li class="clearfix" style="display:block;" id="uploadBtn">'+
+						// '<div class="btn-file"><span>选择图片</span>' +
+						// '<input type="file" tabindex="1" id="'+item.field+'Img" name="'+item.field+'Img" />' +
+						// '</div><div id="'+item.field+'" style="margin-left: 195px;"></div></li>'+
+                    '</ul>'+
+                    '</div><table id="' + item.field + 'List"  data-editable-emptytext="无"></table>');
+                addEditTableListener("#addBtn-o2m", "#removeBtn-o2m", '#' + item.field + 'List', item.columns);
+                $('#' + item.field + 'List').bootstrapTable({
+                    striped: true,
+                    clickToSelect: true,
+                    singleSelect: true,
+                    columns: item.columns,
+                    data: []
+                });
+            }
+        }
 	}
 	
 	if (!window.parent.frames[1]) {
@@ -1903,41 +1957,56 @@ function confirm(msg) {
 	}));
 
 }
-function addEditTableListener(btnId, tableId, columns){
-    window.operateEvents = {
-        'click .remove': function (e, value, row, index) {
-            $(tableId).bootstrapTable('remove', {
-                field: 'code',
-                values: [row.code]
-            });
-        }
-    };
-    function operateFormatter(value, row, index) {
-        return [
-            '<a class="remove" href="javascript:void(0)" title="Remove">',
-            '<i class="glyphicon glyphicon-remove"></i>',
-            '</a>'
-        ].join('');
-    }
+function addEditTableListener(addId, removeId, tableId, columns, flag){
+    // window.operateEvents = {
+    //     'click .remove': function (e, value, row, index) {
+    //         $(tableId).bootstrapTable('remove', {
+    //             field: 'code',
+    //             values: [row.code]
+    //         });
+    //     }
+    // };
+    // function operateFormatter(value, row, index) {
+    //     return [
+    //         '<a class="remove" href="javascript:void(0)" title="Remove">',
+    //         '<i class="glyphicon glyphicon-remove"></i>',
+    //         '</a>'
+    //     ].join('');
+    // }
+    //$("#uploadBtn")
 
 	var count = 0;
     for(var i = 0; i < columns.length; i++){
-        columns[i].editable = columns[i].editable1;
+        columns[i].editable1 && ( columns[i].editable = columns[i].editable1 );
     }
-    columns.push({
-        field: '操作',
-        title: '操作',
-        align: 'center',
-        events: operateEvents,
-        formatter: operateFormatter
-    });
-	$(btnId).on("click", function () {
+    // columns.push({
+    //     field: 'operator11',
+    //     title: '操作',
+    //     align: 'center',
+    //     events: operateEvents,
+    //     formatter: operateFormatter
+    // });
+    addId && $(addId).on("click", function () {
 		var fields = {"":""};
 		for(var i = 0; i < columns.length; i++){
-			fields[ columns[i].field ] = "";
+			fields[ columns[i].field ] = columns[i].defaultValue || "";
 		}
 		fields["code"] = "emptyCode" + (count++);
-		$(tableId).bootstrapTable('append', fields);
+		var index = $('#creditAuditListList').bootstrapTable('getData').length;
+		$(tableId).bootstrapTable('insertRow', {
+			index: index,
+			row: fields
+		});
     });
-
+	removeId && $(removeId).on("click", function () {
+        var selRecords = $(tableId).bootstrapTable('getSelections');
+        if (selRecords.length <= 0) {
+            toastr.info("请选择记录");
+            return;
+        }
+        $(tableId).bootstrapTable('remove', {
+            field: 'code',
+            values: [selRecords[0].code]
+        });
+    });
 }

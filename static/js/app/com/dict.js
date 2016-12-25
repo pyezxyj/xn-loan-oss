@@ -49,6 +49,15 @@ Dict.getName = function(type, key) {
 //	return key ? (Dict.findName(SYJDictCache[type], key) || '-') : SYJDictCache[type];
 }
 
+Dict.getName1 = function (type, key, value) {
+    var arr = Dict.getName(type),
+        result = [];
+    for(var i = 0; i < arr.length; i++){
+        result.push({"value": arr[i][key || "dkey"], "text": arr[i][value || "dvalue"]});
+    }
+    return result;
+};
+
 Dict.getNameForList = function(type) {
 	var res;
 	reqApi({

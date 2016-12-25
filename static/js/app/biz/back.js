@@ -4,29 +4,49 @@ $(function () {
         title: '',
         checkbox: true
     }, {
-        field: 'name',
+        field: 'code',
+        title: '档案号'
+    }, {
+        field: 'userName',
         title: '借款人',
+        type: "select",
         search: true
     }, {
-        field: 'level',
+        field : 'loanType',
+        title : '贷款品种',
+        formatter: Dict.getNameForList('loan_type')
+    }, {
+        field : 'loanAmount',
+        title : '贷款金额',
+        formatter: function(v) {
+            return moneyFormat(+v);
+        }
+    }, {
+        field: 'status',
         title: '状态',
-        formatter: Dict.getNameForList(''),
+        formatter: Dict.getNameForList('credit_status'),
         search: true,
         type: 'select',
-        key: ''
+        key: 'credit_status'
+    }, {
+        title: '经办银行',
+        field: 'jbBank',
+        formatter: Dict.getNameForList('jb_bank')
+    }, {
+        field : '',
+        title : '收款金额',
+        formatter: function(v) {
+            return moneyFormat(+v);
+        }
+    },{
+        field : 'receiptDatetime',
+        title : '收款时间',
+        formatter: dateTimeFormat
     }];
 
     buildList({
         router: 'back',
         columns: columns,
-        pageCode: '',
-    });
-    $('#changeBtn').click(function () {
-        var selRecords = $('#tableList').bootstrapTable('getSelections');
-        if (selRecords.length <= 0) {
-            toastr.info("请选择记录");
-            return;
-        }
-        window.location.href = "back.html?code=" + selRecords[0].code + "&name=" + encodeURI(encodeURI(selRecords[0].name));
+        pageCode: '617003'
     });
 });
