@@ -18,7 +18,7 @@ $(function() {
     }, {
         title: '贷款金额',
         field: 'loanAmount',
-        formatter: function (v) {
+        formatter: function(v) {
             return moneyFormat(+v);
         },
         readonly: true
@@ -31,28 +31,27 @@ $(function() {
         readonly: true
     }, {
         title: '收款金额',
-        field: '',
-        formatter: function (v) {
+        field: 'receiptAmount',
+        formatter: function(v) {
             return moneyFormat(+v);
         },
         required: true,
         amount: true
     }, {
         title: '水单',
-        field: '',
+        field: 'receiptPdf',
         required: true,
         type: 'img'
     }];
     var options = {
         fields: fields,
         code: code,
-        detailCode: '617006',
-        addCode: ''
+        detailCode: '617006'
     };
 
     options.buttons = [{
         title: '确认',
-        handler: function () {
+        handler: function() {
             if ($('#jsForm').valid()) {
                 var data = $('#jsForm').serializeObject();
                 for (var i = 0, len = fields.length; i < len; i++) {
@@ -63,9 +62,17 @@ $(function() {
                         data[item.field] = item.emptyValue;
                     }
                 }
+                $('#jsForm').find('.btn-file [type=file]').parent().next().each(function(i, el) {
+                    var values = [];
+                    var imgs = $(el).find('.img-ctn');
+                    imgs.each(function(index, img) {
+                        values.push($(img).attr('data-src') || $(img).find('img').attr('src'));
+                    });
+                    data[el.id] = values.join('||');
+                });
                 data['id'] = data['code'];
                 reqApi({
-                    code: "",
+                    code: "617021",
                     json: data
                 }).done(function() {
                     sucDetail();
@@ -74,7 +81,7 @@ $(function() {
         }
     }, {
         title: '返回',
-        handler: function () {
+        handler: function() {
             goBack();
         }
     }];

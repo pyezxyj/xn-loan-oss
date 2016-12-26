@@ -1,4 +1,4 @@
-$(function () {
+$(function() {
     var columns = [{
         field: '',
         title: '',
@@ -9,7 +9,6 @@ $(function () {
     }, {
         field: 'userName',
         title: '借款人',
-        type: 'select',
         search: true
     }, {
         field: 'loanType',
@@ -21,7 +20,7 @@ $(function () {
         field: 'car',
         title: '车行',
         formatter: Dict.getNameForList('car_type'),
-        key:"car_type"
+        key: "car_type"
     }, {
         title: '业务员',
         field: 'salesman',
@@ -35,9 +34,12 @@ $(function () {
     }, {
         field: 'status',
         title: '状态',
-        formatter: Dict.getNameForList('credit_status'),
+        data: {
+            '19': '已打款/代收款',
+            '21': '发保合未上传',
+            '22': '发保合已上传'
+        },
         search: true,
-        key: 'credit_status',
         type: "select"
     }, {
         field: 'downloadTimes',
@@ -47,14 +49,17 @@ $(function () {
     buildList({
         router: 'manage',
         columns: columns,
-        pageCode: '617003'
+        pageCode: '617003',
+        searchParams: {
+            statusList: [19, 21, 22]
+        }
     });
-    $("#add1Btn").on("click", function () {
+    $("#add1Btn").on("click", function() {
         var selRecords = $('#tableList').bootstrapTable('getSelections');
         if (selRecords.length <= 0) {
             toastr.info("请选择记录");
             return;
         }
-        window.location.href = "manage_addedit.html?code=" + selRecords[0].code+"&add=1";
+        window.location.href = "manage_addedit.html?code=" + selRecords[0].code + "&add=1";
     });
 });

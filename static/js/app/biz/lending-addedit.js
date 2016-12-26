@@ -1,4 +1,4 @@
-$(function () {
+$(function() {
     var code = getQueryString('code');
 
     var fields = [{
@@ -36,85 +36,62 @@ $(function () {
     }, {
         title: '拟贷金额',
         field: 'loanAmount',
-        formatter: function (v) {
+        formatter: function(v) {
             return moneyFormat(+v);
         },
         readonly: true
     }, {
-        title: '',
+        title: '借款人信息',
         field: 'creditAuditList',
         type: 'o2m',
         editTable: true,
         addeditTable: false,
         columns: [{
+            field: '',
+            title: '',
+            checkbox: true
+        }, {
             field: 'userName',
             title: '姓名',
-            type: 'select'
+            type: 'select',
+            readonly: true
         }, {
             field: 'relation',
             title: '关系',
             type: 'select',
-            formatter: Dict.getNameForList('relation')
+            formatter: Dict.getNameForList('relation'),
+            readonly: true
         }, {
             field: 'idKind',
             title: '证件类型',
             type: 'select',
-            formatter: Dict.getNameForList('id_kind')
+            formatter: Dict.getNameForList('id_kind'),
+            readonly: true
         }, {
             field: 'idNo',
-            title: '证件号'
+            title: '证件号',
+            readonly: true
         }, {
             field: 'mobile',
             title: '手机号码',
-            editable1: {
-                type: 'text',
-                title: '手机号码',
-                validate: function (value) {
-                    value = $.trim(value);
-                    if (!value) {
-                        return '不能为空';
-                    }
-                }
-            }
+            required: true,
+            mobile: true
         }, {
             field: 'workUnit',
             title: '工作单位',
-            editable1: {
-                type: 'text',
-                title: '工作单位',
-                validate: function (value) {
-                    value = $.trim(value);
-                    if (!value) {
-                        return '不能为空';
-                    }
-                }
-            }
+            required: true,
+            isNotFace: true
         }, {
             field: 'workPhone',
             title: '单位电话',
-            editable1: {
-                type: 'text',
-                title: '单位电话',
-                validate: function (value) {
-                    value = $.trim(value);
-                    if (!value) {
-                        return '不能为空';
-                    }
-                }
-            }
+            required: true,
+            isNotFace: true,
+            tm: true
         }, {
             field: 'workAddress',
             title: '单位地址',
-            editable1: {
-                type: 'text',
-                title: '单位地址',
-                validate: function (value) {
-                    value = $.trim(value);
-                    if (!value) {
-                        return '不能为空';
-                    }
-                }
-            }
+            required: true,
+            isNotFace: true
         }]
     }, {
         field: 'cardBank',
@@ -123,21 +100,24 @@ $(function () {
     }, {
         field: 'cardNumber',
         title: '代扣卡号码',
-        required: true
+        required: true,
+        bankCard: true
     }, {
         field: 'brand',
         title: '汽车品牌',
-        required: true
+        required: true,
+        isNotFace: true
     }, {
         field: 'model',
         title: '汽车型号',
-        required: true
+        required: true,
+        isNotFace: true
     }, {
         field: 'price',
         title: '车价',
         amount: true,
         required: true,
-        onKeyup: function (value) {
+        onKeyup: function(value) {
             if ($.isNumeric(value) && $.isNumeric($("#firstPay").val())) {
                 $("#firstRate").val(+$("#firstPay").val() / +value)
             }
@@ -147,12 +127,12 @@ $(function () {
         title: '首付款',
         required: true,
         amount: true,
-        afterSet: function (v, data) {
+        afterSet: function(v, data) {
             if ($.isNumeric(v) && $.isNumeric($("#firstPay").val())) {
                 $("#firstRate").html(+v / +$("#price").val())
             }
         },
-        onKeyup: function (value) {
+        onKeyup: function(value) {
             if ($.isNumeric(value) && $.isNumeric($("#price").val())) {
                 $("#firstRate").html(+value / +$("#price").val());
             }
@@ -191,6 +171,10 @@ $(function () {
         key: 'urgency',
         formatter: Dict.getNameForList('urgency'),
         required: true
+    }, {
+        field: 'supplyInfo',
+        title: '其他补充资料',
+        type: "img"
     }];
 
     var options = {
@@ -201,14 +185,14 @@ $(function () {
 
     options.buttons = [{
         title: '返回',
-        handler: function () {
+        handler: function() {
             goBack();
         }
     }];
 
     options.buttons.unshift({
         title: '确认',
-        handler: function () {
+        handler: function() {
             if ($('#jsForm').valid()) {
                 var data = $('#jsForm').serializeObject();
                 for (var i = 0, len = fields.length; i < len; i++) {
@@ -219,12 +203,20 @@ $(function () {
                         data[item.field] = item.emptyValue;
                     }
                 }
+                $('#jsForm').find('.btn-file [type=file]').parent().next().each(function(i, el) {
+                    var values = [];
+                    var imgs = $(el).find('.img-ctn');
+                    imgs.each(function(index, img) {
+                        values.push($(img).attr('data-src') || $(img).find('img').attr('src'));
+                    });
+                    data[el.id] = values.join('||');
+                });
                 data['id'] = data['code'];
-                data["creditList"] = $('#creditAuditListList').bootstrapTable('getData');
+                data["creditAuditList"] = $('#creditAuditListList').bootstrapTable('getData');
                 reqApi({
                     code: "617012",
                     json: data
-                }).done(function () {
+                }).done(function() {
                     sucDetail();
                 });
             }

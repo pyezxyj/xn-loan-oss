@@ -1,4 +1,4 @@
-$(function () {
+$(function() {
     var code = getQueryString('code');
 
     var fields = [{
@@ -36,7 +36,7 @@ $(function () {
     }, {
         title: '拟贷金额',
         field: 'loanAmount',
-        formatter: function (v) {
+        formatter: function(v) {
             return moneyFormat(+v);
         },
         readonly: true
@@ -108,7 +108,7 @@ $(function () {
         field: 'firstPay',
         title: '首付款',
         number: true,
-        afterSet: function (v, data) {
+        afterSet: function(v, data) {
             if ($.isNumeric(data.firstPay) && $.isNumeric(data.price)) {
                 $("#firstRate").val(+data.firstPay / +data.price)
             }
@@ -161,31 +161,33 @@ $(function () {
 
     options.buttons = [{
         title: '通过',
-        handler: function () {
+        handler: function() {
+            var data = {};
             data['code'] = code;
             data["approveResult"] = "1";
             reqApi({
                 code: "617013",
                 json: data
-            }).done(function () {
+            }).done(function() {
                 sucDetail();
             });
         }
     }, {
         title: '不通过',
-        handler: function () {
+        handler: function() {
+            var data = {};
             data['code'] = code;
             data["approveResult"] = "0";
             reqApi({
                 code: "617013",
                 json: data
-            }).done(function () {
+            }).done(function() {
                 sucDetail();
             });
         }
     }, {
         title: '返回',
-        handler: function () {
+        handler: function() {
             goBack();
         }
     }];

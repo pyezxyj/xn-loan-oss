@@ -27,13 +27,13 @@ $(function() {
             return moneyFormat(+v);
         }
     }, {
-        field : 'mobile',
-        title : '联系电话',
+        field: 'mobile',
+        title: '联系电话',
         required: true,
         mobile: true
     }, {
-        field : 'investigator',
-        title : '调查员',
+        field: 'investigator',
+        title: '调查员',
         type: "select",
         listCode: "805055",
         keyName: "userId",

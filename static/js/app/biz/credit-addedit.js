@@ -1,13 +1,12 @@
-$(function () {
+$(function() {
     var code1 = getQueryString('code');
     var view = !!getQueryString('v');
     var idKindList = Dict.getNameForList('id_kind');
     var idKind = Dict.getName1("id_kind");
-    //var relationDict = Dict.getNameForList('relation')
     var code = "";
     code1 && reqApi({
         code: '617008',
-        json: {code: code1},
+        json: { code: code1 },
         sync: true
     }).then(function(data) {
         code = data.refUser;
@@ -51,14 +50,14 @@ $(function () {
     }, {
         title: '拟贷金额',
         field: 'loanAmount',
-        formatter: function (v) {
+        formatter: function(v) {
             return moneyFormat(+v);
         },
         amount: true,
         required: true,
         readonly: view
     }, {
-        title: '',
+        title: '借款人信息',
         field: 'creditAuditList',
         type: 'o2m',
         editTable: true,
@@ -71,97 +70,58 @@ $(function () {
         }, {
             field: 'userName',
             title: '姓名',
-            editable1: {
-                type: 'text',
-                title: '姓名',
-                validate: function (value) {
-                    value = $.trim(value);
-                    if (!value) {
-                        return '不能为空';
-                    }
-                }
-            }
+            required: true
         }, {
             field: 'relation',
             title: '关系',
             formatter: Dict.getNameForList('relation'),
-            editable1: {
-                type: 'select',
-                title: '关系',
-                source: Dict.getName1('relation'),
-                validate: function (value) {
-                    value = $.trim(value);
-                    if (!value) {
-                        return '不能为空';
-                    }
-                }
-            }
+            type: 'select',
+            key: 'relation',
+            required: true
         }, {
             field: 'idKind',
             title: '证件类型',
             formatter: idKindList,
-            editable1: {
-                type: 'select',
-                title: '证件类型',
-                source: idKind,
-                validate: function (value) {
-                    value = $.trim(value);
-                    if (!value) {
-                        return '不能为空';
-                    }
-                }
-            }
+            type: 'select',
+            key: 'id_kind',
+            required: true
         }, {
             field: 'idNo',
+            required: true,
             title: '证件号',
-            editable1: {
-                type: 'text',
-                title: '证件号',
-                validate: function (value) {
-                    value = $.trim(value);
-                    if (!value) {
-                        return '不能为空';
-                    }
-                }
-            }
+            idCard: true
         }, {
             field: 'accreditPdf',
             title: '授权书',
-            editable1: {
-                type: 'text',
-                title: '授权书',
-                validate: function (value) {
-                    value = $.trim(value);
-                    if (!value) {
-                        return '不能为空';
-                    }
-                }
-            }
+            type1: "img",
+            required: true
         }, {
             field: 'status',
             title: '证信结果',
-            formatter: Dict.getNameForList('credit_status'),
-            defaultValue: "0"
+            formatter: Dict.getNameForList('audit_status'),
+            hidden1: true,
+            readonly: true,
+            defaultValue: 0,
+            type: 'select',
+            key: 'audit_status'
         }]
     }];
 
     var options = {
         fields: fields,
         code: code,
-        detailCode: '617006',
-        // addCode: '617000',
-        // editCode: '617002'
+        detailCode: '617006'
     };
 
     options.buttons = [{
         title: '返回',
-        handler: function () {
+        handler: function() {
             goBack();
         }
     }];
     !view && options.buttons.unshift({
         title: '保存',
-        handler: function () {
+        handler: function() {
             if ($('#jsForm').valid()) {
                 var data = $('#jsForm').serializeObject();
                 for (var i = 0, len = fields.length; i < len; i++) {

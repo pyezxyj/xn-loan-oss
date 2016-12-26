@@ -1,4 +1,4 @@
-$(function () {
+$(function() {
     var code = getQueryString('code');
 
     var fields = [{
@@ -19,7 +19,7 @@ $(function () {
     }, {
         title: '核定贷款金额',
         field: 'loanAmount',
-        formatter: function (v) {
+        formatter: function(v) {
             return moneyFormat(+v);
         },
         readonly: true
@@ -30,13 +30,11 @@ $(function () {
     }, {
         field: 'cardBank',
         title: '车行卡开户行',
-        readonly: true,
-        isNotFace: true
+        readonly: true
     }, {
         field: 'cardNumber',
         title: '车行卡号码',
-        readonly: true,
-        isNotFace: true
+        readonly: true
     }, {
         field: 'playPdf',
         title: '水单',
@@ -52,13 +50,13 @@ $(function () {
 
     options.buttons = [{
         title: '确认',
-        handler: function () {
+        handler: function() {
             if ($('#jsForm').valid()) {
-                var data = {"code": code};
-                $('#jsForm').find('.btn-file [type=file]').parent().next().each(function (i, el) {
+                var data = { "code": code };
+                $('#jsForm').find('.btn-file [type=file]').parent().next().each(function(i, el) {
                     var values = [];
                     var imgs = $(el).find('.img-ctn');
-                    imgs.each(function (index, img) {
+                    imgs.each(function(index, img) {
                         values.push($(img).attr('data-src') || $(img).find('img').attr('src'));
                     });
                     data[el.id] = values.join('||');
@@ -67,14 +65,14 @@ $(function () {
                 reqApi({
                     code: "617018",
                     json: data
-                }).done(function () {
+                }).done(function() {
                     sucDetail();
                 });
             }
         }
     }, {
         title: '返回',
-        handler: function () {
+        handler: function() {
             goBack();
         }
     }];

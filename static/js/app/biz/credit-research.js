@@ -1,17 +1,9 @@
 $(function() {
 
-    var code1 = getQueryString('code');
-    var code;
-    code1 && reqApi({
-        code: '617008',
-        json: {code: code1},
-        sync: true
-    }).then(function(data) {
-        code = data.refUser;
-    });
+    var code = getQueryString('code');
     var fields = [{
-        field : 'userName',
-        title : '调查对象',
+        field: 'userName',
+        title: '调查对象',
         required: true,
         readonly: true
     }, {

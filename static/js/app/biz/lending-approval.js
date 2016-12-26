@@ -1,4 +1,4 @@
-$(function () {
+$(function() {
     var code = getQueryString('code');
 
     var fields = [{
@@ -32,7 +32,7 @@ $(function () {
     }, {
         title: '拟贷金额',
         field: 'loanAmount',
-        formatter: function (v) {
+        formatter: function(v) {
             return moneyFormat(+v);
         },
         readonly: true
@@ -104,7 +104,7 @@ $(function () {
         field: 'firstPay',
         title: '首付款',
         amount: true,
-        afterSet: function (v, data) {
+        afterSet: function(v, data) {
             if ($.isNumeric(data.firstPay) && $.isNumeric(data.price)) {
                 $("#firstRate").val(+data.firstPay / +data.price)
             }
@@ -119,8 +119,8 @@ $(function () {
         title: '贷款额',
         required: true,
         amount: true,
-        onKeyup: function (value) {
-            if( $.isNumeric(value) ){
+        onKeyup: function(value) {
+            if ($.isNumeric(value)) {
 
             }
         }
@@ -163,52 +163,56 @@ $(function () {
 
     options.buttons = [{
         title: '直接否决',
-        handler: function () {
+        handler: function() {
+            var data = {};
             data['code'] = code;
             data["approveResult"] = "2";
             reqApi({
                 code: "617013",
                 json: data
-            }).done(function () {
+            }).done(function() {
                 sucDetail();
             });
         }
     }, {
         title: '补充资料',
-        handler: function () {
+        handler: function() {
+            var data = {};
             data['code'] = code;
             data["approveResult"] = "3";
             reqApi({
                 code: "617013",
                 json: data
-            }).done(function () {
+            }).done(function() {
                 sucDetail();
             });
         }
     }, {
         title: '调额通过',
-        handler: function () {
+        handler: function() {
             if ($('#jsForm').valid()) {
+                var data = {};
                 data['code'] = code;
                 data["approveResult"] = "4";
                 data["realLoanAmount"] = $("#realLoanAmount").val();
                 reqApi({
                     code: "617013",
                     json: data
-                }).done(function () {
+                }).done(function() {
                     sucDetail();
                 });
             }
         }
     }, {
         title: '直接通过',
-        handler: function () {
+        handler: function() {
+            var data = {};
             data['code'] = code;
             data["approveResult"] = "5";
             reqApi({
                 code: "617013",
                 json: data
-            }).done(function () {
+            }).done(function() {
                 sucDetail();
             });
         }

@@ -1,4 +1,4 @@
-$(function () {
+$(function() {
     var code = getQueryString('code');
 
     var fields = [{
@@ -32,7 +32,7 @@ $(function () {
     }, {
         title: '拟贷金额',
         field: 'loanAmount',
-        formatter: function (v) {
+        formatter: function(v) {
             return moneyFormat(+v);
         },
         readonly: true
@@ -67,15 +67,15 @@ $(function () {
             title: '手机号码',
             readonly: true
         }, {
-            field: 'work_unit',
+            field: 'workUnit',
             title: '工作单位',
             readonly: true
         }, {
-            field: 'work_phone',
+            field: 'workPhone',
             title: '单位电话',
             readonly: true
         }, {
-            field: 'work_address',
+            field: 'workAddress',
             title: '单位地址',
             readonly: true
         }]
@@ -103,7 +103,7 @@ $(function () {
     }, {
         field: 'firstPay',
         title: '首付款',
-        afterSet: function (v, data) {
+        afterSet: function(v, data) {
             if ($.isNumeric(data.firstPay) && $.isNumeric(data.price)) {
                 $("#firstRate").val(+data.firstPay / +data.price)
             }
@@ -144,7 +144,7 @@ $(function () {
         formatter: Dict.getNameForList('urgency'),
         readonly: true
     }, {
-        field: 'payrollPdf',
+        field: 'supplyInfo',
         title: '其他补充资料',
         required: true,
         type: "img"
@@ -162,13 +162,13 @@ $(function () {
 
     options.buttons = [{
         title: '确认',
-        handler: function () {
+        handler: function() {
             if ($('#jsForm').valid()) {
-                var data = {"code": code};
-                $('#jsForm').find('.btn-file [type=file]').parent().next().each(function (i, el) {
+                var data = { "code": code };
+                $('#jsForm').find('.btn-file [type=file]').parent().next().each(function(i, el) {
                     var values = [];
                     var imgs = $(el).find('.img-ctn');
-                    imgs.each(function (index, img) {
+                    imgs.each(function(index, img) {
                         values.push($(img).attr('data-src') || $(img).find('img').attr('src'));
                     });
                     data[el.id] = values.join('||');
@@ -177,14 +177,14 @@ $(function () {
                 reqApi({
                     code: "617014",
                     json: data
-                }).done(function () {
+                }).done(function() {
                     sucDetail();
                 });
             }
         }
     }, {
         title: '返回',
-        handler: function () {
+        handler: function() {
             goBack();
         }
     }];
