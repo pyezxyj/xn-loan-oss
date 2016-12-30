@@ -26,10 +26,8 @@ $(function() {
         title: '状态',
         type: "select",
         data: {
-            '10': '电话回访通过/待补充资料',
-            '12': '垫款复核不通过/财务复核不通过/财务待补充资料',
-            '13': '已补充资料',
-            '15': '财务待补充资料'
+            "9": "电话回访通过/待补充请款资料/财务复核不通过",
+            '10': '已补充资料/待垫款复核'
         },
         search: true
     }, {
@@ -42,7 +40,7 @@ $(function() {
         columns: columns,
         pageCode: '617003',
         searchParams: {
-            statusList: [10, 12, 13, 15]
+            statusList: [9, 10]
         }
     });
     $("#add1Btn").on("click", function() {

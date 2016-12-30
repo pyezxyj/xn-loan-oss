@@ -25,11 +25,9 @@ $(function() {
         field: 'status',
         title: '状态',
         data: {
-            '13': '已补充资料',
-            '16': '待垫款复核',
-            '17': '垫款复核不通过',
-            '18': '垫款复核通过/代打款',
-            '19': '已打款/代收款'
+            '10': '已补充资料/待垫款复核',
+            '11': '垫款复核通过/待打款',
+            '12': '已打款/发保合未上传'
         },
         type: 'select',
         search: true
@@ -43,7 +41,7 @@ $(function() {
         columns: columns,
         pageCode: '617003',
         searchParams: {
-            statusList: [13, 16, 17, 18, 19]
+            statusList: [10, 11, 12]
         }
     });
     $("#add1Btn").on("click", function() {

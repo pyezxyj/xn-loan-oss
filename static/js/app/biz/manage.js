@@ -35,9 +35,8 @@ $(function() {
         field: 'status',
         title: '状态',
         data: {
-            '19': '已打款/代收款',
-            '21': '发保合未上传',
-            '22': '发保合已上传'
+            '12': '已打款/发保合未上传',
+            '13': '发保合已上传/待收款'
         },
         search: true,
         type: "select"
@@ -51,7 +50,7 @@ $(function() {
         columns: columns,
         pageCode: '617003',
         searchParams: {
-            statusList: [19, 21, 22]
+            statusList: [12, 13]
         }
     });
     $("#add1Btn").on("click", function() {

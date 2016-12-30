@@ -28,9 +28,9 @@ $(function() {
         field: 'status',
         title: '状态',
         data: {
-            '9': '直接通过/待电话回访',
-            '10': '电话回访通过/待补充资料',
-            '11': '电话回访不通过'
+            '7': '调额通过/待电话回访',
+            '8': '直接通过/待电话回访',
+            '9': '电话回访通过/待补充请款资料/财务复核不通过'
         },
         type: "select",
         search: true
@@ -44,7 +44,7 @@ $(function() {
         columns: columns,
         pageCode: '617003',
         searchParams: {
-            statusList: [9, 10, 11]
+            statusList: [7, 8, 9]
         }
     });
     $("#returnBtn").on("click", function() {

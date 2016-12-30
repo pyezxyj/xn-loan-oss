@@ -5,23 +5,19 @@ $(function() {
     var fields = [{
         title: '借款人',
         field: 'userName',
-        required: true,
         readonly: true
     }, {
         title: '身份证',
         field: 'idNo',
-        required: true,
         readonly: true
     }, {
         title: '贷款品种',
         field: 'loanType',
         formatter: Dict.getNameForList('loan_type'),
-        required: true,
         readonly: true
     }, {
         title: '拟贷金额',
         field: 'loanAmount',
-        required: true,
         readonly: true,
         formatter: function(v) {
             return moneyFormat(+v);
@@ -40,12 +36,14 @@ $(function() {
         required: true,
         valueName: "loginName",
         params: {
-            roleCode: "SR2016122515014423585"
+            roleCode: "SR2016122515014423585",
+            status: "0"
         },
         required: true
     }, {
         title: '备注',
-        field: 'remark'
+        field: 'remark',
+        maxLength: 255
     }];
 
     buildDetail({

@@ -151,7 +151,8 @@ $(function() {
     }, {
         field: 'remark',
         title: '打回理由',
-        isNotFace: true
+        isNotFace: true,
+        maxlength: 255
     }];
 
     var options = {

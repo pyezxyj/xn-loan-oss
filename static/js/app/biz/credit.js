@@ -28,8 +28,6 @@ $(function() {
     }, {
         field: 'status',
         title: '资信结果',
-        // formatter: Dict.getNameForList('audit_status'),
-        // key: 'audit_status',
         data: {
             '0': '待审核',
             '1': '审核通过',

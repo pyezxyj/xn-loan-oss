@@ -24,9 +24,8 @@ $(function() {
         field: 'status',
         title: '状态',
         data: {
-            '22': '发保合已上传',
-            '19': '已打款/代收款',
-            '20': '已收款'
+            '13': '发保合已上传/待收款',
+            '14': '已收款/结束'
         },
         search: true,
         type: 'select',
@@ -51,7 +50,7 @@ $(function() {
         columns: columns,
         pageCode: '617003',
         searchParams: {
-            statusList: [19, 20, 22]
+            statusList: [13, 14]
         }
     });
     $("#add1Btn").on("click", function() {

@@ -54,7 +54,8 @@ $(function() {
             field: 'userName',
             title: '姓名',
             type: 'select',
-            readonly: true
+            readonly: true,
+            maxlength: 32
         }, {
             field: 'relation',
             title: '关系',
@@ -70,7 +71,8 @@ $(function() {
         }, {
             field: 'idNo',
             title: '证件号',
-            readonly: true
+            readonly: true,
+            idCard: true
         }, {
             field: 'mobile',
             title: '手机号码',
@@ -80,7 +82,8 @@ $(function() {
             field: 'workUnit',
             title: '工作单位',
             required: true,
-            isNotFace: true
+            isNotFace: true,
+            maxlength: 32
         }, {
             field: 'workPhone',
             title: '单位电话',
@@ -91,7 +94,8 @@ $(function() {
             field: 'workAddress',
             title: '单位地址',
             required: true,
-            isNotFace: true
+            isNotFace: true,
+            maxlength: 64
         }]
     }, {
         field: 'cardBank',
@@ -144,6 +148,7 @@ $(function() {
     }, {
         field: 'realLoanAmount',
         title: '贷款额',
+        amount: true,
         required: true
     }, {
         field: 'loanTerm',

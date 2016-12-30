@@ -121,6 +121,7 @@ $(function() {
     }, {
         field: 'realLoanAmount',
         title: '贷款额',
+        amount: true,
         readonly: true
     }, {
         field: 'loanTerm',
@@ -150,7 +151,8 @@ $(function() {
         readonly: true
     }, {
         field: 'remark',
-        title: '备注'
+        title: '备注',
+        maxlength: 255
     }];
 
     var options = {

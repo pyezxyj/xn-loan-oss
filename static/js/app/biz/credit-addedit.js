@@ -20,7 +20,8 @@ $(function() {
         keyName: "userId",
         valueName: "loginName",
         params: {
-            roleCode: "SR2016122515012575166"
+            roleCode: "SR2016122515012575166",
+            status: "0"
         },
         readonly: view
     }, {
@@ -70,7 +71,8 @@ $(function() {
         }, {
             field: 'userName',
             title: '姓名',
-            required: true
+            required: true,
+            maxlength: 32
         }, {
             field: 'relation',
             title: '关系',

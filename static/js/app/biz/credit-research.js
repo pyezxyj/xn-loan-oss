@@ -31,7 +31,8 @@ $(function() {
         title: '资信描述',
         required: true,
         type: "textarea",
-        normalArea: true
+        normalArea: true,
+        maxLength: 255
     }, {
         field: 'courtResult',
         title: '法院结果',
@@ -44,7 +45,8 @@ $(function() {
         title: '法院描述',
         required: true,
         type: "textarea",
-        normalArea: true
+        normalArea: true,
+        maxLength: 255
     }];
 
     buildDetail({

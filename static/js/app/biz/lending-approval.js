@@ -152,7 +152,8 @@ $(function() {
         readonly: true
     }, {
         field: 'remark',
-        title: '批复意见'
+        title: '批复意见',
+        maxlength: 255
     }];
 
     var options = {
@@ -194,7 +195,7 @@ $(function() {
                 var data = {};
                 data['code'] = code;
                 data["approveResult"] = "4";
-                data["realLoanAmount"] = $("#realLoanAmount").val();
+                data["realLoanAmount"] = +$("#realLoanAmount").val() * 1000;
                 reqApi({
                     code: "617013",
                     json: data
