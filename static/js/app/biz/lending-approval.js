@@ -2,11 +2,15 @@ $(function() {
     var code = getQueryString('code');
 
     var fields = [{
-        title: '业务员',
-        field: 'saleman',
+    	title: '业务员',
+        field: 'salesman',
         type: 'select',
-        key: 'car_type',
-        formatter: Dict.getNameForList('car_type'),
+        listCode: "805055",
+        keyName: "userId",
+        valueName: "loginName",
+        params: {
+            roleCode: "SR2016122515012575166"
+        },
         readonly: true
     }, {
         field: 'car',
@@ -99,17 +103,25 @@ $(function() {
         field: 'price',
         title: '车价',
         amount: true,
-        readonly: true
+        readonly: true,
+        afterSet: function(text) {
+        	var firstPay = $("#firstPay").text().replace(/,/g, "");
+            if ($.isNumeric(text) && $.isNumeric(firstPay)) {
+                $("#firstRate").text(+firstPay / +text)
+            }
+        }
     }, {
         field: 'firstPay',
         title: '首付款',
         amount: true,
-        afterSet: function(v, data) {
-            if ($.isNumeric(data.firstPay) && $.isNumeric(data.price)) {
-                $("#firstRate").val(+data.firstPay / +data.price)
+        readonly: true,
+        afterSet: function(text) {
+        	var price = $("#price").text().replace(/,/g, "");
+        	if ($.isNumeric(text) && $.isNumeric(price)) {
+                $("#firstRate").html(+text / +price);
             }
-        },
-        readonly: true
+        }
+        
     }, {
         field: 'firstRate',
         title: '首付比例',
@@ -134,6 +146,7 @@ $(function() {
     }, {
         field: 'sumRate',
         title: '综合费率',
+        formatter:percentFormat,
         readonly: true
     }, {
         field: '',
