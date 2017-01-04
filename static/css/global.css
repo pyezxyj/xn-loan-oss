@@ -1023,3 +1023,11 @@ li input[type="radio"] {
 .clearfix {
     zoom: 1
 }
+.t_3dot{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.w100p{
+	width: 100px;
+}

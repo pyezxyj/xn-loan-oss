@@ -1554,13 +1554,18 @@ function buildDetail(options) {
 
                                     imgsHtml += '<div class="img-ctn" data-src="' + src + '" style="display: inline-block;position: relative;">' +
                                         '<img width="100" src="' + suffixMap[suffix] + '" />' +
+                                        '<div class="t_3dot w100p">'+src.substring(src.lastIndexOf('/')+1)+'</div>'+
                                         '<i class="zmdi zmdi-download zmdi-hc-fw"></i></div>';
-                                } else if( suffix == 'jpg' || suffix == 'gif' || 
+                                } else if( suffix == 'jpg' || suffix == 'gif' ||
                                     suffix == 'png' || suffix == 'bmp' ) {
-                                    imgsHtml += '<img src="' + src + '" style="max-width: 300px;" />';
+                                	  imgsHtml += '<div class="img-ctn" data-src="' + src +'" style="display: inline-block;position: relative;">' +
+                                      '<img src="' + src + '?imageView2/1/w/100/h/100" style="max-width: 300px;" />' +
+                                      '<div class="t_3dot w100p">'+src.substring(src.lastIndexOf('/')+1)+'</div>'+
+                                      '<i class="zmdi zmdi-download zmdi-hc-fw"></i></div>';
                                 } else {
                                     imgsHtml += '<div class="img-ctn" data-src="' + src + '" style="display: inline-block;position: relative;">' +
                                         '<img width="100" src="' + defaultFile + '" />' +
+                                        '<div class="t_3dot w100p">'+src.substring(src.lastIndexOf('/')+1)+'</div>'+
                                         '<i class="zmdi zmdi-download zmdi-hc-fw"></i></div>';
                                 }
                             });
@@ -1620,16 +1625,20 @@ function buildDetail(options) {
                                 imgsHtml += '<div class="img-ctn" data-src="' + src + '" style="display: inline-block;position: relative;">' +
                                     '<img width="100" src="' + suffixMap[suffix] + '" />' +
                                     '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
+                                     '<div class="t_3dot w100p">'+src.substring(src.lastIndexOf('/')+1)+'</div>'+
                                     '<i class="zmdi zmdi-download zmdi-hc-fw"></i></div>';
-                            } else if( suffix == 'jpg' || suffix == 'gif' || 
+                            } else if( suffix == 'jpg' || suffix == 'gif' ||
                                 suffix == 'png' || suffix == 'bmp' ) {
-                                imgsHtml += '<div class="img-ctn" style="display: inline-block;position: relative;">' +
-                                    '<img src="' + src + '" />' +
-                                    '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i></div>';
+                            	  imgsHtml += '<div class="img-ctn" data-src="' + src +'" style="display: inline-block;position: relative;">' +
+                                  '<img src="' + src + '?imageView2/1/w/100/h/100" style="max-width: 300px;" />' +
+                                  '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
+                                  '<div class="t_3dot w100p">'+src.substring(src.lastIndexOf('/')+1)+'</div>'+
+                                  '<i class="zmdi zmdi-download zmdi-hc-fw"></i></div>';
                             } else {
                                 imgsHtml += '<div class="img-ctn" data-src="' + src + '" style="display: inline-block;position: relative;">' +
                                     '<img width="100" src="' + defaultFile + '" />' +
                                     '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
+                                    '<div class="t_3dot w100p">'+src.substring(src.lastIndexOf('/')+1)+'</div>'+
                                     '<i class="zmdi zmdi-download zmdi-hc-fw"></i></div>';
                             }
                         });
@@ -1828,6 +1837,7 @@ function uploadInit() {
     // }).done(function(data) {
     //     token = data.uploadToken;
     // });
+    
     var swfUrl = __uri("../../lib/Moxie.swf");
     // 创建上传对象
     var uploader = Qiniu.uploader({
@@ -1837,7 +1847,7 @@ function uploadInit() {
         //Ajax请求upToken的Url，**强烈建议设置**（服务端提供）
         // uptoken: token,
         //若未指定uptoken_url,则必须指定 uptoken ,uptoken由其他程序生成
-        unique_names: true,
+        unique_names: false,
         // 默认 false，key为文件名。若开启该选项，SDK会为每个文件自动生成key（文件名）
         // save_key: true,
         // 默认 false。若在服务端生成uptoken的上传策略中指定了 `sava_key`，则开启，SDK在前端将不对key进行任何处理
@@ -1874,6 +1884,7 @@ function uploadInit() {
                         // 文件添加进队列后,处理相关的事情
                         var sourceLink = file.name;
                         var suffix = sourceLink.slice(sourceLink.lastIndexOf('.') + 1);
+                        var imgCtn;
                         if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' ||
                             suffix == 'xls' || suffix == 'xlsx' || suffix == "mp4" ||
                             suffix == "avi" || suffix == 'rar' || suffix == 'zip') {
@@ -1888,21 +1899,27 @@ function uploadInit() {
                                 'rar': __inline('../images/rar.png'),
                                 'zip': __inline('../images/rar.png')
                             };
-                            var imgCtn = $('<div id="'+file.id+'" class="img-ctn" style="display: inline-block;position: relative;vertical-align: top;">' +
-                                '<img width="100" src="' + suffixMap[suffix] + '"/>' +
-                                '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
-                                '<i class="zmdi zmdi-download zmdi-hc-fw"></i>'+
-                                '<div class="progress-wrap"><div class="progress-infos">等待...</div>' +
-                                '<div class="progress progress-striped" style="display: none;">'+
-                                '<div class="progress-bar progress-bar-info" style="height: 20px;"></div>'+
-                                '</div>'+
-                                '</div>'+
-                                '</div>').appendTo(editor);
+                            imgCtn = $(
+                            		'<div id="'+file.id+'" class="img-ctn" style="display: inline-block;position: relative;vertical-align: top;">' +
+		                                '<img width="100" src="' + suffixMap[suffix] + '"/>' +
+		                                '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
+		                                '<i class="zmdi zmdi-download zmdi-hc-fw"></i>'+
+		                                '<div>'+file.name+'</div>'+
+		                                '<div class="progress-wrap">'+
+		                                	'<div class="progress-infos">等待...</div>' +
+			                                '<div class="progress progress-striped" style="display: none;">'+
+			                                	'<div class="progress-bar progress-bar-info" style="height: 20px;"></div>'+
+			                                '</div>'+
+		                                '</div>'+
+		                                
+                                	'</div>').appendTo(editor);
                         } else if( suffix == 'jpg' || suffix == 'gif' ||
                             suffix == 'png' || suffix == 'bmp' ) {
-                            var imgCtn = $('<div id="'+file.id+'" class="img-ctn" style="display: inline-block;position: relative;vertical-align: top;">'+
+                            imgCtn = $('<div id="'+file.id+'" class="img-ctn" style="display: inline-block;position: relative;vertical-align: top;">'+
                                 '<img src="' + defaultImg + '"/>'+
                                 '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>'+
+                                '<i class="zmdi zmdi-download zmdi-hc-fw"></i>'+
+                                '<div>'+file.name+'</div>'+
                                 '<div class="progress-wrap"><div class="progress-infos">等待...</div>' +
                                 '<div class="progress progress-striped" style="display: none;">'+
                                 '<div class="progress-bar progress-bar-info" style="height: 20px;"></div>'+
@@ -1910,10 +1927,11 @@ function uploadInit() {
                                 '</div>'+
                                 '</div>').appendTo(editor);
                         }else{
-                            var imgCtn = $('<div id="'+file.id+'" class="img-ctn" style="display: inline-block;position: relative;vertical-align: top;">' +
+                            imgCtn = $('<div id="'+file.id+'" class="img-ctn" style="display: inline-block;position: relative;vertical-align: top;">' +
                                 '<img width="100" src="' + defaultFile + '"/>' +
                                 '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
                                 '<i class="zmdi zmdi-download zmdi-hc-fw"></i>'+
+                                '<div>'+file.name+'</div>'+
                                 '<div class="progress-wrap"><div class="progress-infos">等待...</div>' +
                                 '<div class="progress progress-striped" style="display: none;">'+
                                 '<div class="progress-bar progress-bar-info" style="height: 20px;"></div>'+
@@ -1949,6 +1967,7 @@ function uploadInit() {
                         .parent().find(".progress-bar").css("width", parseInt(file.percent, 10) + "%");
                 }
             },
+            
             'FileUploaded': function(up, file, info) {
                 // 每个文件上传成功后,处理相关的事情
                 // 其中 info 是文件上传成功后，服务端返回的json，形式如
@@ -1976,16 +1995,17 @@ function uploadInit() {
                         suffix == 'xls' || suffix == 'xlsx' || suffix == "mp4" ||
                         suffix == "avi" || suffix == "rar" || suffix == "zip") {
                         imgCtn.attr("data-src", sourceLink);
-                    } else if( suffix == 'jpg' || suffix == 'gif' || 
+                    } else if( suffix == 'jpg' || suffix == 'gif' ||
                         suffix == 'png' || suffix == 'bmp' ) {
-                        imgCtn.find("img").attr("src", sourceLink);
+                        imgCtn.find("img").attr("src", sourceLink+"?imageView2/1/w/100/h/100");
+                        imgCtn.attr("data-src", sourceLink);
                     } else{
                         imgCtn.attr("data-src", sourceLink);
                     }
 
                     imgCtn.find('.zmdi-download').on('click', function(e) {
                         window.open(imgCtn.attr('data-src'), '_blank');
-                    });
+                    });  //zmdi-name
                 }
             },
             'Error': function(up, err, errTip) {
@@ -2600,7 +2620,7 @@ function buildDetail1(options) {
                             'zip': __inline('../images/rar.png')
                         };
                         var defaultFile = __inline("../images/default_file.png");
-
+                        var src=file.name
                         sp.length && sp.forEach(function(item) {
                             var suffix = item.slice(item.lastIndexOf('.') + 1);
                             var src = (realValue.indexOf('http://') > -1 ? item : (OSS.picBaseUrl + '/' + item));
@@ -2609,15 +2629,20 @@ function buildDetail1(options) {
                                 suffix == 'xls' || suffix == 'xlsx' || suffix == "mp4" ||
                                 suffix == "avi" || suffix == "rar" || suffix == "zip") {
 
-                                imgsHtml += '<div class="img-ctn" data-src="' + src + '" style="display: inline-block;position: relative;">' +
+                                imgsHtml += '<div class="img-ctn" data-src="' + src +'" style="display: inline-block;position: relative;">' +
                                     '<img width="100" src="' + suffixMap[suffix] + '" />' +
+                                    '<div class="t_3dot w100p">'+src.substring(src.lastIndexOf('/')+1)+'</div>'+
                                     '<i class="zmdi zmdi-download zmdi-hc-fw"></i></div>';
-                            } else if( suffix == 'jpg' || suffix == 'gif' || 
+                            } else if( suffix == 'jpg' || suffix == 'gif' ||
                                 suffix == 'png' || suffix == 'bmp' ) {
-                                imgsHtml += '<img src="' + src + '" style="max-width: 300px;" />';
+                                imgsHtml += '<div class="img-ctn" data-src="' + src +'" style="display: inline-block;position: relative;">' +
+                                '<img src="' + src + '?imageView2/1/w/100/h/100" style="max-width: 300px;" />' +
+                                '<div class="t_3dot w100p">'+src.substring(src.lastIndexOf('/')+1)+'</div>'+
+                                '<i class="zmdi zmdi-download zmdi-hc-fw"></i></div>';
                             }else {
-                                imgsHtml += '<div class="img-ctn" data-src="' + src + '" style="display: inline-block;position: relative;">' +
+                                imgsHtml += '<div class="img-ctn" data-src="' + src +'" style="display: inline-block;position: relative;">' +
                                     '<img width="100" src="' + defaultFile + '" />' +
+                                    '<div class="t_3dot w100p">'+src.substring(src.lastIndexOf('/')+1)+'</div>'+
                                     '<i class="zmdi zmdi-download zmdi-hc-fw"></i></div>';
                             }
                         });
@@ -2676,17 +2701,21 @@ function buildDetail1(options) {
                             suffix == "avi" || suffix == "rar" || suffix == "zip") {
                             imgsHtml += '<div class="img-ctn" data-src="' + src + '" style="display: inline-block;position: relative;">' +
                                 '<img width="100" src="' + suffixMap[suffix] + '" />' +
+                                '<div class="t_3dot w100p">'+src.substring(src.lastIndexOf('/')+1)+'</div>'+
                                 '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
                                 '<i class="zmdi zmdi-download zmdi-hc-fw"></i></div>';
-                        } else if( suffix == 'jpg' || suffix == 'gif' || 
+                        } else if( suffix == 'jpg' || suffix == 'gif' ||
                             suffix == 'png' || suffix == 'bmp' ) {
-                            imgsHtml += '<div class="img-ctn" style="display: inline-block;position: relative;">' +
-                                '<img src="' + src + '" />' +
-                                '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i></div>';
+                        	  imgsHtml += '<div class="img-ctn" data-src="' + src +'" style="display: inline-block;position: relative;">' +
+                              '<img src="' + src + '?imageView2/1/w/100/h/100" style="max-width: 300px;" />' +
+                              '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
+                              '<div class="t_3dot w100p">'+src.substring(src.lastIndexOf('/')+1)+'</div>'+
+                              '<i class="zmdi zmdi-download zmdi-hc-fw"></i></div>';
                         } else{
                             imgsHtml += '<div class="img-ctn" data-src="' + src + '" style="display: inline-block;position: relative;">' +
                                 '<img width="100" src="' + defaultFile + '" />' +
                                 '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
+                                 '<div class="t_3dot w100p">'+src.substring(src.lastIndexOf('/')+1)+'</div>'+
                                 '<i class="zmdi zmdi-download zmdi-hc-fw"></i></div>';
                         }
                     });
