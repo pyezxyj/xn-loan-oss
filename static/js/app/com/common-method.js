@@ -1299,6 +1299,7 @@ function buildDetail(options) {
         ];
         //如果你只需要上传图片功能，而不需要插入网络图片功能
         editor.config.printLog = false;
+        editor.config.menuFixed = false;
         editor.config.hideLinkImg = true;
         editor.config.customUpload = true; // 设置自定义上传的开关
         editor.config.customUploadInit = uploadInit; // 配置自定义上传初始化事件，uploadInit方法在上面定义了
@@ -1321,7 +1322,7 @@ function buildDetail(options) {
             setTimeout(function() {
                 var item = imgList[i];
                 uploadInit.call($('#' + item.field));
-            }, 1);
+            }, 40);
         })(i);
     }
 
@@ -1533,18 +1534,22 @@ function buildDetail(options) {
                             var sp = realValue && realValue.split('||') || [];
                             var imgsHtml = '';
                             var suffixMap = {
-                                'docx': __uri('../images/word.png'),
-                                'doc': __uri('../images/word.png'),
-                                'xls': __uri('../images/excel.png'),
-                                'xlsx': __uri('../images/excel.png'),
-                                'pdf': __uri('../images/pdf.png'),
-                                'mp4': __uri('../images/avi.png'),
-                                'avi': __uri('../images/avi.png')
+                                'docx': __inline('../images/word.png'),
+                                'doc': __inline('../images/word.png'),
+                                'xls': __inline('../images/excel.png'),
+                                'xlsx': __inline('../images/excel.png'),
+                                'pdf': __inline('../images/pdf.png'),
+                                'mp4': __inline('../images/avi.png'),
+                                'avi': __inline('../images/avi.png'),
+                                'rar': __inline('../images/rar.png'),
+                                'zip': __inline('../images/rar.png')
                             };
                             sp.length && sp.forEach(function(item) {
                                 var suffix = item.slice(item.lastIndexOf('.') + 1);
                                 var src = (realValue.indexOf('http://') > -1 ? item : (OSS.picBaseUrl + '/' + item));
-                                if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' || suffix == 'xls' || suffix == 'xlsx' || suffix == 'mp4' || suffix == 'avi') {
+                                if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' ||
+                                    suffix == 'xls' || suffix == 'xlsx' || suffix == 'mp4' ||
+                                    suffix == 'avi' || suffix == "rar" || suffix == "zip") {
 
                                     imgsHtml += '<div class="img-ctn" data-src="' + src + '" style="display: inline-block;position: relative;">' +
                                         '<img width="100" src="' + suffixMap[suffix] + '" />' +
@@ -1590,18 +1595,22 @@ function buildDetail(options) {
                         var sp = realValue && realValue.split('||') || [];
                         var imgsHtml = '';
                         var suffixMap = {
-                            'docx': __uri('../images/word.png'),
-                            'doc': __uri('../images/word.png'),
-                            'xls': __uri('../images/excel.png'),
-                            'xlsx': __uri('../images/excel.png'),
-                            'pdf': __uri('../images/pdf.png'),
-                            'avi': __uri('../images/avi.png'),
-                            'mp4': __uri('../images/avi.png')
+                            'docx': __inline('../images/word.png'),
+                            'doc': __inline('../images/word.png'),
+                            'xls': __inline('../images/excel.png'),
+                            'xlsx': __inline('../images/excel.png'),
+                            'pdf': __inline('../images/pdf.png'),
+                            'avi': __inline('../images/avi.png'),
+                            'mp4': __inline('../images/avi.png'),
+                            'rar': __inline('../images/rar.png'),
+                            'zip': __inline('../images/rar.png')
                         };
                         sp.length && sp.forEach(function(item) {
                             var suffix = item.slice(item.lastIndexOf('.') + 1);
                             var src = (realValue.indexOf('http://') > -1 ? item : (OSS.picBaseUrl + '/' + item));
-                            if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' || suffix == 'xls' || suffix == 'xlsx' || suffix == 'mp4' || suffix == 'avi') {
+                            if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' ||
+                                suffix == 'xls' || suffix == 'xlsx' || suffix == 'mp4' ||
+                                suffix == 'avi' || suffix == "zip" || suffix == "rar") {
                                 imgsHtml += '<div class="img-ctn" data-src="' + src + '" style="display: inline-block;position: relative;">' +
                                     '<img width="100" src="' + suffixMap[suffix] + '" />' +
                                     '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
@@ -1622,11 +1631,6 @@ function buildDetail(options) {
                     } else if (item.type == 'radio') {
                         $('input[name=' + item.field + '][value=' + displayValue + ']').prop('checked', true);
                     } else if (item.type == 'textarea' && !item.normalArea) {
-                        //						(function(f) {
-                        //							UE.getEditor(f).ready(function() {
-                        //								UE.getEditor(f).setContent(data[f]);
-                        //							});
-                        //						})(item.field);
                         $('#' + item.field)[0].editor.$txt.html(data[item.field]);
                     } else if (item.type == 'textarea' && item.normalArea) {
                         $('#' + item.field).val(data[item.field]);
@@ -1831,7 +1835,7 @@ function uploadInit() {
                     extensions: "jpg,gif,png,bmp"
                 }, {
                     title: '文件',
-                    extensions: "docx,doc,xls,xlsx,pdf,avi,mp4"
+                    extensions: "docx,doc,xls,xlsx,pdf,avi,mp4,zip,rar"
                 }
             ]
         },
@@ -1842,18 +1846,74 @@ function uploadInit() {
         auto_start: true, //选择文件后自动上传，若关闭需要自己绑定事件触发上传
         init: {
             'FilesAdded': function(up, files) {
-                plupload.each(files, function(file) {
-                    // 文件添加进队列后,处理相关的事情
-                    // printLog('on FilesAdded');
-                });
+                if (editor.append) {
+                    var defaultImg = __inline("../images/default_img.png");
+                    plupload.each(files, function (file) {
+                        // 文件添加进队列后,处理相关的事情
+                        var sourceLink = file.name;
+                        var suffix = sourceLink.slice(sourceLink.lastIndexOf('.') + 1);
+                        if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' ||
+                            suffix == 'xls' || suffix == 'xlsx' || suffix == "mp4" ||
+                            suffix == "avi" || suffix == 'rar' || suffix == 'zip') {
+                            var suffixMap = {
+                                'docx': __inline('../images/word.png'),
+                                'doc': __inline('../images/word.png'),
+                                'xls': __inline('../images/excel.png'),
+                                'xlsx': __inline('../images/excel.png'),
+                                'pdf': __inline('../images/pdf.png'),
+                                'mp4': __inline('../images/avi.png'),
+                                'avi': __inline('../images/avi.png'),
+                                'rar': __inline('../images/rar.png'),
+                                'zip': __inline('../images/rar.png')
+                            };
+                            var imgCtn = $('<div id="'+file.id+'" class="img-ctn" style="display: inline-block;position: relative;vertical-align: top;">' +
+                                '<img width="100" src="' + suffixMap[suffix] + '" />' +
+                                '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
+                                '<i class="zmdi zmdi-download zmdi-hc-fw"></i>'+
+                                '<div class="progress-wrap"><div class="progress-infos">等待...</div>' +
+                                '<div class="progress progress-striped" style="display: none;">'+
+                                '<div class="progress-bar progress-bar-info" style="height: 20px;"></div>'+
+                                '</div>'+
+                                '</div>'+
+                                '</div>').appendTo(editor);
+                        } else {
+                            var imgCtn = $('<div id="'+file.id+'" class="img-ctn" style="display: inline-block;position: relative;vertical-align: top;">'+
+                                '<img src="' + defaultImg + '" />'+
+                                '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>'+
+                                '<div class="progress-wrap"><div class="progress-infos">等待...</div>' +
+                                '<div class="progress progress-striped" style="display: none;">'+
+                                '<div class="progress-bar progress-bar-info" style="height: 20px;"></div>'+
+                                '</div>'+
+                                '</div>'+
+                                '</div>').appendTo(editor);
+                        }
+                        imgCtn.find('.zmdi-close-circle-o').on('click', function(e) {
+                            up.removeFile(file);
+                            imgCtn.remove();
+                        });
+                    });
+                }
             },
             'BeforeUpload': function(up, file) {
                 // 每个文件上传前,处理相关的事情
                 //printLog('on BeforeUpload');
+                if (editor.append) {
+                    editor.find("#" + file.id).find(".progress-striped").show();
+                }
             },
             'UploadProgress': function(up, file) {
+                //
                 // 显示进度条
-                editor.showUploadProgress && editor.showUploadProgress(file.percent);
+                if(editor.showUploadProgress){
+                    editor.showUploadProgress(file.percent);
+                }else if(editor.append){
+                    var uploaded = file.loaded;
+                    var size = plupload.formatSize(uploaded).toUpperCase();
+                    var formatSpeed = plupload.formatSize(file.speed).toUpperCase();
+                    editor.find("#"+file.id)
+                        .find(".progress-infos").text("已上传: " + size + " 上传速度： " + formatSpeed + "/s")
+                        .parent().find(".progress-bar").css("width", parseInt(file.percent, 10) + "%");
+                }
             },
             'FileUploaded': function(up, file, info) {
                 // 每个文件上传成功后,处理相关的事情
@@ -1874,32 +1934,32 @@ function uploadInit() {
                 // 插入图片到editor
                 editor.command && editor.command(null, 'insertHtml', '<img src="' + sourceLink + '" style="max-width:100%;"/>');
                 if (editor.append) {
+                    var imgCtn = editor.find("#" + file.id);
+                    imgCtn.find(".progress-wrap").hide();
                     var suffix = sourceLink.slice(sourceLink.lastIndexOf('.') + 1);
-                    if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' || suffix == 'xls' || suffix == 'xlsx' || suffix == "mp4" || suffix == "avi") {
+                    if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' ||
+                        suffix == 'xls' || suffix == 'xlsx' || suffix == "mp4" ||
+                        suffix == "avi" || suffix == "rar" || suffix == "zip") {
                         var suffixMap = {
-                            'docx': __uri('../images/word.png'),
-                            'doc': __uri('../images/word.png'),
-                            'xls': __uri('../images/excel.png'),
-                            'xlsx': __uri('../images/excel.png'),
-                            'pdf': __uri('../images/pdf.png'),
-                            'mp4': __uri('../images/avi.png'),
-                            'avi': __uri('../images/avi.png')
+                            'docx': __inline('../images/word.png'),
+                            'doc': __inline('../images/word.png'),
+                            'xls': __inline('../images/excel.png'),
+                            'xlsx': __inline('../images/excel.png'),
+                            'pdf': __inline('../images/pdf.png'),
+                            'mp4': __inline('../images/avi.png'),
+                            'avi': __inline('../images/avi.png'),
+                            'rar': __inline('../images/rar.png'),
+                            'zip': __inline('../images/rar.png')
                         };
-                        var imgCtn = $('<div class="img-ctn" data-src="' + sourceLink + '" style="display: inline-block;position: relative;">' +
-                            '<img width="100" src="' + suffixMap[suffix] + '" />' +
-                            '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
-                            '<i class="zmdi zmdi-download zmdi-hc-fw"></i></div>').appendTo(editor);
+                        imgCtn.attr("data-src", sourceLink)
+                            .find("img").attr("src", suffixMap[suffix]);
                     } else {
-                        var imgCtn = $('<div class="img-ctn" style="display: inline-block;position: relative;"><img src="' + sourceLink + '" /><i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i></div>').appendTo(editor);
-
+                        imgCtn.find("img").attr("src", sourceLink);
                     }
-                    imgCtn.find('.zmdi-close-circle-o').on('click', function(e) {
-                        imgCtn.remove();
-                    });
+
                     imgCtn.find('.zmdi-download').on('click', function(e) {
                         window.open(imgCtn.attr('data-src'), '_blank');
                     });
-
                 }
             },
             'Error': function(up, err, errTip) {
@@ -1980,60 +2040,6 @@ function confirm(msg) {
 
 }
 
-function addEditTableListener(addId, removeId, tableId, columns, flag) {
-    // window.operateEvents = {
-    //     'click .remove': function (e, value, row, index) {
-    //         $(tableId).bootstrapTable('remove', {
-    //             field: 'code',
-    //             values: [row.code]
-    //         });
-    //     }
-    // };
-    // function operateFormatter(value, row, index) {
-    //     return [
-    //         '<a class="remove" href="javascript:void(0)" title="Remove">',
-    //         '<i class="glyphicon glyphicon-remove"></i>',
-    //         '</a>'
-    //     ].join('');
-    // }
-    //$("#uploadBtn")
-
-    var count = 0;
-    for (var i = 0; i < columns.length; i++) {
-        columns[i].editable1 && (columns[i].editable = columns[i].editable1);
-    }
-    // columns.push({
-    //     field: 'operator11',
-    //     title: '操作',
-    //     align: 'center',
-    //     events: operateEvents,
-    //     formatter: operateFormatter
-    // });
-    addId && $(addId).on("click", function() {
-        var fields = { "": "" };
-        for (var i = 0; i < columns.length; i++) {
-            fields[columns[i].field] = columns[i].defaultValue || "";
-        }
-        fields["code"] = "emptyCode" + (count++);
-        var index = $('#creditAuditListList').bootstrapTable('getData').length;
-        $(tableId).bootstrapTable('insertRow', {
-            index: index,
-            row: fields
-        });
-    });
-    removeId && $(removeId).on("click", function() {
-        var selRecords = $(tableId).bootstrapTable('getSelections');
-        if (selRecords.length <= 0) {
-            toastr.info("请选择记录");
-            return;
-        }
-        $(tableId).bootstrapTable('remove', {
-            field: 'code',
-            values: [selRecords[0].code]
-        });
-    });
-}
-
 function addEditTableListener1(addId, removeId, editId, tableId, columns, options) {
     //var isAdd = true;
     var idx = 0;
@@ -2100,17 +2106,15 @@ function addEditTableListener1(addId, removeId, editId, tableId, columns, option
             toastr.info("请选择记录");
             return;
         }
-        //isAdd = false;
         buildDetail1({
             fields: columns,
-            code1: options.code,
+            // code1: options.code,
             detailCode: options.detailCode,
             code: selRecords[0].code,
             record: selRecords[0]
         });
     });
     addId && $(addId).on("click", function() {
-        //isAdd = true;
         buildDetail1({
             fields: columns
         });
@@ -2316,12 +2320,12 @@ function buildDetail1(options) {
         });
     }
     for (var i = 0, len = imgList.length; i < len; i++) {
-        (function() {
+        (function(i) {
             setTimeout(function() {
                 var item = imgList[i];
                 uploadInit.call($('#' + item.field + "-model"));
-            }, 10);
-        })();
+            }, 40);
+        })(i);
 
     }
 
@@ -2564,12 +2568,16 @@ function buildDetail1(options) {
                             'xlsx': __uri('../images/excel.png'),
                             'pdf': __uri('../images/pdf.png'),
                             'mp4': __uri('../images/avi.png'),
-                            'avi': __uri('../images/avi.png')
+                            'avi': __uri('../images/avi.png'),
+                            'rar': __inline('../images/rar.png'),
+                            'zip': __inline('../images/rar.png')
                         };
                         sp.length && sp.forEach(function(item) {
                             var suffix = item.slice(item.lastIndexOf('.') + 1);
                             var src = (realValue.indexOf('http://') > -1 ? item : (OSS.picBaseUrl + '/' + item));
-                            if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' || suffix == 'xls' || suffix == 'xlsx' || suffix == "mp4" || suffix == "avi") {
+                            if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' ||
+                                suffix == 'xls' || suffix == 'xlsx' || suffix == "mp4" ||
+                                suffix == "avi" || suffix == "rar" || suffix == "zip") {
 
                                 imgsHtml += '<div class="img-ctn" data-src="' + src + '" style="display: inline-block;position: relative;">' +
                                     '<img width="100" src="' + suffixMap[suffix] + '" />' +
@@ -2595,7 +2603,7 @@ function buildDetail1(options) {
                     }
 
                 }
-                if (item.formatter) {
+                if (item.formatter && !item.formatter1) {
                     $('#' + item.field + "-model").html(item.formatter(displayValue, data));
                 }
                 if (item['[value]']) {
@@ -2621,12 +2629,16 @@ function buildDetail1(options) {
                         'xlsx': __uri('../images/excel.png'),
                         'pdf': __uri('../images/pdf.png'),
                         'avi': __uri('../images/avi.png'),
-                        'mp4': __uri('../images/avi.png')
+                        'mp4': __uri('../images/avi.png'),
+                        'rar': __inline('../images/rar.png'),
+                        'zip': __inline('../images/rar.png')
                     };
                     sp.length && sp.forEach(function(item) {
                         var suffix = item.slice(item.lastIndexOf('.') + 1);
                         var src = (realValue.indexOf('http://') > -1 ? item : (OSS.picBaseUrl + '/' + item));
-                        if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' || suffix == 'xls' || suffix == 'xlsx' || suffix == "mp4" || suffix == "avi") {
+                        if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' ||
+                            suffix == 'xls' || suffix == 'xlsx' || suffix == "mp4" ||
+                            suffix == "avi" || suffix == "rar" || suffix == "zip") {
                             imgsHtml += '<div class="img-ctn" data-src="' + src + '" style="display: inline-block;position: relative;">' +
                                 '<img width="100" src="' + suffixMap[suffix] + '" />' +
                                 '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
@@ -2715,4 +2727,40 @@ function chosen1() {
         // }, 1);
 
     });
+}
+
+function calculateSecurityLevel(password) {
+    var strength_L = 0;
+    var strength_M = 0;
+    var strength_H = 0;
+
+    for (var i = 0; i < password.length; i++) {
+        var code = password.charCodeAt(i);
+        // 数字
+        if (code >= 48 && code <= 57) {
+            strength_L++;
+            // 小写字母 大写字母
+        } else if ((code >= 65 && code <= 90) ||
+            (code >= 97 && code <= 122)) {
+            strength_M++;
+            // 特殊符号
+        } else if ((code >= 32 && code <= 47) ||
+            (code >= 58 && code <= 64) ||
+            (code >= 94 && code <= 96) ||
+            (code >= 123 && code <= 126)) {
+            strength_H++;
+        }
+    }
+    // 弱
+    if ((strength_L == 0 && strength_M == 0) ||
+        (strength_L == 0 && strength_H == 0) ||
+        (strength_M == 0 && strength_H == 0)) {
+        return "1";
+    }
+    // 强
+    if (0 != strength_L && 0 != strength_M && 0 != strength_H) {
+        return "3";
+    }
+    // 中
+    return "2";
 }

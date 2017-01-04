@@ -96,7 +96,11 @@ $(function() {
             field: 'accreditPdf',
             title: '授权书',
             type1: "img",
-            required: true
+            required: true,
+            formatter: function (value, row) {
+                return '<a href="'+value+'" target="_blank">'+value+'</a>';
+            },
+            formatter1: true
         }, {
             field: 'status',
             title: '证信结果',
@@ -136,6 +140,10 @@ $(function() {
                 }
                 data['id'] = data['code'];
                 data["creditList"] = $('#creditAuditListList').bootstrapTable('getData');
+                if( !data["creditList"].length ){
+                    toastr.info("借款人信息不能为空");
+                    return;
+                }
                 reqApi({
                     code: code ? "617002" : "617000",
                     json: data

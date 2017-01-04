@@ -149,20 +149,41 @@ $(function() {
         field: 'realLoanAmount',
         title: '贷款额',
         amount: true,
-        required: true
+        required: true,
+        onKeyup: function (value) {
+            var bj = value,
+                ll = $("#sumRate").val(),
+                t = $("#loanTerm").val();
+            var result = calculateMonthlyPayments(bj, ll, t);
+            $("#monthMoney").html(result);
+        }
     }, {
         field: 'loanTerm',
         title: '贷款期限',
         type: 'select',
         key: 'loan_term',
         formatter: Dict.getNameForList('loan_term'),
-        required: true
+        required: true,
+        onChange: function (value) {
+            var bj = $("#realLoanAmount").val(),
+                ll = $("#sumRate").val(),
+                t = value;
+            var result = calculateMonthlyPayments(bj, ll, t);
+            $("#monthMoney").html(result);
+        }
     }, {
         field: 'sumRate',
         title: '综合费率',
-        required: true
+        required: true,
+        onKeyup: function (value) {
+            var bj = $("#realLoanAmount").val(),
+                ll = value,
+                t = $("#loanTerm").val();
+            var result = calculateMonthlyPayments(bj, ll, t);
+            $("#monthMoney").html(result);
+        }
     }, {
-        field: '',
+        field: 'monthMoney',
         title: '月供',
         readonly: true
     }, {
@@ -229,4 +250,22 @@ $(function() {
     });
 
     buildDetail(options);
+    function calculateMonthlyPayments(bj, ll, t) {
+        var result = "-";
+        if( $.isNumeric(bj) && $.isNumeric(ll) && t != undefined && t !== ""){
+            ll = +ll / 12;
+            bj = +bj;
+            var time =
+                t == "0" ? 12 :
+                    t == "1" ? 18 :
+                        t == "2" ? 24 :
+                            t == "3" ? 30 :
+                                t == "4" ? 36 : -1;
+            if(time !== -1){
+                var a1 = Math.pow(ll + 1, time);
+                var result = (a1 * bj * ll) / (a1 - 1);
+            }
+        }
+        return result;
+    }
 });

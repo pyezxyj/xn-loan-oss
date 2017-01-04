@@ -150,6 +150,11 @@ $(function() {
         formatter: Dict.getNameForList('urgency'),
         readonly: true
     }, {
+        field: 'supplyInfo',
+        title: '其他补充资料',
+        type: "img",
+        readonly: true
+    }, {
         field: 'remark',
         title: '备注',
         maxlength: 255

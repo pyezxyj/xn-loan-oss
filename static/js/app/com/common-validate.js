@@ -68,7 +68,7 @@ jQuery.validator.addMethod("mm", function(value, element) {
 
 //电话或手机验证规则  
 jQuery.validator.addMethod("tm", function(value, element) {
-    var tm = /(^1[3|4|5|7|8]\d{9}$)|(^\d{3,4}-\d{7,8}$)|(^\d{7,8}$)|(^\d{3,4}-\d{7,8}-\d{1,4}$)|(^\d{7,8}-\d{1,4}$)/;
+    var tm = /(^1[3|4|5|7|8]\d{9}$)|(^\d{3,4}-\d{7,8}$)|(^\d{7,8}$)|(^\d{3,4}-\d{7,8}-\d{1,4}$)|(^\d{7,8}-\d{1,4}$|(^\d{3}-\d{3}-\d{4}$))/;
     return this.optional(element) || (tm.test(value));
 }, "电话或手机格式不对");
 
@@ -139,7 +139,7 @@ jQuery.validator.addMethod("times", function(value, element) {
 //身份证
 jQuery.validator.addMethod("idCard", function(value, element) {
     var isIDCard1 = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$/; //(15位)
-    var isIDCard2 = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/; //(18位)
+    var isIDCard2 = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X|x)$/; //(18位)
 
     return this.optional(element) || (isIDCard1.test(value)) || (isIDCard2.test(value));
 }, "身份证格式不对");
