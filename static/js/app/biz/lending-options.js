@@ -2,11 +2,15 @@ $(function() {
     var code = getQueryString('code');
 
     var fields = [{
-        title: '业务员',
-        field: 'saleman',
+    	title: '业务员',
+        field: 'salesman',
         type: 'select',
-        key: 'car_type',
-        formatter: Dict.getNameForList('car_type'),
+        listCode: "805055",
+        keyName: "userId",
+        valueName: "loginName",
+        params: {
+            roleCode: "SR2016122515012575166"
+        },
         readonly: true
     }, {
         field: 'car',
