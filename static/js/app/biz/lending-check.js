@@ -108,16 +108,19 @@ $(function() {
         field: 'firstPay',
         title: '首付款',
         number: true,
-        afterSet: function(v, data) {
-            if ($.isNumeric(data.firstPay) && $.isNumeric(data.price)) {
-                $("#firstRate").val(+data.firstPay / +data.price)
-            }
-        },
         readonly: true
     }, {
         field: 'firstRate',
-        title: '首付比例',
-        readonly: true
+        title: '首付比例(%)',
+        readonly: true,
+        afterSet: function(v, data) {
+            var firstPay = data.firstPay;
+            var price = data.price;
+            if ($.isNumeric(price) && $.isNumeric(firstPay)) {
+                var rate = (+firstPay * 100 / +price).toFixed(2);
+                $("#firstRate").html(rate);
+            }
+        }
     }, {
         field: 'realLoanAmount',
         title: '贷款额',
@@ -127,17 +130,24 @@ $(function() {
         field: 'loanTerm',
         title: '贷款期限',
         type: 'select',
-        key: 'urgency',
+        key: 'loan_term',
         formatter: Dict.getNameForList('loanTerm'),
         readonly: true
     }, {
         field: 'sumRate',
-        title: '综合费率',
+        title: '综合费率(%)',
         readonly: true
     }, {
-        field: '',
+        field: 'monthMoney',
         title: '月供',
-        readonly: true
+        readonly: true,
+        afterSet: function (v, data) {
+            var bj = +data.realLoanAmount / 1000,
+                ll = data.sumRate,
+                t = data.loanTerm;
+            var result = calculateMonthlyPayments(bj, ll, t);
+            $("#monthMoney").html(result);
+        }
     }, {
         field: 'fee',
         title: '服务费',
@@ -157,7 +167,8 @@ $(function() {
     }, {
         field: 'remark',
         title: '备注',
-        maxlength: 255
+        maxlength: 255,
+        isNotFace: true
     }];
 
     var options = {

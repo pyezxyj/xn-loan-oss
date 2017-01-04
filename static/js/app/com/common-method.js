@@ -1345,17 +1345,6 @@ function buildDetail(options) {
             })(item);
 
         }
-
-        if (item.onKeyup) {
-
-            (function(i) {
-                $('#' + i.field).on('keyup', function(e) {
-                    i.onKeyup(this.value);
-                });
-            })(item);
-
-        }
-
     }
 
     var detailParams = { code: code, id: code };
@@ -1389,6 +1378,15 @@ function buildDetail(options) {
                 var item = fields[i];
                 var value = item.value;
                 var displayValue = data[item.field];
+                if (item.onKeyup) {
+
+                    (function(i, d) {
+                        $('#' + i.field).on('keyup', function() {
+                            i.onKeyup(this.value, d);
+                        });
+                    })(item, data);
+
+                }
                 if (item.field && item.field.indexOf('-') > -1) {
                     var fs = item.field.split('-');
                     displayValue = data[fs[0]] ? data[fs[0]][fs[1]] : '-';
@@ -1493,6 +1491,7 @@ function buildDetail(options) {
                             realValue = item.value(data);
                         }
                         params[item.keyName] = realValue;
+                        item.params && $.extend(params, item.params);
                         if (!realValue) {
                             $('#' + item.field).html('-');
                         } else if (realValue == 0) {
@@ -1544,6 +1543,8 @@ function buildDetail(options) {
                                 'rar': __inline('../images/rar.png'),
                                 'zip': __inline('../images/rar.png')
                             };
+                            var defaultFile = __inline("../images/default_file.png");
+
                             sp.length && sp.forEach(function(item) {
                                 var suffix = item.slice(item.lastIndexOf('.') + 1);
                                 var src = (realValue.indexOf('http://') > -1 ? item : (OSS.picBaseUrl + '/' + item));
@@ -1554,10 +1555,14 @@ function buildDetail(options) {
                                     imgsHtml += '<div class="img-ctn" data-src="' + src + '" style="display: inline-block;position: relative;">' +
                                         '<img width="100" src="' + suffixMap[suffix] + '" />' +
                                         '<i class="zmdi zmdi-download zmdi-hc-fw"></i></div>';
-                                } else {
+                                } else if( suffix == 'jpg' || suffix == 'gif' || 
+                                    suffix == 'png' || suffix == 'bmp' ) {
                                     imgsHtml += '<img src="' + src + '" style="max-width: 300px;" />';
+                                } else {
+                                    imgsHtml += '<div class="img-ctn" data-src="' + src + '" style="display: inline-block;position: relative;">' +
+                                        '<img width="100" src="' + defaultFile + '" />' +
+                                        '<i class="zmdi zmdi-download zmdi-hc-fw"></i></div>';
                                 }
-
                             });
                             $('#' + item.field).html(imgsHtml);
                             $('#' + item.field).find('.zmdi-download').on('click', function(e) {
@@ -1605,6 +1610,7 @@ function buildDetail(options) {
                             'rar': __inline('../images/rar.png'),
                             'zip': __inline('../images/rar.png')
                         };
+                        var defaultFile = __inline("../images/default_file.png");
                         sp.length && sp.forEach(function(item) {
                             var suffix = item.slice(item.lastIndexOf('.') + 1);
                             var src = (realValue.indexOf('http://') > -1 ? item : (OSS.picBaseUrl + '/' + item));
@@ -1615,10 +1621,16 @@ function buildDetail(options) {
                                     '<img width="100" src="' + suffixMap[suffix] + '" />' +
                                     '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
                                     '<i class="zmdi zmdi-download zmdi-hc-fw"></i></div>';
-                            } else {
+                            } else if( suffix == 'jpg' || suffix == 'gif' || 
+                                suffix == 'png' || suffix == 'bmp' ) {
                                 imgsHtml += '<div class="img-ctn" style="display: inline-block;position: relative;">' +
                                     '<img src="' + src + '" />' +
                                     '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i></div>';
+                            } else {
+                                imgsHtml += '<div class="img-ctn" data-src="' + src + '" style="display: inline-block;position: relative;">' +
+                                    '<img width="100" src="' + defaultFile + '" />' +
+                                    '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
+                                    '<i class="zmdi zmdi-download zmdi-hc-fw"></i></div>';
                             }
                         });
                         $('#' + item.field).html(imgsHtml);
@@ -1714,6 +1726,15 @@ function buildDetail(options) {
         for (var i = 0, len = fields.length; i < len; i++) {
             var item = fields[i];
             var value = item.value;
+            if (item.onKeyup) {
+
+                (function(i) {
+                    $('#' + i.field).on('keyup', function() {
+                        i.onKeyup(this.value);
+                    });
+                })(item);
+
+            }
             if (item.type == "o2m" && item.editTable) {
                 var innerHtml = '';
                 if (item.addeditTable) {
@@ -1827,18 +1848,18 @@ function uploadInit() {
         max_file_size: '100mb', //最大文件体积限制
         // flash_swf_url: 'js/plupload/Moxie.swf', //引入flash,相对路径
         flash_swf_url: swfUrl,
-        filters: {
-            mime_types: [
-                //只允许上传图片文件 （注意，extensions中，逗号后面不要加空格）
-                {
-                    title: "图片文件",
-                    extensions: "jpg,gif,png,bmp"
-                }, {
-                    title: '文件',
-                    extensions: "docx,doc,xls,xlsx,pdf,avi,mp4,zip,rar"
-                }
-            ]
-        },
+        // filters: {
+        //     mime_types: [
+        //         //只允许上传图片文件 （注意，extensions中，逗号后面不要加空格）
+        //         {
+        //             title: "图片文件",
+        //             extensions: "jpg,gif,png,bmp"
+        //         }, {
+        //             title: '文件',
+        //             extensions: "docx,doc,xls,xlsx,pdf,avi,mp4,zip,rar"
+        //         }
+        //     ]
+        // },
         max_retries: 3, //上传失败最大重试次数
         dragdrop: true, //开启可拖曳上传
         drop_element: dropId, //拖曳上传区域元素的ID，拖曳文件或文件夹后可触发上传
@@ -1848,6 +1869,7 @@ function uploadInit() {
             'FilesAdded': function(up, files) {
                 if (editor.append) {
                     var defaultImg = __inline("../images/default_img.png");
+                    var defaultFile = __inline("../images/default_file.png");
                     plupload.each(files, function (file) {
                         // 文件添加进队列后,处理相关的事情
                         var sourceLink = file.name;
@@ -1867,7 +1889,7 @@ function uploadInit() {
                                 'zip': __inline('../images/rar.png')
                             };
                             var imgCtn = $('<div id="'+file.id+'" class="img-ctn" style="display: inline-block;position: relative;vertical-align: top;">' +
-                                '<img width="100" src="' + suffixMap[suffix] + '" />' +
+                                '<img width="100" src="' + suffixMap[suffix] + '"/>' +
                                 '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
                                 '<i class="zmdi zmdi-download zmdi-hc-fw"></i>'+
                                 '<div class="progress-wrap"><div class="progress-infos">等待...</div>' +
@@ -1876,10 +1898,22 @@ function uploadInit() {
                                 '</div>'+
                                 '</div>'+
                                 '</div>').appendTo(editor);
-                        } else {
+                        } else if( suffix == 'jpg' || suffix == 'gif' ||
+                            suffix == 'png' || suffix == 'bmp' ) {
                             var imgCtn = $('<div id="'+file.id+'" class="img-ctn" style="display: inline-block;position: relative;vertical-align: top;">'+
-                                '<img src="' + defaultImg + '" />'+
+                                '<img src="' + defaultImg + '"/>'+
                                 '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>'+
+                                '<div class="progress-wrap"><div class="progress-infos">等待...</div>' +
+                                '<div class="progress progress-striped" style="display: none;">'+
+                                '<div class="progress-bar progress-bar-info" style="height: 20px;"></div>'+
+                                '</div>'+
+                                '</div>'+
+                                '</div>').appendTo(editor);
+                        }else{
+                            var imgCtn = $('<div id="'+file.id+'" class="img-ctn" style="display: inline-block;position: relative;vertical-align: top;">' +
+                                '<img width="100" src="' + defaultFile + '"/>' +
+                                '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
+                                '<i class="zmdi zmdi-download zmdi-hc-fw"></i>'+
                                 '<div class="progress-wrap"><div class="progress-infos">等待...</div>' +
                                 '<div class="progress progress-striped" style="display: none;">'+
                                 '<div class="progress-bar progress-bar-info" style="height: 20px;"></div>'+
@@ -1937,24 +1971,16 @@ function uploadInit() {
                     var imgCtn = editor.find("#" + file.id);
                     imgCtn.find(".progress-wrap").hide();
                     var suffix = sourceLink.slice(sourceLink.lastIndexOf('.') + 1);
+
                     if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' ||
                         suffix == 'xls' || suffix == 'xlsx' || suffix == "mp4" ||
                         suffix == "avi" || suffix == "rar" || suffix == "zip") {
-                        var suffixMap = {
-                            'docx': __inline('../images/word.png'),
-                            'doc': __inline('../images/word.png'),
-                            'xls': __inline('../images/excel.png'),
-                            'xlsx': __inline('../images/excel.png'),
-                            'pdf': __inline('../images/pdf.png'),
-                            'mp4': __inline('../images/avi.png'),
-                            'avi': __inline('../images/avi.png'),
-                            'rar': __inline('../images/rar.png'),
-                            'zip': __inline('../images/rar.png')
-                        };
-                        imgCtn.attr("data-src", sourceLink)
-                            .find("img").attr("src", suffixMap[suffix]);
-                    } else {
+                        imgCtn.attr("data-src", sourceLink);
+                    } else if( suffix == 'jpg' || suffix == 'gif' || 
+                        suffix == 'png' || suffix == 'bmp' ) {
                         imgCtn.find("img").attr("src", sourceLink);
+                    } else{
+                        imgCtn.attr("data-src", sourceLink);
                     }
 
                     imgCtn.find('.zmdi-download').on('click', function(e) {
@@ -2521,6 +2547,7 @@ function buildDetail1(options) {
                         realValue = item.value(data);
                     }
                     params[item.keyName] = realValue;
+                    item.params && $.extend(params, item.params);
                     if (!realValue) {
                         $('#' + item.field + "-model").html('-');
                     } else if (realValue == 0) {
@@ -2562,19 +2589,22 @@ function buildDetail1(options) {
                         var sp = realValue && realValue.split('||') || [];
                         var imgsHtml = '';
                         var suffixMap = {
-                            'docx': __uri('../images/word.png'),
-                            'doc': __uri('../images/word.png'),
-                            'xls': __uri('../images/excel.png'),
-                            'xlsx': __uri('../images/excel.png'),
-                            'pdf': __uri('../images/pdf.png'),
-                            'mp4': __uri('../images/avi.png'),
-                            'avi': __uri('../images/avi.png'),
+                            'docx': __inline('../images/word.png'),
+                            'doc': __inline('../images/word.png'),
+                            'xls': __inline('../images/excel.png'),
+                            'xlsx': __inline('../images/excel.png'),
+                            'pdf': __inline('../images/pdf.png'),
+                            'mp4': __inline('../images/avi.png'),
+                            'avi': __inline('../images/avi.png'),
                             'rar': __inline('../images/rar.png'),
                             'zip': __inline('../images/rar.png')
                         };
+                        var defaultFile = __inline("../images/default_file.png");
+
                         sp.length && sp.forEach(function(item) {
                             var suffix = item.slice(item.lastIndexOf('.') + 1);
                             var src = (realValue.indexOf('http://') > -1 ? item : (OSS.picBaseUrl + '/' + item));
+
                             if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' ||
                                 suffix == 'xls' || suffix == 'xlsx' || suffix == "mp4" ||
                                 suffix == "avi" || suffix == "rar" || suffix == "zip") {
@@ -2582,10 +2612,14 @@ function buildDetail1(options) {
                                 imgsHtml += '<div class="img-ctn" data-src="' + src + '" style="display: inline-block;position: relative;">' +
                                     '<img width="100" src="' + suffixMap[suffix] + '" />' +
                                     '<i class="zmdi zmdi-download zmdi-hc-fw"></i></div>';
-                            } else {
+                            } else if( suffix == 'jpg' || suffix == 'gif' || 
+                                suffix == 'png' || suffix == 'bmp' ) {
                                 imgsHtml += '<img src="' + src + '" style="max-width: 300px;" />';
+                            }else {
+                                imgsHtml += '<div class="img-ctn" data-src="' + src + '" style="display: inline-block;position: relative;">' +
+                                    '<img width="100" src="' + defaultFile + '" />' +
+                                    '<i class="zmdi zmdi-download zmdi-hc-fw"></i></div>';
                             }
-
                         });
                         $('#' + item.field + "-model").html(imgsHtml);
                         $('#' + item.field + "-model").find('.zmdi-download').on('click', function(e) {
@@ -2623,16 +2657,17 @@ function buildDetail1(options) {
                     var sp = realValue && realValue.split('||') || [];
                     var imgsHtml = '';
                     var suffixMap = {
-                        'docx': __uri('../images/word.png'),
-                        'doc': __uri('../images/word.png'),
-                        'xls': __uri('../images/excel.png'),
-                        'xlsx': __uri('../images/excel.png'),
-                        'pdf': __uri('../images/pdf.png'),
-                        'avi': __uri('../images/avi.png'),
-                        'mp4': __uri('../images/avi.png'),
+                        'docx': __inline('../images/word.png'),
+                        'doc': __inline('../images/word.png'),
+                        'xls': __inline('../images/excel.png'),
+                        'xlsx': __inline('../images/excel.png'),
+                        'pdf': __inline('../images/pdf.png'),
+                        'avi': __inline('../images/avi.png'),
+                        'mp4': __inline('../images/avi.png'),
                         'rar': __inline('../images/rar.png'),
                         'zip': __inline('../images/rar.png')
                     };
+                    var defaultFile = __inline("../images/default_file.png");
                     sp.length && sp.forEach(function(item) {
                         var suffix = item.slice(item.lastIndexOf('.') + 1);
                         var src = (realValue.indexOf('http://') > -1 ? item : (OSS.picBaseUrl + '/' + item));
@@ -2643,10 +2678,16 @@ function buildDetail1(options) {
                                 '<img width="100" src="' + suffixMap[suffix] + '" />' +
                                 '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
                                 '<i class="zmdi zmdi-download zmdi-hc-fw"></i></div>';
-                        } else {
+                        } else if( suffix == 'jpg' || suffix == 'gif' || 
+                            suffix == 'png' || suffix == 'bmp' ) {
                             imgsHtml += '<div class="img-ctn" style="display: inline-block;position: relative;">' +
                                 '<img src="' + src + '" />' +
                                 '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i></div>';
+                        } else{
+                            imgsHtml += '<div class="img-ctn" data-src="' + src + '" style="display: inline-block;position: relative;">' +
+                                '<img width="100" src="' + defaultFile + '" />' +
+                                '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
+                                '<i class="zmdi zmdi-download zmdi-hc-fw"></i></div>';
                         }
                     });
                     $('#' + item.field + "-model").html(imgsHtml);
@@ -2728,7 +2769,7 @@ function chosen1() {
 
     });
 }
-
+//计算密码强度
 function calculateSecurityLevel(password) {
     var strength_L = 0;
     var strength_M = 0;
@@ -2763,4 +2804,27 @@ function calculateSecurityLevel(password) {
     }
     // 中
     return "2";
+}
+//计算月供
+//bj:本金、ll:年利率(百分比)、t:贷款周期(数据字典)
+function calculateMonthlyPayments(bj, ll, t) {
+    var result = "-";
+    bj = (bj+"").replace(/,/g, "");
+    ll = (ll+"").replace(/,/g, "");
+    if( $.isNumeric(bj) && $.isNumeric(ll) && t != undefined && t !== ""){
+        ll = +ll / 1200;    //除以12个月，再除以100，因为传入的是百分比
+        bj = +bj;
+        var time =
+            t == "0" ? 12 :
+                t == "1" ? 18 :
+                    t == "2" ? 24 :
+                        t == "3" ? 30 :
+                            t == "4" ? 36 : -1;
+        if(time !== -1){
+            var a1 = Math.pow(ll + 1, time);
+            result = (a1 * bj * ll) / (a1 - 1);
+            result = result.toFixed(2);
+        }
+    }
+    return result;
 }

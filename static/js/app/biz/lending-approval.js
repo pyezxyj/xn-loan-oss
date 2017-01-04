@@ -103,38 +103,35 @@ $(function() {
         field: 'price',
         title: '车价',
         amount: true,
-        readonly: true,
-        afterSet: function(text) {
-        	var firstPay = $("#firstPay").text().replace(/,/g, "");
-            if ($.isNumeric(text) && $.isNumeric(firstPay)) {
-                $("#firstRate").text(+firstPay / +text)
-            }
-        }
+        readonly: true
     }, {
         field: 'firstPay',
         title: '首付款',
         amount: true,
-        readonly: true,
-        afterSet: function(text) {
-        	var price = $("#price").text().replace(/,/g, "");
-        	if ($.isNumeric(text) && $.isNumeric(price)) {
-                $("#firstRate").html(+text / +price);
-            }
-        }
-        
+        readonly: true
     }, {
         field: 'firstRate',
-        title: '首付比例',
-        readonly: true
+        title: '首付比例(%)',
+        readonly: true,
+        afterSet: function(v, data) {
+            var firstPay = data.firstPay;
+            var price = data.price;
+            if ($.isNumeric(price) && $.isNumeric(firstPay)) {
+                var rate = (+firstPay * 100 / +price).toFixed(2);
+                $("#firstRate").html(rate);
+            }
+        }
     }, {
         field: 'realLoanAmount',
         title: '贷款额',
         required: true,
         amount: true,
-        onKeyup: function(value) {
-            if ($.isNumeric(value)) {
-
-            }
+        onKeyup: function (value, data) {
+            var bj = value,
+                ll = data.sumRate,
+                t = data.loanTerm;
+            var result = calculateMonthlyPayments(bj, ll, t);
+            $("#monthMoney").html(result);
         }
     }, {
         field: 'loanTerm',
@@ -145,13 +142,19 @@ $(function() {
         readonly: true
     }, {
         field: 'sumRate',
-        title: '综合费率',
-        formatter:percentFormat,
+        title: '综合费率(%)',
         readonly: true
     }, {
-        field: '',
+        field: 'monthMoney',
         title: '月供',
-        readonly: true
+        readonly: true,
+        afterSet: function (v, data) {
+            var bj = +data.realLoanAmount / 1000,
+                ll = data.sumRate,
+                t = data.loanTerm;
+            var result = calculateMonthlyPayments(bj, ll, t);
+            $("#monthMoney").html(result);
+        }
     }, {
         field: 'fee',
         title: '服务费',
