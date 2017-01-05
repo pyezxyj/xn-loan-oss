@@ -1,7 +1,8 @@
 $(function() {
 
     var code = getQueryString('code');
-    var fields = [{
+    var fields = [
+       {
         field: 'userName',
         title: '调查对象',
         required: true,
@@ -20,6 +21,11 @@ $(function() {
         required: true,
         readonly: true
     }, {
+        field: '',
+        title: '授权书',
+        required: true,
+        readonly: true
+    },{
         field: 'creditResult',
         title: '资信结果',
         type: 'select',

@@ -4,11 +4,12 @@ $(function() {
         title: '',
         checkbox: true
     }, {
-        field: 'code',
-        title: '档案号'
+        field: '',
+        title: '业务编号'
     }, {
         field: 'userName',
         title: '借款人',
+        type:'select',
         search: true
     }, {
         field: 'loanType',
@@ -40,10 +41,11 @@ $(function() {
         },
         search: true,
         type: "select"
-    }, {
-        field: 'downloadTimes',
-        title: '下载次数'
     }];
+//    {
+//        field: 'downloadTimes',
+//        title: '下载次数'
+//    }];
 
     buildList({
         router: 'manage',
@@ -61,27 +63,27 @@ $(function() {
         }
         window.location.href = "manage_addedit.html?code=" + selRecords[0].code + "&add=1";
     });
-    $("#downloadBtn").on("click", function () {
-        var selRecords = $('#tableList').bootstrapTable('getSelections');
-        if (selRecords.length <= 0) {
-            toastr.info("请选择记录");
-            return;
-        }
-        selRecords = selRecords[0];
-        if(!selRecords.receipt){
-            toastr.info("该条记录还没有发保合");
-            return;
-        }
-        reqApi({
-            code: "617020",
-            json: {
-                code: selRecords.code
-            }
-        }).then(function () {
-            sucList();
-        });
-        window.open(selRecords.receipt, "_blank");
-        window.open(selRecords.policy, "_blank");
-        window.open(selRecords.certification, "_blank");
-    });
+//    $("#downloadBtn").on("click", function () {
+//        var selRecords = $('#tableList').bootstrapTable('getSelections');
+//        if (selRecords.length <= 0) {
+//            toastr.info("请选择记录");
+//            return;
+//        }
+//        selRecords = selRecords[0];
+//        if(!selRecords.receipt){
+//            toastr.info("该条记录还没有发保合");
+//            return;
+//        }
+//        reqApi({
+//            code: "617020",
+//            json: {
+//                code: selRecords.code
+//            }
+//        }).then(function () {
+//            sucList();
+//        });
+//        window.open(selRecords.receipt, "_blank");
+//        window.open(selRecords.policy, "_blank");
+//        window.open(selRecords.certification, "_blank");
+//    });
 });

@@ -4,26 +4,19 @@ $(function() {
         title: '',
         checkbox: true
     }, {
-        field: 'loanType',
-        title: '贷款品种',
-        formatter: Dict.getNameForList('loan_type'),
-        key: 'loan_type'
+        field: '',
+        title: '业务编号',
+        formatter: Dict.getNameForList(''),
+        key: ''
     }, {
-        field: 'loanAmount',
-        title: '拟贷金额',
-        formatter: function(v) {
-            return moneyFormat(+v);
-        }
-    }, {
-        field: 'userName',
-        title: '姓名',
-        search: true
-    }, {
-        field: 'relation',
-        title: '关系',
-        type: 'select',
-        formatter: Dict.getNameForList('relation'),
-        key: 'relation',
+        field: '',
+        title: '贷款品种'
+    },{
+        field: '',
+        title: '拟贷金额'
+    },  {
+        field: '',
+        title: '借款人',
         search: true
     }, {
         field: 'status',

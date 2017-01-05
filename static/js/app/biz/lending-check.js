@@ -102,11 +102,13 @@ $(function() {
     }, {
         field: 'price',
         title: '车价',
+        formatter: moneyFormat,
         number: true,
         readonly: true
     }, {
         field: 'firstPay',
         title: '首付款',
+        formatter: moneyFormat,
         number: true,
         readonly: true
     }, {

@@ -4,11 +4,12 @@ $(function() {
         title: '',
         checkbox: true
     }, {
-        field: 'code',
-        title: '档案号'
+        field: '',
+        title: '业务编号'
     }, {
         field: 'userName',
         title: '借款人',
+        type:'select',
         search: true
     }, {
         field: 'loanType',
@@ -16,7 +17,7 @@ $(function() {
         formatter: Dict.getNameForList('loan_type')
     }, {
         field: 'loanAmount',
-        title: '贷款金额',
+        title: '垫款金额',
         formatter: function(v) {
             return moneyFormat(+v);
         }

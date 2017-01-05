@@ -126,7 +126,7 @@ $(function() {
         }
     }];
     !view && options.buttons.unshift({
-        title: '保存',
+        title: '确认',
         handler: function() {
             if ($('#jsForm').valid()) {
                 var data = $('#jsForm').serializeObject();

@@ -5,9 +5,8 @@ $(function() {
         title: '',
         checkbox: true
     }, {
-        field: 'userName',
-        title: '借款人',
-        search: true
+        field: '',
+        title: '业务编号'
     }, {
         field: 'loanType',
         title: '贷款品种',
@@ -18,9 +17,10 @@ $(function() {
         formatter: function(v) {
             return moneyFormat(+v);
         }
-    }, {
-        field: 'mobile',
-        title: '联系电话'
+    },{
+        field: 'userName',
+        title: '借款人',
+        search: true
     }, {
         field: 'investigator',
         title: '调查人',
@@ -43,7 +43,8 @@ $(function() {
         search: true
     }, {
         field: 'remark',
-        title: '备注'
+        title: '备注',
+        maxlength:255
     }];
 
     buildList({

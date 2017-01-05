@@ -5,23 +5,23 @@ $(function() {
         title: '',
         checkbox: true
     }, {
-        field: 'code',
-        title: '档案号'
-    }, {
-        field: 'userName',
-        title: '借款人',
-        search: true
+        field: '',
+        title: '业务编号'
     }, {
         field: 'loanType',
         title: '贷款品种',
         formatter: Dict.getNameForList('loan_type')
-    }, {
+    },{
         field: 'loanAmount',
         title: '拟贷金额',
         formatter: function(v) {
             return moneyFormat(+v);
         }
     }, {
+        field: 'userName',
+        title: '借款人',
+        search: true
+    },  {
         field: 'status',
         title: '状态',
         data: {
@@ -36,7 +36,8 @@ $(function() {
         search: true
     }, {
         field: 'remark',
-        title: '备注'
+        title: '备注',
+        maxlength:255
     }];
 
     buildList({
