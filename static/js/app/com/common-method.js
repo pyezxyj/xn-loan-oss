@@ -1321,7 +1321,7 @@ function buildDetail(options) {
         ];
         //如果你只需要上传图片功能，而不需要插入网络图片功能
         editor.config.printLog = false;
-        editor.config.menuFixed = false;
+        editor.config.menuFixed = false; 
         editor.config.hideLinkImg = true;
         editor.config.customUpload = true; // 设置自定义上传的开关
         editor.config.customUploadInit = uploadInit; // 配置自定义上传初始化事件，uploadInit方法在上面定义了
