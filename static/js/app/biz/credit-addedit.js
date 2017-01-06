@@ -1,17 +1,44 @@
-$(function() {
-    var code1 = getQueryString('code');
+$(function () {
+    var code = getQueryString('code');
     var view = !!getQueryString('v');
     var idKindList = Dict.getNameForList('id_kind');
     var idKind = Dict.getName1("id_kind");
-    var code = "";
-    code1 && reqApi({
-        code: '617008',
-        json: { code: code1 },
-        sync: true
-    }).then(function(data) {
-        code = data.refUser;
-    });
+
     var fields = [{
+        title: "地区",
+        field: "citySelect",
+        type: 'citySelect',
+        readonly: view,
+        onChange: function (province, city, area) {
+            //$("#salesman").val()
+            var prev = $("#salesman").prev();
+            if (prev.hasClass("chosen-container")) {
+                prev.remove();
+                $('#salesman').empty();
+            }
+            var salesman = $('#salesman');
+            salesman.renderDropdown($.extend({
+                listCode: "805055",
+                params: {
+                    roleCode: "SR2016122515012575166",
+                    status: "0",
+                    province: province,
+                    city: city,
+                    area: area
+                },
+                keyName: "userId",
+                valueName: "loginName"
+            }));
+            salesman.chosen && salesman.not('.norender').chosen({search_contains: true, allow_single_deselect: true});
+            salesman.chosen && salesman.not('.norender').chosen()
+                .change(function () {
+                    var that = this;
+                    setTimeout(function () {
+                        $(that).parent().height($(that).prev().height());
+                    }, 1);
+                });
+        }
+    }, {
         title: '业务员',
         field: 'salesman',
         required: true,
@@ -25,7 +52,7 @@ $(function() {
         },
         readonly: view
     }, {
-        field: 'car',
+        field: 'carStore',
         title: '车行',
         type: 'select',
         required: true,
@@ -51,7 +78,7 @@ $(function() {
     }, {
         title: '拟贷金额',
         field: 'loanAmount',
-        formatter: function(v) {
+        formatter: function (v) {
             return moneyFormat(+v);
         },
         amount: true,
@@ -59,7 +86,7 @@ $(function() {
         readonly: view
     }, {
         title: '借款人信息',
-        field: 'creditAuditList',
+        field: 'creditPeopleList',
         type: 'o2m',
         editTable: true,
         addeditTable: true,
@@ -69,7 +96,7 @@ $(function() {
             title: '',
             checkbox: true
         }, {
-            field: 'userName',
+            field: 'realName',
             title: '姓名',
             required: true,
             maxlength: 32
@@ -98,7 +125,7 @@ $(function() {
             type1: "img",
             required: true,
             formatter: function (value, row) {
-                return '<a href="'+value+'" target="_blank">'+value+'</a>';
+                return '<a href="' + value + '" target="_blank">' + value + '</a>';
             },
             formatter1: true
         }, {
@@ -116,18 +143,18 @@ $(function() {
     var options = {
         fields: fields,
         code: code,
-        detailCode: '617006'
+        detailCode: '617016'
     };
 
     options.buttons = [{
         title: '返回',
-        handler: function() {
+        handler: function () {
             goBack();
         }
     }];
     !view && options.buttons.unshift({
         title: '确认',
-        handler: function() {
+        handler: function () {
             if ($('#jsForm').valid()) {
                 var data = $('#jsForm').serializeObject();
                 for (var i = 0, len = fields.length; i < len; i++) {
@@ -139,20 +166,19 @@ $(function() {
                     }
                 }
                 data['id'] = data['code'];
-                data["creditList"] = $('#creditAuditListList').bootstrapTable('getData');
-                if( !data["creditList"].length ){
+                data["creditPeopleList"] = $('#creditPeopleListList').bootstrapTable('getData');
+                if (!data["creditPeopleList"].length) {
                     toastr.info("借款人信息不能为空");
                     return;
                 }
                 reqApi({
-                    code: code ? "617002" : "617000",
+                    code: code ? "617001" : "617000",
                     json: data
-                }).done(function() {
+                }).done(function () {
                     sucDetail();
                 });
             }
         }
     });
-
     buildDetail(options);
 });

@@ -3,7 +3,7 @@ $(function() {
 
     var fields = [{
         title: '借款人',
-        field: 'userName',
+        field: 'realName',
         readonly: true
     }, {
         field: 'idNo',
@@ -19,24 +19,26 @@ $(function() {
     }, {
         title: '核定贷款金额',
         field: 'loanAmount',
-        formatter: function(v) {
-            return moneyFormat(+v);
-        },
+        formatter: moneyFormat,
         readonly: true
     }, {
         field: 'mobile',
         title: '联系电话',
         readonly: true
     }, {
-        field: 'cardBank',
+        field: 'bank',
         title: '车行卡开户行',
-        readonly: true
+        required: true
     }, {
-        field: 'cardNumber',
+        field: 'branch',
+        title: '车行卡开户支行',
+        required: true
+    }, {
+        field: 'cardNo',
         title: '车行卡号码',
         readonly: true
     }, {
-        field: 'playPdf',
+        field: 'data',
         title: '水单',
         required: true,
         type: "img"
@@ -45,7 +47,7 @@ $(function() {
     var options = {
         fields: fields,
         code: code,
-        detailCode: '617006'
+        detailCode: '617016'
     };
 
     options.buttons = [{
@@ -63,7 +65,7 @@ $(function() {
                 });
                 data["remark"] = $("#remark").val();
                 reqApi({
-                    code: "617018",
+                    code: "617012",
                     json: data
                 }).done(function() {
                     sucDetail();

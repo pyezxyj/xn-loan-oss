@@ -20,6 +20,11 @@ $(function() {
 		keyName: 'code',
 		valueName: 'name'
 	}, {
+		title: '所属地区',
+		field: 'citySelect',
+		type: 'citySelect',
+		required: true
+	}, {
 		title: '备注',
 		field: 'remark',
 		maxlength: 250

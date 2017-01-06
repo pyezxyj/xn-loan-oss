@@ -5,7 +5,7 @@ $(function() {
         title: '',
         checkbox: true
     }, {
-        field: '',
+        field: 'code',
         title: '业务编号'
     }, {
         field: 'loanType',
@@ -18,7 +18,7 @@ $(function() {
             return moneyFormat(+v);
         }
     },{
-        field: 'userName',
+        field: 'realName',
         title: '借款人',
         type:"select",
         search: true
@@ -26,24 +26,23 @@ $(function() {
         field: 'status',
         title: '状态',
         data: {
-            '10': '已补充资料/待垫款复核',
-            '11': '垫款复核通过/待打款',
-            '12': '已打款/发保合未上传'
+            '10': '待垫款复核',
+            '11': '复核通过，待打款',
+            '15': '垫款不通过'
         },
         type: 'select',
         search: true
     }, {
         field: 'remark',
-        title: '备注',
-        maxlenth:255
+        title: '备注'
     }];
 
     buildList({
         router: 'review',
         columns: columns,
-        pageCode: '617003',
+        pageCode: '617016',
         searchParams: {
-            statusList: [10, 11, 12]
+            statusList: [10, 11, 15]
         }
     });
     $("#add1Btn").on("click", function() {
@@ -52,12 +51,22 @@ $(function() {
             toastr.info("请选择记录");
             return;
         }
-        window.location.href = "review_addedit.html?code=" + selRecords[0].code;
+        var selRecord = selRecords[0];
+        if(selRecord.status != "10"){
+            toastr.info("该条记录不是待垫款复核状态");
+            return;
+        }
+        window.location.href = "review_addedit.html?code=" + selRecord.code;
     });
     $("#transferBtn").on("click", function() {
         var selRecords = $('#tableList').bootstrapTable('getSelections');
         if (selRecords.length <= 0) {
             toastr.info("请选择记录");
+            return;
+        }
+        var selRecord = selRecords[0];
+        if(selRecord.status != "11"){
+            toastr.info("该条记录不是待打款回录状态");
             return;
         }
         window.location.href = "review_transfer.html?code=" + selRecords[0].code;

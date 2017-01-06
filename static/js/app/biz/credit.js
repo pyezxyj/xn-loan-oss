@@ -4,18 +4,18 @@ $(function() {
         title: '',
         checkbox: true
     }, {
-        field: '',
-        title: '业务编号',
-        formatter: Dict.getNameForList(''),
-        key: ''
+        field: 'code',
+        title: '业务编号'
     }, {
-        field: '',
-        title: '贷款品种'
+        field: 'loanType',
+        title: '贷款品种',
+        formatter: Dict.getNameForList('loan_type'),
+        key: 'loan_type'
     },{
-        field: '',
+        field: 'loanAmount',
         title: '拟贷金额'
     },  {
-        field: '',
+        field: 'realName',
         title: '借款人',
         search: true
     }, {
@@ -23,8 +23,7 @@ $(function() {
         title: '资信结果',
         data: {
             '0': '待审核',
-            '1': '审核通过',
-            '2': '审核不通过'
+            '16': '不通过'
         },
         type: "select",
         search: true
@@ -34,10 +33,9 @@ $(function() {
         router: 'credit',
         columns: columns,
         searchParams: {
-            statusList: [0, 1, 2]
+            statusList: [0, 16]
         },
-        pageCode: '617004',
-        deleteCode: '617001'
+        pageCode: '617015'
     });
 
     $("#researchBtn").on("click", function() {

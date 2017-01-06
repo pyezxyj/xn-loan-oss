@@ -5,7 +5,7 @@ $(function() {
         title: '',
         checkbox: true
     }, {
-        field: '',
+        field: 'code',
         title: '业务编号'
     }, {
         field: 'loanType',
@@ -18,7 +18,7 @@ $(function() {
             return moneyFormat(+v);
         }
     }, {
-        field: 'userName',
+        field: 'realName',
         title: '借款人',
         search: true
     }, {
@@ -26,14 +26,12 @@ $(function() {
         title: '状态',
         type: "select",
         data: {
-            "9": "电话回访通过/待补充请款资料/财务复核不通过",
-            '10': '已补充资料/待垫款复核'
+            "8": "待补充请款资料"
         },
         search: true
     }, {
         field: 'remark',
-        title: '备注',
-        maxlength:255
+        title: '备注'
     }];
 
     buildList({
@@ -41,7 +39,7 @@ $(function() {
         columns: columns,
         pageCode: '617003',
         searchParams: {
-            statusList: [9, 10]
+            statusList: [8]
         }
     });
     $("#add1Btn").on("click", function() {
@@ -50,6 +48,11 @@ $(function() {
             toastr.info("请选择记录");
             return;
         }
-        window.location.href = "add_addedit.html?code=" + selRecords[0].code;
+        var selRecord = selRecords[0];
+        if(selRecord.status != "8"){
+            toastr.info("该条记录不是待补充请款资料状态");
+            return;
+        }
+        window.location.href = "add_addedit.html?code=" + selRecord.code;
     });
 });

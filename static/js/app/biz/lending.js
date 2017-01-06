@@ -5,7 +5,7 @@ $(function() {
         title: '',
         checkbox: true
     }, {
-        field: '',
+        field: 'code',
         title: '业务编号'
     }, {
         field: 'loanType',
@@ -18,52 +18,60 @@ $(function() {
             return moneyFormat(+v);
         }
     }, {
-        field: 'userName',
+        field: 'realName',
         title: '借款人',
         search: true
     },  {
         field: 'status',
         title: '状态',
         data: {
-            '3': '已回录/待资料录入/审查不通过',
-            '4': '已录入/待审查/电话回访不通过',
-            '5': '审查通过/待额度审批',
-            '6': '补充资料',
-            '7': '调额通过/待电话回访',
-            '8': '直接通过/待电话回访'
+            '3': '待资料录入',
+            '4': '待合规审查',
+            '5': '合规审查不通过',
+            '6': '待额度审批',
+            '7': '待补充资料',
+            '17': '直接否接'
         },
         type: "select",
         search: true
     }, {
         field: 'remark',
-        title: '备注',
-        maxlength:255
+        title: '备注'
     }];
 
     buildList({
         router: 'lending',
         columns: columns,
-        pageCode: '617003',
+        pageCode: '617016',
         searchParams: {
-            statusList: [3, 4, 5, 6, 7, 8]
+            statusList: [3, 4, 5, 6, 7, 17]
         }
     });
-
-    // $("#checkBtn").on("click", function () {
-    //     var selRecords = $('#tableList').bootstrapTable('getSelections');
-    //     if (selRecords.length <= 0) {
-    //         toastr.info("请选择记录");
-    //         return;
-    //     }
-    //     window.location.href = "lending_check.html?code=" + selRecords[0].code;
-    // });
-    $("#optionsBtn").on("click", function() {
+    $("#edit1Btn").on("click", function () {
         var selRecords = $('#tableList').bootstrapTable('getSelections');
         if (selRecords.length <= 0) {
             toastr.info("请选择记录");
             return;
         }
-        window.location.href = "lending_options.html?code=" + selRecords[0].code;
+        var selRecord = selRecords[0];
+        if(selRecord.status != "3" && selRecord.status != "5"){
+            toastr.info("该条记录的状态无法资料录入");
+            return;
+        }
+        window.location.href = "lending_addedit.html?code=" + selRecord.code;
+    });
+    $("#check1Btn").on("click", function () {
+        var selRecords = $('#tableList').bootstrapTable('getSelections');
+        if (selRecords.length <= 0) {
+            toastr.info("请选择记录");
+            return;
+        }
+        var selRecord = selRecords[0];
+        if(selRecord.status != "4"){
+            toastr.info("该条记录不是待合规审查状态");
+            return;
+        }
+        window.location.href = "lending_check.html?code=" + selRecord.code;
     });
     $("#approvalBtn").on("click", function() {
         var selRecords = $('#tableList').bootstrapTable('getSelections');
@@ -71,6 +79,24 @@ $(function() {
             toastr.info("请选择记录");
             return;
         }
-        window.location.href = "lending_approval.html?code=" + selRecords[0].code;
-    })
+        var selRecord = selRecords[0];
+        if(selRecord.status != "6"){
+            toastr.info("该条记录不是待额度审批状态");
+            return;
+        }
+        window.location.href = "lending_approval.html?code=" + selRecord.code;
+    });
+    $("#optionsBtn").on("click", function() {
+        var selRecords = $('#tableList').bootstrapTable('getSelections');
+        if (selRecords.length <= 0) {
+            toastr.info("请选择记录");
+            return;
+        }
+        var selRecord = selRecords[0];
+        if(selRecord.status != "7"){
+            toastr.info("该条记录不是待补充资料状态");
+            return;
+        }
+        window.location.href = "lending_options.html?code=" + selRecord.code;
+    });
 });

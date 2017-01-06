@@ -31,22 +31,27 @@ $(function() {
         readonly: true
     }, {
         title: '收款金额',
-        field: 'receiptAmount',
-        formatter: function(v) {
-            return moneyFormat(+v);
+        field: 'amount',
+        formatter: function(v, data) {
+            return moneyFormat(data.skAmount || v);
         },
         required: true,
         amount: true
     }, {
         title: '水单',
-        field: 'receiptPdf',
+        field: 'skPdf',
         required: true,
         type: 'img'
+    }, {
+        title: '还款起始日期',
+        field: 'yhDatetime',
+        required: true,
+        type: 'date'
     }];
     var options = {
         fields: fields,
         code: code,
-        detailCode: '617006'
+        detailCode: '617016'
     };
 
     options.buttons = [{
@@ -71,8 +76,9 @@ $(function() {
                     data[el.id] = values.join('||');
                 });
                 data['id'] = data['code'];
+                data['pdf'] = data['skPdf'];
                 reqApi({
-                    code: "617021",
+                    code: "617014",
                     json: data
                 }).done(function() {
                     sucDetail();

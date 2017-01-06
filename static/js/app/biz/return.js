@@ -5,7 +5,7 @@ $(function() {
         title: '',
         checkbox: true
     }, {
-        field: '',
+        field: 'code',
         title: '业务编号'
     }, {
         field: 'loanType',
@@ -18,7 +18,7 @@ $(function() {
             return moneyFormat(+v);
         }
     }, {
-        field: 'userName',
+        field: 'realName',
         title: '借款人',
         type:"select",
         search: true
@@ -29,24 +29,21 @@ $(function() {
         field: 'status',
         title: '状态',
         data: {
-            '7': '调额通过/待电话回访',
-            '8': '直接通过/待电话回访',
-            '9': '电话回访通过/待补充请款资料/财务复核不通过'
+            '9': '待电话回访'
         },
         type: "select",
         search: true
     }, {
         field: 'remark',
-        title: '备注',
-        maxlength:255
+        title: '备注'
     }];
 
     buildList({
         router: 'return',
         columns: columns,
-        pageCode: '617003',
+        pageCode: '617016',
         searchParams: {
-            statusList: [7, 8, 9]
+            statusList: [9]
         }
     });
     $("#returnBtn").on("click", function() {
@@ -55,6 +52,11 @@ $(function() {
             toastr.info("请选择记录");
             return;
         }
-        window.location.href = "return_return.html?code=" + selRecords[0].code;
+        var selRecord = selRecords[0];
+        if(selRecord.status != "9"){
+            toastr.info("该条记录不是待电话回访状态");
+            return;
+        }
+        window.location.href = "return_return.html?code=" + selRecord.code;
     });
 });

@@ -3,7 +3,7 @@ $(function() {
 
     var fields = [{
         title: '借款人',
-        field: 'userName',
+        field: 'realName',
         readonly: true
     }, {
         field: 'idNo',
@@ -19,16 +19,14 @@ $(function() {
     }, {
         title: '核定贷款金额',
         field: 'loanAmount',
-        formatter: function(v) {
-            return moneyFormat(+v);
-        },
+        formatter: moneyFormat,
         readonly: true
     }, {
         field: 'mobile',
         title: '联系电话',
         readonly: true
     }, {
-        field: 'remark',
+        field: 'approveNote',
         title: '备注',
         isNotFace: true,
         maxlength: 255
@@ -37,7 +35,7 @@ $(function() {
     var options = {
         fields: fields,
         code: code,
-        detailCode: '617006'
+        detailCode: '617016'
     };
 
     options.buttons = [{
@@ -45,10 +43,11 @@ $(function() {
         handler: function() {
             if ($('#jsForm').valid()) {
                 var data = { "code": code };
-                data["remark"] = $("#remark").val();
+                data['approverUser'] = sessionStorage.getItem('userName');
                 data["approveResult"] = "1";
+                data["approveNote"] = $("#approveNote").val();
                 reqApi({
-                    code: "617015",
+                    code: "617010",
                     json: data
                 }).done(function() {
                     sucDetail();
@@ -60,10 +59,11 @@ $(function() {
         handler: function() {
             if ($('#jsForm').valid()) {
                 var data = { "code": code };
-                data["remark"] = $("#remark").val();
+                data['approverUser'] = sessionStorage.getItem('userName');
                 data["approveResult"] = "0";
+                data["approveNote"] = $("#approveNote").val();
                 reqApi({
-                    code: "617015",
+                    code: "617010",
                     json: data
                 }).done(function() {
                     sucDetail();

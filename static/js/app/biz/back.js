@@ -4,10 +4,10 @@ $(function() {
         title: '',
         checkbox: true
     }, {
-        field: '',
+        field: 'code',
         title: '业务编号'
     }, {
-        field: 'userName',
+        field: 'realName',
         title: '借款人',
         type:'select',
         search: true
@@ -18,30 +18,26 @@ $(function() {
     }, {
         field: 'loanAmount',
         title: '垫款金额',
-        formatter: function(v) {
-            return moneyFormat(+v);
-        }
+        formatter: moneyFormat
     }, {
         field: 'status',
         title: '状态',
         data: {
-            '13': '发保合已上传/待收款',
-            '14': '已收款/结束'
+            '13': '待收款',
+            '14': '已收款'
         },
         search: true,
-        type: 'select',
+        type: 'select'
     }, {
         title: '经办银行',
         field: 'jbBank',
         formatter: Dict.getNameForList('jb_bank')
     }, {
-        field: 'receiptAmount',
+        field: 'skAmount',
         title: '收款金额',
-        formatter: function(v) {
-            return moneyFormat(+v);
-        }
+        formatter: moneyFormat
     }, {
-        field: 'receiptDatetime',
+        field: 'skDatetime',
         title: '收款时间',
         formatter: dateTimeFormat
     }];
@@ -49,7 +45,7 @@ $(function() {
     buildList({
         router: 'back',
         columns: columns,
-        pageCode: '617003',
+        pageCode: '617016',
         searchParams: {
             statusList: [13, 14]
         }
@@ -58,6 +54,11 @@ $(function() {
         var selRecords = $('#tableList').bootstrapTable('getSelections');
         if (selRecords.length <= 0) {
             toastr.info("请选择记录");
+            return;
+        }
+        var selRecord = selRecords[0];
+        if(selRecord.status != "13"){
+            toastr.info("该条记录不是待收款状态");
             return;
         }
         window.location.href = "back_addedit.html?code=" + selRecords[0].code;

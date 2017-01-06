@@ -9,11 +9,12 @@ $(function() {
         keyName: "userId",
         valueName: "loginName",
         params: {
-            roleCode: "SR2016122515012575166"
+            roleCode: "SR2016122515012575166",
+            status: "0"
         },
         readonly: true
     }, {
-        field: 'car',
+        field: 'carStore',
         title: '车行',
         type: 'select',
         key: 'car_type',
@@ -42,7 +43,7 @@ $(function() {
         readonly: true
     }, {
         title: '借款人信息',
-        field: 'creditAuditList',
+        field: 'creditPeopleList',
         type: 'o2m',
         editTable: true,
         addeditTable: false,
@@ -51,7 +52,7 @@ $(function() {
             title: '',
             checkbox: true
         }, {
-            field: 'userName',
+            field: 'realName',
             title: '姓名',
             type: 'select',
             readonly: true,
@@ -98,11 +99,15 @@ $(function() {
             maxlength: 64
         }]
     }, {
-        field: 'cardBank',
+        field: 'bank',
         title: '代扣卡开户行',
         required: true
     }, {
-        field: 'cardNumber',
+        field: 'branch',
+        title: '支行',
+        required: true
+    }, {
+        field: 'cardNo',
         title: '代扣卡号码',
         required: true,
         bankCard: true
@@ -130,7 +135,7 @@ $(function() {
             }
         }
     }, {
-        field: 'firstPay',
+        field: 'firstAmount',
         title: '首付款',
         required: true,
         amount: true,
@@ -147,7 +152,7 @@ $(function() {
         title: '首付比例(%)',
         readonly: true,
         afterSet: function(v, data) {
-            var firstPay = data.firstPay;
+            var firstPay = data.firstAmount;
             var price = data.price;
             if ($.isNumeric(price) && $.isNumeric(firstPay)) {
                 var rate = (+firstPay * 100 / +price).toFixed(2);
@@ -155,16 +160,16 @@ $(function() {
             }
         }
     }, {
-        field: 'realLoanAmount',
+        field: 'loanAmount',
         title: '贷款额',
         amount: true,
         required: true,
         onKeyup: function (value) {
             var bj = value,
-                ll = $("#sumRate").val(),
+                ll = $("#rate").val(),
                 t = $("#loanTerm").val();
             var result = calculateMonthlyPayments(bj, ll, t);
-            $("#monthMoney").html(result);
+            $("#termAmount").html(result);
         }
     }, {
         field: 'loanTerm',
@@ -174,34 +179,28 @@ $(function() {
         formatter: Dict.getNameForList('loan_term'),
         required: true,
         onChange: function (value) {
-            var bj = $("#realLoanAmount").val(),
-                ll = $("#sumRate").val(),
+            var bj = $("#loanAmount").val(),
+                ll = $("#rate").val(),
                 t = value;
             var result = calculateMonthlyPayments(bj, ll, t);
-            $("#monthMoney").html(result);
+            $("#termAmount").html(result);
         }
     }, {
-        field: 'sumRate',
+        field: 'rate',
         title: '综合费率(%)',
         required: true,
         onKeyup: function (value) {
-            var bj = $("#realLoanAmount").val(),
+            var bj = $("#loanAmount").val(),
                 ll = value,
                 t = $("#loanTerm").val();
             var result = calculateMonthlyPayments(bj, ll, t);
-            $("#monthMoney").html(result);
+            $("#termAmount").html(result);
         }
     }, {
-        field: 'monthMoney',
+        field: 'termAmount',
         title: '月供',
         readonly: true,
-        afterSet: function (v, data) {
-            var bj = +data.realLoanAmount / 1000,
-                ll = data.sumRate,
-                t = data.loanTerm;
-            var result = calculateMonthlyPayments(bj, ll, t);
-            $("#monthMoney").html(result);
-        }
+        formatter: moneyFormat
     }, {
         field: 'fee',
         title: '服务费',
@@ -213,16 +212,12 @@ $(function() {
         key: 'urgency',
         formatter: Dict.getNameForList('urgency'),
         required: true
-    }, {
-        field: 'supplyInfo',
-        title: '其他补充资料',
-        type: "img"
     }];
 
     var options = {
         fields: fields,
         code: code,
-        detailCode: '617006'
+        detailCode: '617016'
     };
 
     options.buttons = [{
@@ -236,6 +231,11 @@ $(function() {
         title: '确认',
         handler: function() {
             if ($('#jsForm').valid()) {
+                var termAmount = $("#termAmount").text();
+                if(!termAmount){
+                    toastr.info("月供不能为空");
+                    return;
+                }
                 var data = $('#jsForm').serializeObject();
                 for (var i = 0, len = fields.length; i < len; i++) {
                     var item = fields[i];
@@ -253,10 +253,11 @@ $(function() {
                     });
                     data[el.id] = values.join('||');
                 });
+                data['termAmount'] = termAmount;
                 data['id'] = data['code'];
-                data["creditAuditList"] = $('#creditAuditListList').bootstrapTable('getData');
+                data["creditPeopleList"] = $('#creditPeopleListList').bootstrapTable('getData');
                 reqApi({
-                    code: "617012",
+                    code: "617005",
                     json: data
                 }).done(function() {
                     sucDetail();

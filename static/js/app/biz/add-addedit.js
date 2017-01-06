@@ -3,7 +3,7 @@ $(function() {
 
     var fields = [{
         title: '借款人',
-        field: 'userName',
+        field: 'realName',
         readonly: true
     }, {
         field: 'idNo',
@@ -32,7 +32,7 @@ $(function() {
         title: '备注',
         readonly: true
     }, {
-        field: 'cwPdf',
+        field: 'data',
         title: '请款资料',
         type: "img",
         required: true
@@ -41,7 +41,7 @@ $(function() {
     var options = {
         fields: fields,
         code: code,
-        detailCode: '617006'
+        detailCode: '617016'
     };
 
     options.buttons = [{
@@ -58,7 +58,7 @@ $(function() {
                     data[el.id] = values.join('||');
                 });
                 reqApi({
-                    code: "617017",
+                    code: "617009",
                     json: data
                 }).done(function() {
                     sucDetail();

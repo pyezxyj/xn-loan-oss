@@ -4,10 +4,10 @@ $(function() {
         title: '',
         checkbox: true
     }, {
-        field: '',
+        field: 'code',
         title: '业务编号'
     }, {
-        field: 'userName',
+        field: 'realName',
         title: '借款人',
         type:'select',
         search: true
@@ -18,7 +18,7 @@ $(function() {
         type: 'select',
         key: 'loan_type'
     }, {
-        field: 'car',
+        field: 'carStore',
         title: '车行',
         formatter: Dict.getNameForList('car_type'),
         key: "car_type"
@@ -30,14 +30,14 @@ $(function() {
         keyName: "userId",
         valueName: "loginName",
         params: {
-            roleCode: "SR2016122515012575166"
+            roleCode: "SR2016122515012575166",
+            status: "0"
         }
     }, {
         field: 'status',
         title: '状态',
         data: {
-            '12': '已打款/发保合未上传',
-            '13': '发保合已上传/待收款'
+            '12': '待发保合上传'
         },
         search: true,
         type: "select"
@@ -52,7 +52,7 @@ $(function() {
         columns: columns,
         pageCode: '617003',
         searchParams: {
-            statusList: [12, 13]
+            statusList: [12]
         }
     });
     $("#add1Btn").on("click", function() {
@@ -61,7 +61,12 @@ $(function() {
             toastr.info("请选择记录");
             return;
         }
-        window.location.href = "manage_addedit.html?code=" + selRecords[0].code + "&add=1";
+        var selRecord = selRecords[0];
+        if(selRecord.status != "12"){
+            toastr.info("该条记录不是待发保合上传状态");
+            return;
+        }
+        window.location.href = "manage_addedit.html?code=" + selRecord.code + "&add=1";
     });
 //    $("#downloadBtn").on("click", function () {
 //        var selRecords = $('#tableList').bootstrapTable('getSelections');

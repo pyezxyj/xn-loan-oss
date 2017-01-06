@@ -1,14 +1,10 @@
 $(function() {
 
     var code = getQueryString('code');
-
+    var getIdKindName = Dict.getNameForList("id_kind");
     var fields = [{
-        title: '借款人',
-        field: 'userName',
-        readonly: true
-    }, {
-        title: '身份证',
-        field: 'idNo',
+        field: 'code',
+        title: '业务编号',
         readonly: true
     }, {
         title: '贷款品种',
@@ -23,12 +19,23 @@ $(function() {
             return moneyFormat(+v);
         }
     }, {
+        title: '借款人',
+        field: 'realName',
+        readonly: true
+    }, {
+        title: '证件号码',
+        field: 'idNo',
+        readonly: true,
+        formatter: function (v, data) {
+            return getIdKindName(data.idKind) + " - " + v;
+        }
+    }, {
         field: 'mobile',
         title: '联系电话',
         required: true,
         mobile: true
     }, {
-        field: 'investigator',
+        field: 'dcUser',
         title: '调查员',
         type: "select",
         listCode: "805055",
@@ -49,9 +56,8 @@ $(function() {
     buildDetail({
         fields: fields,
         code: code,
-        detailCode: '617006',
-        addCode: '617010',
-        editCode: '617010'
+        detailCode: '617016',
+        editCode: '617003'
     });
 
 });
