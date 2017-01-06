@@ -3,6 +3,14 @@ $(function() {
     var view = !!getQueryString('v');
     var code = "";
     var fields = [{
+    	title: '车主',
+    	field: 'realName',
+    	type: 'hidden'
+    }, {
+    	title: '汽车编号',
+    	field: 'carCode',
+    	type: 'hidden'
+    }, {
         title: '保险公司',
         field: 'company',
         required: true
@@ -16,15 +24,17 @@ $(function() {
         required: true
     }, {
         title: '起始日期',
-        field: 'endDatetime',
-        required: true,
+        field: 'startDatetime',
+        type: 'date',
+        required: true
     }, {
         title: '终止日期',
-        field: 'startDatetime',
-        required: true,
+        field: 'endDatetime',
+        type: 'date',
+        required: true
     }, {
-        title: '保险金额',
-        field: 'amount',
+        title: '',
+        field: 'insureTypeList',
         type: 'o2m',
         editTable: true,
         addeditTable: true,
@@ -35,30 +45,29 @@ $(function() {
             title: '',
             checkbox: true
         }, {
-            field: 'insureCode',
-            title: '保单编号',
+            field: 'type',
+            title: '险种',
             required: true,
             maxlength: 32
         }, {
-            field: 'type',
-            title: '险种',
+            field: 'amount',
+            title: '金额',
             required: true
-        }, {
-            field: 'amounut',
-            title: '保险金额',
-            required: true
-        }, {
-            field: 'remark',
-            required: true,
-            title: '备注',
-            maxlength:255
         }]
+    }, {
+        field: 'amount',
+        title: '保险金额',
+        required: true
+    }, {
+        field: 'remark',
+        title: '备注',
+        maxlength:255
     }];
 
     var options = {
         fields: fields,
         code: code,
-        detailCode: '617055'
+        detailCode: '617046'
     };
 
     options.buttons = [{
@@ -81,13 +90,13 @@ $(function() {
                     }
                 }
                 data['id'] = data['code'];
-                data["creditList"] = $('#creditAuditListList').bootstrapTable('getData');
-                if( !data["creditList"].length ){
-                    toastr.info("借款人信息不能为空");
+                data["insureTypeList"] = $('#insureTypeListList').bootstrapTable('getData');
+                if( !data["insureTypeList"].length ){
+                    toastr.info("险种信息不能为空");
                     return;
                 }
                 reqApi({
-                    code: code ? "617052" : "617050",
+                    code: "617040",
                     json: data
                 }).done(function() {
                     sucDetail();

@@ -12,16 +12,16 @@ $(function() {
         type:'select',
         search: true
     },{
-        field: '',
+        field: 'yhAmount',
         title: '应还金额'
     },{
-        field: '',
+        field: 'shAmount',
         title: '实还金额'
     }, {
-        field: '',
-        title: '逾期日期'
+        field: 'overDays',
+        title: '逾期天数'
     },{
-        field: '',
+        field: 'smsCount',
         title: '已发催款短信'
     },{
         field: 'status',
@@ -35,10 +35,7 @@ $(function() {
     buildList({
         router: 'select',
         columns: columns,
-//        searchParams: {
-//            statusList: [0, 1, 2]
-//        },
-        pageCode: '617081',
+        pageCode: '617081'
     
     });
 
@@ -49,13 +46,12 @@ $(function() {
             return;
         }
        reqApi({
-       code: "617072",
-       json: {
-          code: selRecords.code
-       }
+    	   code: "617072",
+	       json: {
+	          code: selRecords[0].code
+	       }
        }).then(function () {
-       sucList();
-		$('#tableList').bootstrapTable('refresh', { url: $('#tableList').bootstrapTable('getOptions').url });
+    	   sucList();
        });
     });
     
@@ -66,13 +62,12 @@ $(function() {
             return;
         }
        reqApi({
-       code: "617073",
-       json: {
-          code: selRecords.code
-       }
+	       code: "617073",
+	       json: {
+	          code: selRecords[0].code
+	       }
        }).then(function () {
-       sucList();
-		$('#tableList').bootstrapTable('refresh', { url: $('#tableList').bootstrapTable('getOptions').url });
+    	   sucList();
        });
     });
     
@@ -83,13 +78,12 @@ $(function() {
             return;
         }
        reqApi({
-       code: "617074",
-       json: {
-          code: selRecords.code
-       }
+	       code: "617074",
+	       json: {
+	          code: selRecords[0].code
+	       }
        }).then(function () {
-       sucList();
-		$('#tableList').bootstrapTable('refresh', { url: $('#tableList').bootstrapTable('getOptions').url });
+    	   sucList();
        });
     });
     

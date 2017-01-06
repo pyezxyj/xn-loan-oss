@@ -4,7 +4,7 @@ $(function() {
         title: '',
         checkbox: true
     },  {
-        field: '',
+        field: 'code',
         title: '档案号'
     },{
         field: 'realName',
@@ -13,23 +13,29 @@ $(function() {
         field: 'idNo',
         title: '身份证号'
     }, {
-        field: '',
+        field: 'jbBank',
         title: '经办银行',
         type:"select",
         search: true,
+        key: 'jb_bank',
+        formatter: Dict.getNameForList('jb_bank'),
         required:true,
     },  {
-        field: '',
-        title: '应还时间'
+        field: 'yhDatetime',
+        title: '应还时间',
+        formatter: dateFormat
     },{
-        field: '',
-        title: '应还金额'
+        field: 'yhAmount',
+        title: '应还金额',
+        formatter: moneyFormat
     }, {
-        field: '',
-        title: '实还时间'
+        field: 'shDatetime',
+        title: '实还时间',
+        formatter: dateFormat
     }, {
-        field: '',
-        title: '实还金额'
+        field: 'shAmount',
+        title: '实还金额',
+        formatter: moneyFormat
     }, {
         field: 'remark',
         title: '备注',
@@ -39,11 +45,7 @@ $(function() {
     buildList({
         router: 'import',
         columns: columns,
-//        searchParams: {
-//            statusList: [0, 1, 2]
-//        },
-        pageCode: '617070',
-   
+        pageCode: '617083'
     });
    
     $("#compareBtn").on("click", function() {
@@ -55,12 +57,11 @@ $(function() {
         reqApi({
             code: "617071",
             json: {
-               code: selRecords.code
+               code: selRecords[0].code
             }
-            }).then(function () {
+        }).then(function () {
             sucList();
-			$('#tableList').bootstrapTable('refresh', { url: $('#tableList').bootstrapTable('getOptions').url });
-            });
+        });
     });
     
     

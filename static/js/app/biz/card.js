@@ -8,13 +8,9 @@ $(function() {
     	title:'编号',
     	type:'hidden',
     },{
-        field: '',
+        field: 'realName',
         title: '户名',
-        formatter: Dict.getNameForList(''),
-        key: '',
-        type:'select',
-        search:true,
-        required:true
+        search:true
     }, {
         field: 'bank',
         title: '开户银行'
@@ -26,33 +22,16 @@ $(function() {
         title: '卡号'
     }, {
         field: 'remark',
-        title: '备注',
-        maxlength:255
+        title: '备注'
        
     }];
 
     buildList({
         router: 'card',
         columns: columns,
-        pageCode: '617076'
-    });
-    
-    $("#changeBtn").on("click", function() {
-        var selRecords = $('#tableList').bootstrapTable('getSelections');
-        if (selRecords.length <= 0) {
-            toastr.info("请选择记录");
-            return;
+        pageCode: '617015',
+        searchParams: {
+            statusList: [3,4,5,6,7,8,9,10,11,12,13,14,15,17]
         }
-       reqApi({
-       code: "617076",
-       json: {
-          code: selRecords.code
-       }
-       }).then(function () {
-       sucList();
-		$('#tableList').bootstrapTable('refresh', { url: $('#tableList').bootstrapTable('getOptions').url });
-       });
     });
-    
-
 });

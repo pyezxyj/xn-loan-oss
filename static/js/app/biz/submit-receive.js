@@ -35,62 +35,60 @@ $(function() {
         field: 'type',
         title: '交接事件',
         type:'select',
-        required: true,
-        
+        readonly: true
     },{
         field: 'deliverCompany',
         title: '收件单位',
-        required: true,
-        type:'select',
-      
+        readonly: true,
+        type:'select'
     },{
     	field:'deliverer',
     	title:'收件人',
     	type:'select',
-    	required:true
+    	readonly:true
     },{
         field: 'deliverCompany',
         title: '寄件单位',
         type:'select',
-        required: true
+        readonly: true
     },{
     	field:'deliverer',
     	title:'寄件人',
     	type:'select',
-        required: true,
+    	readonly: true,
     },{
         field: 'typeNote',
         title: '移交说明',
-        required: true,
+        readonly: true,
        
     },{
         field: 'logiCompany',
         title: '快递',
         type:'select',
-        required: true,
+        readonly: true,
        
     },{
         field: 'logiCode',
         title: '快递单号',
-        required: true,
+        readonly: true,
        
     },{
         field: 'deliverDatetime',
         title: '寄件时间',
         type: 'datetime',
-        required: true,
-      
+        readonly: true,
+        formatter: dateFormat
     },{
         field: 'deliverPdf',
         title: '快递单',
         type:'img',
-        required: true
+        readonly: true
     }];
 
     buildDetail({
         fields: fields,
         code: code,
-        editCode: '617060',
+        editCode: '617061',
         detailCode: '617066'
     });
 

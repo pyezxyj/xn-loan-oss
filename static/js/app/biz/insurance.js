@@ -21,24 +21,37 @@ $(function() {
     }, {
         field: 'amount',
         title: '保费',
+        formatter: moneyFormat
     }, {
         field: 'startDatetime',
         title: '保险到期时间',
+        formatter: dateTimeFormat
     },  {
-        field: '',
+        field: 'smsCount',
         title: '续保短信',
     },{
     	title:'备注',
-    	field:'remark',
-    	maxlength:255
+    	field:'remark'
     }];
 
     buildList({
         router: 'insurance',
         columns: columns,
-        pageCode: '617045',
-        detailCode:'617046'
-       
+        pageCode: '617045'
     });
-
+    $("#xbdxBtn").on("click", function() {
+        var selRecords = $('#tableList').bootstrapTable('getSelections');
+        if (selRecords.length <= 0) {
+            toastr.info("请选择记录");
+            return;
+        }
+        reqApi({
+            code: "617041",
+            json: {
+               code: selRecords[0].code
+            }
+        }).then(function () {
+            sucList();
+        });
+    });
 });

@@ -4,28 +4,25 @@ $(function() {
 
     var fields = [{
         title: '业务编号',
-        field: '',
-        required: true,
+        field: 'creditOrderCode',
         readonly: true
     },  {
         title: '贷款品种',
         field: 'loanType',
+        key: 'loan_type',
         formatter: Dict.getNameForList('loan_type'),
         readonly: true
     }, {
         title: '拟贷金额',
         field: 'loanAmount',
         readonly: true,
-//        formatter: function(v) {
-//            return moneyFormat(+v);
-//        }
+        formatter: moneyFormat
     }, {
-        field: '',
+        field: 'realName',
         title: '借款人',
-        required: true,
         readonly: true
     }, {
-        field: '',
+        field: 'idNo',
         title: '证件号码',
         required: true,
         readonly: true
@@ -43,9 +40,8 @@ $(function() {
     buildDetail({
         fields: fields,
         code: code,
-        detailCode: '',
-        addCode: '',
-        editCode: ''
+        detailCode: '617082',
+        editCode: '617075'
     });
 
 });
