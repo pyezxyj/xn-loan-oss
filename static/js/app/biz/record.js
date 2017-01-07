@@ -5,25 +5,25 @@ $(function() {
         title: '',
         checkbox: true
     },{
-        field: 'code',
+        field: 'creditOrderCode',
         title: '业务编号',
         search:true
     }, {
-        field: '',
+        field: 'brand',
         title: '抵押物'
     }, {
         field: 'dyStartDatetime',
         title: '抵押时间',
-        
+        formatter: dateFormat
     },{
         field: 'dyEndDatetime',
         title: '抵押到期',
-        
+        formatter: dateFormat
     }, {
         field: 'status',
         title: '状态',
         formatter: Dict.getNameForList('car_status'),
-         key:'car_status',
+        key:'car_status',
         type: 'select',
         search: true
     }, {
@@ -35,8 +35,7 @@ $(function() {
     buildList({
         router: 'record',
         columns: columns,
-        pageCode: '617036',
-        detailCode:'617035'
+        pageCode: '617036'
     });
     $("#releaseBtn").on("click", function() {
         var selRecords = $('#tableList').bootstrapTable('getSelections');

@@ -1,35 +1,60 @@
 $(function() {
 
-    var code = getQueryString('code');
-
     var fields = [{
         title: '经办银行',
-        field: '',
+        field: 'jbBank',
         type:"select",
+        key: 'jb_bank',
+        formatter: Dict.getNameForList('jb_bank'),
         required:true
     }, {
         title: '数据源',
-        field: '',
-        type:'img',
+        field: 'repayList',
+        type:'file',
         required:true
-   }, 
-       // {
-//        title: '备注',
-//        field: 'remark',
-//        required:true,
-//        maxLength: 255
-//    }
-    ];
-
-    buildDetail({
-        fields: fields,
-        code: code,
-        detailCode: '',
-        addCode: '',
-        editCode: ''
-    });
+   }];
+    
+    var options = {
+            fields: fields
+        };
+    options.buttons = [{
+    	title: "保存",
+    	handler: function(){
+    		if ( $('#jsForm').valid() ) {
+                var jbBank = $("#jbBank").val();
+                var list = $("#repayList").data("list");
+                for(var i = list.length; i;){
+                	list[--i].jbBank = jbBank;
+                }
+                reqApi({
+                	code: "617070",
+                	json: {
+                		repayList: list
+                	}
+                }).then(function(){
+                	sucDetail();
+                })
+    		}
+    	}
+    },{
+    	title: "返回",
+    	handler: goBack
+    }]
+    	
+    
+    buildDetail(options);
     
     
+    $("#repayList").on("change",
+        getImportDataFun({
+            getImportData: function (list) {
+                $("#repayList").data("list", list);
+                toastr.success('导入成功');
+            },
+            error: function(){
+            	$("#repayList").val("");
+            }
+        }));
     
     
 

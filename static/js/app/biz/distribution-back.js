@@ -10,6 +10,7 @@ $(function() {
         title: '贷款品种',
         field: 'loanType',
         formatter: Dict.getNameForList('loan_type'),
+        key:'loan_type',
         readonly: true
     }, {
         title: '拟贷金额',
@@ -67,7 +68,7 @@ $(function() {
     }, {
         title: '备注',
         field: 'remark',
-        maxLength: 255
+        maxlength: 255
     }];
 
     buildDetail({

@@ -13,7 +13,7 @@ $(function() {
         title: '档案号',
         required:true
     }, {
-        field: '',
+        field: 'realName',
         title: '借款人',
         type:'select',
         search: true
@@ -36,10 +36,7 @@ $(function() {
     buildList({
         router: 'preback',
         columns: columns,
-//        searchParams: {
-//            statusList: [0, 1, 2]
-//        },
-        pageCode: '617075',
+        pageCode: '617083'
   
     });
 
@@ -49,15 +46,7 @@ $(function() {
             toastr.info("请选择记录");
             return;
         }
-       reqApi({
-       code: "617075",
-       json: {
-          code: selRecords.code
-       }
-       }).then(function () {
-       sucList();
-		$('#tableList').bootstrapTable('refresh', { url: $('#tableList').bootstrapTable('getOptions').url });
-       });
+        window.location.href = "preback_addedit.html?code=" + selRecords[0].code;
     });
     
 });

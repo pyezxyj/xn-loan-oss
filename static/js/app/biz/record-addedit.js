@@ -10,88 +10,108 @@ $(function() {
     },{
         title: '车辆品牌',
         field: 'brand',
-        required:true
+        readonly: true
     }, {
         field: 'model',
         title: '车辆型号',
-      
-        required:true
+        readonly: true
     }, {
         title: '车辆号码',
         field: 'carNo',
-        required:true
+        required:true,
+        readonly: view
     },{
     	title:'车架号',
     	field:'chassisNo',
-    	required:true
+    	required:true,
+        readonly: view
     }, {
         title: '发动机号',
         field: 'engineNo',
-        required:true
+        required:true,
+        readonly: view
     }, {
         title: '车座位数',
         field: 'seatNum',
-        required:true
+        required:true,
+        readonly: view
     },{
         title: '发票号码',
         field: 'invoiceNo',
-        required:true
+        required:true,
+        readonly: view
     },{
         title: '购车日期',
         field: 'buyDatetime',
-        required:true
+        type: "datetime",
+        required:true,
+        readonly: view
     },{
         title: '购置税金额',
         field: 'buyTax',
- 
-        required:true
+        required:true,
+        readonly: view
     },{
         title: 'GPS厂商',
         field: 'gpsVendor',
-        required:true
+        required:true,
+        readonly: view
     },{
         title: 'GPS编号',
         field: 'gpsNo',
-        required:true
+        required:true,
+        readonly: view
     },{
         title: '抵押时间',
         field: 'dyStartDatetime',
-        required:true
+        type: "datetime",
+        required:true,
+        readonly: view
     },{
         title: '抵押到期',
         field: 'dyEndDatetime',
-        required:true
+        type: "datetime",
+        required:true,
+        readonly: view
     },{
         title: '经办人',
         field: 'agent',
-        required:true
+        required:true,
+        readonly: view
     },{
     	title:'备注',
     	field:'remark',
     	maxlength:255,
-    	required:true
+        readonly: view
     },{
         title: '完税材料',
         field: 'taxPdf',
         type:'img',
-        required:true
+        required:true,
+        readonly: view
     },{
         title: '抵押登记证',
         field: 'guarantyPdf',
         type:'img',
-        required:true
+        required:true,
+        readonly: view
     },{
         title: '车辆登记证',
         field: 'registPdf',
         type:'img',
-        required:true
+        required:true,
+        readonly: view
+    }, {
+    	title: '备注',
+    	field: 'remark',
+    	maxlength: 255
     }];
     
     buildDetail({
 		fields: fields,
 		code: code,
-		addCode: '617030',
-		detailCode:'617035'
+		editCode: '617030',
+		detailCode:'617035',
 		view: view
 	});
     

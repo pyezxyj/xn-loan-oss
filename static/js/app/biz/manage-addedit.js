@@ -15,6 +15,7 @@ $(function() {
         title: '贷款品种',
         field: 'loanType',
         formatter: Dict.getNameForList('loan_type'),
+        key:'loan_type',
         readonly: true
     }, {
         title: '车行',

@@ -4,7 +4,7 @@ $(function() {
         title: '',
         checkbox: true
     }, {
-        field: 'creditOrderCode',
+        field: 'code',
         title: '档案号',
         search:true,
         type:'select'
@@ -40,13 +40,13 @@ $(function() {
 
     });
 
-     $("#moveBtn").on("click", function() {
+     $("#receiveBtn").on("click", function() {
         var selRecords = $('#tableList').bootstrapTable('getSelections');
          if (selRecords.length <= 0) {
              toastr.info("请选择记录");
              return;
          }
-         window.location.href = "submit_addedit.html?code=" + selRecords[0].code;
+         window.location.href = "submit_receive.html?code=" + selRecords[0].code;
      });
      $("#checkedBtn").on("click", function() {
          var selRecords = $('#tableList').bootstrapTable('getSelections');

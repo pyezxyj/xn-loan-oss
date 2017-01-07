@@ -3159,6 +3159,7 @@ function getImportDataFun(options, dw) {
                         process_wb(wb);
                     }
                 }catch (e){
+                	options.error && options.error();
                     toastr.info("导入失败");
                 }
             };

@@ -5,7 +5,7 @@ $(function() {
 
     var fields = [{
         title: '业务编号',
-        field: 'code',
+        field: 'creditOrderCode',
         readonly: true
     }, {
         field: 'model',
@@ -17,13 +17,11 @@ $(function() {
     }, {
         title: '车辆号码',
         field: 'carNo',
-        readonly: true,
-        
+        readonly: true
     }, {
         title: '车架号',
         field: 'chassisNo',
-        readonly: true,
-        required:true
+        readonly: true
     },{
         title: '发动机号',
         field: 'engineNo',
@@ -35,21 +33,28 @@ $(function() {
     },{
         title: '贷款结清日期',
         field: 'loanEndDatetime',
+        type: 'datetime',
         required:true
     },{
         title: '权证取出日期',
         field: 'fetchDatetime',
+        type: 'datetime',
         required:true
+    },{
+    	field: 'approveNote',
+    	title: '备注',
+    	maxlength: 255
     },{
     	field:'approverUser',
     	title:'审核人',
-    	type:'hidden'
+    	type:'hidden',
+    	value: sessionStorage.getItem('userName')
     }];
     
     var options = {
             fields: fields,
             code: code,
-            detailCode:'617032'
+            detailCode:'617032',
      		view: view
         };
 
@@ -67,6 +72,7 @@ $(function() {
                     data[el.id] = values.join('||');
                 });
                 data['id'] = data['code'];
+                data['approveResult'] = '1';
                 reqApi({
                     code: "617032",
                     json: data
@@ -89,6 +95,7 @@ $(function() {
                     data[el.id] = values.join('||');
                 });
                 data['id'] = data['code'];
+                data['approveResult'] = '2';
                 reqApi({
                     code: "617032",
                     json: data
