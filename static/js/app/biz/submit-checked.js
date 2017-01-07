@@ -1,62 +1,80 @@
 $(function() {
 
     var code = getQueryString('code');
+    var  creditOrderCode=getQueryString('code1');
+    var  loanTypeDict=Dict.getNameForList('loan_type');
+    var data={};
+    
+    reqApi({
+    	code:"617016",
+    	json:{"code":creditOrderCode},
+    	aync:true
+    }).done(function(data1){
+    	data=data1;
+    })
 
     var fields = [{
         title: '档案号',
-        field: 'code',
+        field: 'creditOrderCode',
         type:'select',
-        required: true,
-        
+        readonly: true,
     },{
         title: '业务编号',
-        field: 'creditOrderCode',
+        field: 'creditOrderCode1',
         readonly: true
     },  {
         title: '贷款品种',
         field: 'loanType',
-        formatter: Dict.getNameForList('loan_type'),
-        key:'loan_type',
-        readonly: true,
+        afterSet:function(){
+        	$("#loanType").html( loanTypeDict( data.loanType ) );
+        },
+        readonly:true
     }, {
         title: '拟贷金额',
         field: 'loanAmount',
-        readonly: true,
-        formatter: moneyFormat,
+        afterSet:function(){
+        	$("#loanAmount").html( moneyFormat(data.loanAmount) );
+        },
+        readonly:true
     }, {
         field: 'realName',
         title: '借款人',
-        readonly: true,
-       
+        afterSet:function(){
+        	$("#realName").html(data.realName);
+        } ,
+        readonly:true
     }, {
         field: 'idNo',
         title: '证件号码',
-        readonly: true,
-        
+        afterSet:function(){
+        	$('#idNo').html(data.idNo);
+        },
+        readonly:true
     }, {
         field: 'type',
         title: '交接事件',
-        type:'select',
+        formatter: Dict.getNameForList('jiao_event'),
+        key:"jiao_event",
         readonly: true
     },{
-        field: 'deliverCompany',
+        field: 'receiveCompany',
         title: '收件单位',
-        readonly: true,
-        type:'select'
+        formatter: Dict.getNameForList('receive_company'),
+        key:"receive_company",
+        readonly: true
     },{
-    	field:'deliverer',
+    	field:'receiver',
     	title:'收件人',
-    	type:'select',
     	readonly:true
     },{
         field: 'deliverCompany',
         title: '寄件单位',
-        type:'select',
+        formatter: Dict.getNameForList('deli_company'),
+        key:"deli_company",
         readonly: true
     },{
     	field:'deliverer',
     	title:'寄件人',
-    	type:'select',
     	readonly: true,
     },{
         field: 'typeNote',
@@ -66,7 +84,8 @@ $(function() {
     },{
         field: 'logiCompany',
         title: '快递',
-        type:'select',
+        formatter: Dict.getNameForList('wl_company'),
+        key:"wl_company",
         readonly: true,
        
     },{
@@ -86,14 +105,22 @@ $(function() {
         type:'img',
         readonly: true
     },{
-        field: 'copier',
         title: '抄写员',
-        type:'select',
-        required: true
+        field: 'copier',
+        required: true,
+        type: 'select',
+        listCode: "617062",
+        keyName:'userId',
+        valueName: "loginName",
+        params: {
+            roleCode: "SR2017010713402529122",
+            status: "0"
+        },
+        readonly:true
     },{
     	field:'remark',
     	title:'备注',
-    	maxlength:255
+        readonly:true
     }];
 
     var options = {

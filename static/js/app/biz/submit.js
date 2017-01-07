@@ -46,7 +46,7 @@ $(function() {
              toastr.info("请选择记录");
              return;
          }
-         window.location.href = "submit_receive.html?code=" + selRecords[0].code;
+         window.location.href = "submit_receive.html?code=" + selRecords[0].code + "code1=" + selRecords[0].creditOrderCode;
      });
      $("#checkedBtn").on("click", function() {
          var selRecords = $('#tableList').bootstrapTable('getSelections');
@@ -54,6 +54,6 @@ $(function() {
               toastr.info("请选择记录");
               return;
           }
-          window.location.href = "submit_checked.html?code=" + selRecords[0].code;
+          window.location.href = "submit_checked.html?code=" + selRecords[0].code + "code1=" + selRecords[0].creditOrderCode;
       });
 });
