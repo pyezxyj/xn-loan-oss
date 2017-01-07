@@ -1028,7 +1028,7 @@ $.extend($.validator, {
 				return val && val.length > 0;
 			} else if (element.type === 'file' && element.id.indexOf('Img') > -1) {
 				var val = $('#' + element.id.replace('Img', '')).find('img');
-				return val && val.length > 0 && val.parent().attr("data-src");
+				return val && val.length > 0 && val.parents('[data-src]').attr("data-src");
 			}
 			if ( this.checkable(element) ) {
 				return this.getLength(value, element) > 0;

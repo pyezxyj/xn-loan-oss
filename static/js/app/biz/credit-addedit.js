@@ -2,7 +2,6 @@ $(function () {
     var code = getQueryString('code');
     var view = !!getQueryString('v');
     var idKindList = Dict.getNameForList('id_kind');
-    var idKind = Dict.getName1("id_kind");
 
     var fields = [{
         title: "地区",

@@ -13,7 +13,8 @@ $(function() {
         key: 'loan_type'
     },{
         field: 'loanAmount',
-        title: '拟贷金额'
+        title: '拟贷金额',
+        amount: true
     },  {
         field: 'realName',
         title: '借款人',

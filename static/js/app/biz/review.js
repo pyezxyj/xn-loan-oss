@@ -20,7 +20,6 @@ $(function() {
     },{
         field: 'realName',
         title: '借款人',
-        type:"select",
         search: true
     }, {
         field: 'status',

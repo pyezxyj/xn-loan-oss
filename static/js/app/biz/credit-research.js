@@ -1,6 +1,7 @@
 $(function () {
 
     var code = getQueryString('code');
+    var idKindList = Dict.getNameForList('id_kind');
     var fields = [{
         title: '业务员',
         field: 'salesman',
