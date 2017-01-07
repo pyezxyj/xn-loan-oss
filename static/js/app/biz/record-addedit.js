@@ -111,7 +111,7 @@ $(function() {
 		fields: fields,
 		code: code,
 		editCode: '617030',
-		detailCode:'617035'
+		detailCode:'617035',
 		view: view
 	});
     

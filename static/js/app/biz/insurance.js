@@ -31,7 +31,8 @@ $(function() {
         title: '续保短信',
     },{
     	title:'备注',
-    	field:'remark'
+    	field:'remark',
+    	maxlength:255
     }];
 
     buildList({

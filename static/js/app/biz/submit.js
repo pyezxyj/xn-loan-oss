@@ -29,7 +29,8 @@ $(function() {
         type:'select'
     },{
         field: 'remark',
-        title: '备注'
+        title: '备注',
+        maxlength:255
     },];
 
     buildList({

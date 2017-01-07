@@ -54,7 +54,7 @@ $(function() {
     var options = {
             fields: fields,
             code: code,
-            detailCode:'617032'
+            detailCode:'617032',
      		view: view
         };
 

@@ -22,7 +22,8 @@ $(function() {
         title: '卡号'
     }, {
         field: 'remark',
-        title: '备注'
+        title: '备注',
+        maxlength:255
        
     }];
 

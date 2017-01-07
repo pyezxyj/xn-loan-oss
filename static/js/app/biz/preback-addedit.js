@@ -34,7 +34,7 @@ $(function() {
     },{
         title: '备注',
         field: 'remark',
-        maxLength: 255
+        maxlength: 255
     }];
 
     buildDetail({
