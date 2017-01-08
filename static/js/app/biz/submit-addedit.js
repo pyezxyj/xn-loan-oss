@@ -7,7 +7,10 @@ $(function() {
         title: '档案号',
         field: 'creditOrderCode',
         type:'select',
-        listCode: '',
+        listCode: '617020',
+        params: {
+        	status:"13"
+        },
         keyName: "userId",
         valueName: "loginName",
         required: true,
@@ -18,7 +21,7 @@ $(function() {
         			code: value
         		}
         	}).done(function(data){
-        		$("#code").html(value);
+        		$("#code1").html(value);
         		$("#loanType").html( loanTypeDict(data.loanType) );
         		$("#loanAmount").html( moneyFormat(data.loanAmount) );
         		$("#realName").html(data.realName);
@@ -27,7 +30,7 @@ $(function() {
         }
     },{
         title: '业务编号',
-        field: 'code',
+        field: 'code1',
         readonly: true
     },  {
         title: '贷款品种',
@@ -99,7 +102,7 @@ $(function() {
     },{
         field: 'deliverDatetime',
         title: '寄件时间',
-        type: 'datetime',
+        type: 'date',
         required: true
     },{
         field: 'deliverPdf',

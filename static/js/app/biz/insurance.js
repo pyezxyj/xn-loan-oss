@@ -21,11 +21,11 @@ $(function() {
     }, {
         field: 'amount',
         title: '保费',
-        formatter: moneyFormat
+        amount:true
     }, {
         field: 'startDatetime',
         title: '保险到期时间',
-        formatter: dateTimeFormat
+        formatter: dateFormat
     },  {
         field: 'smsCount',
         title: '续保短信',
@@ -54,5 +54,13 @@ $(function() {
         }).then(function () {
             sucList();
         });
-    });
+    });  
+    $("#registBtn").on("click", function() {
+        var selRecords = $('#tableList').bootstrapTable('getSelections');
+        if (selRecords.length <= 0) {
+            toastr.info("请选择记录");
+            return;
+        }
+        window.location.href = "insurance_addedit.html?code=" + selRecords[0].code;
+    });  
 });

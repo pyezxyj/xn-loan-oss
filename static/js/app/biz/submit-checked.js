@@ -96,7 +96,7 @@ $(function() {
     },{
         field: 'deliverDatetime',
         title: '寄件时间',
-        type: 'datetime',
+        type: 'date',
         readonly: true,
         formatter: dateFormat
     },{
