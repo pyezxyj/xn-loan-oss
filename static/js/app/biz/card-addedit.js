@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
     var code = getQueryString('code');
 
     var fields = [{
@@ -13,11 +13,12 @@ $(function() {
         field: 'cardNo',
         title: '代扣卡号码',
         required: true,
-        bankCard: true
+        bankCard: true,
+        '[value]': 'bankcardNo'
     }, {
-    	field: 'remark',
-    	title: '备注',
-    	maxlength: 255
+        field: 'remark',
+        title: '备注',
+        maxlength: 255
     }];
 
     var options = {

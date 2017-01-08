@@ -18,7 +18,7 @@ $(function () {
         field: 'branch',
         title: '支行'
     }, {
-        field: 'idNo',
+        field: 'bankcardNo',
         title: '卡号'
     }, {
         field: 'remark',

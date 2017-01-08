@@ -79,7 +79,7 @@ $(function() {
             title: '单位电话',
             readonly: true
         }, {
-            field: 'workAddress',
+            field: 'address',
             title: '单位地址',
             readonly: true
         }]

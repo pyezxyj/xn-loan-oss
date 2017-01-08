@@ -39,7 +39,7 @@ $(function() {
     }, {
         field: 'skDatetime',
         title: '收款时间',
-        formatter: dateTimeFormat
+        formatter: dateFormat
     }];
 
     buildList({

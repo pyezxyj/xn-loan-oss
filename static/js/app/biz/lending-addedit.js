@@ -242,7 +242,11 @@ $(function () {
             if ($('#jsForm').valid()) {
                 var termAmount = $("#termAmount").text();
                 if (!termAmount) {
-                    toastr.info("月供不能为空");
+                    toastr.warning("月供不能为空");
+                    return;
+                }
+                if(!$.isNumeric(termAmount)){
+                    toastr.warning("月供必须为有效数字");
                     return;
                 }
                 var creditPeopleList = $('#creditPeopleListList').bootstrapTable('getData');
@@ -270,7 +274,7 @@ $(function () {
                     });
                     data[el.id] = values.join('||');
                 });
-                data['termAmount'] = termAmount;
+                data['termAmount'] = +termAmount * 1000;
                 data['id'] = data['code'];
                 data["creditPeopleList"] = creditPeopleList;
                 reqApi({

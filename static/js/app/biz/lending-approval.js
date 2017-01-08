@@ -241,12 +241,22 @@ $(function() {
         title: '调额通过',
         handler: function() {
             if ($('#jsForm').valid()) {
+                var termAmount = $("#termAmount").text();
+                if (!termAmount) {
+                    toastr.warning("月供不能为空");
+                    return;
+                }
+                if(!$.isNumeric(termAmount)){
+                    toastr.warning("月供必须为有效数字");
+                    return;
+                }
                 var data = {};
                 data['code'] = code;
                 data['approverUser'] = sessionStorage.getItem('userName');
                 data["approveResult"] = "3";
                 data["approveNote"] = $("#approveNote").val();
                 data["loanAmount"] = +$("#loanAmount").val() * 1000;
+                data['termAmount'] = +termAmount * 1000;
                 reqApi({
                     code: "617007",
                     json: data

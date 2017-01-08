@@ -4,7 +4,7 @@ $(function() {
         title: '',
         checkbox: true
     },  {
-        field: 'code',
+        field: 'creditOrderCode',
         title: '档案号'
     },{
         field: 'realName',
@@ -52,15 +52,15 @@ $(function() {
     });
    
     $("#compareBtn").on("click", function() {
-        var selRecords = $('#tableList').bootstrapTable('getSelections');
-        if (selRecords.length <= 0) {
-            toastr.info("请选择记录");
-            return;
-        }
+        // var selRecords = $('#tableList').bootstrapTable('getSelections');
+        // if (selRecords.length <= 0) {
+        //     toastr.info("请选择记录");
+        //     return;
+        // }
         reqApi({
             code: "617071",
             json: {
-               code: selRecords[0].code
+               // code: selRecords[0].code
             }
         }).then(function () {
             sucList();

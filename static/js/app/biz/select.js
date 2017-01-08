@@ -4,19 +4,20 @@ $(function() {
         title: '',
         checkbox: true
     }, {
-        field: 'code',
+        field: 'creditOrderCode',
         title: '档案号'
     }, {
         field: 'realName',
         title: '借款人',
-        type:'select',
         search: true
     },{
         field: 'yhAmount',
-        title: '应还金额'
+        title: '应还金额',
+        amount: true
     },{
         field: 'shAmount',
-        title: '实还金额'
+        title: '实还金额',
+        amount: true
     }, {
         field: 'overDays',
         title: '逾期天数'
@@ -26,17 +27,20 @@ $(function() {
     },{
         field: 'status',
         title: '状态',
+        formatter: Dict.getNameForList('repay_status')
     },{
         field: 'remark',
         title: '备注',
         maxlength:255
-    },];
+    }];
 
     buildList({
         router: 'select',
         columns: columns,
-        pageCode: '617081'
-    
+        pageCode: '617081',
+        searchParams: {
+            statusList: ["3", "4", "5"]
+        }
     });
 
     $("#messageBtn").on("click", function() {

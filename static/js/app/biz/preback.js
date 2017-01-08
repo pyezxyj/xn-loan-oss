@@ -4,18 +4,12 @@ $(function() {
         title: '',
         checkbox: true
     }, {
-    	field:'updater',
-    	title:'更新人',
-    	type:'hidden',
-    	required:true,
-    },{
-        field: 'code',
+        field: 'creditOrderCode',
         title: '档案号',
         required:true
     }, {
         field: 'realName',
         title: '借款人',
-        type:'select',
         search: true
     },{
         field: '',
@@ -31,13 +25,15 @@ $(function() {
         title: '备注',
         required:true,
         maxlength:255
-    },];
+    }];
 
     buildList({
         router: 'preback',
         columns: columns,
-        pageCode: '617083'
-  
+        pageCode: '617083',
+        searchParams: {
+            status: "6"
+        }
     });
 
     $("#prebackBtn").on("click", function() {
