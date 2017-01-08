@@ -182,7 +182,7 @@ $(function() {
         title: '打回理由',
         readonly: true
     }, {
-        field: 'qkPdf',
+        field: 'fkPdf',
         title: '附件',
         required: true,
         type: "img"
@@ -207,7 +207,7 @@ $(function() {
                     });
                     data[el.id] = values.join('||');
                 });
-                data.data = data.qkPdf;
+                data.data = data.fkPdf;
                 reqApi({
                     code: "617008",
                     json: data

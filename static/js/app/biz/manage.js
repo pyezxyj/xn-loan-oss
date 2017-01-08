@@ -66,7 +66,7 @@ $(function() {
             toastr.info("该条记录不是待发保合上传状态");
             return;
         }
-        window.location.href = "manage_addedit.html?code=" + selRecord.code + "&add=1";
+        window.location.href = "manage_addedit.html?code=" + selRecord.code + "&car_code=" + selRecord.carList[0].code;
     });
 //    $("#downloadBtn").on("click", function () {
 //        var selRecords = $('#tableList').bootstrapTable('getSelections');

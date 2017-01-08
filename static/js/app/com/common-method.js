@@ -1352,7 +1352,7 @@ function buildDetail(options) {
                                         '<div class="center-img-wrap">' +
                                         '<img width="100" src="' + suffixMap[suffix] + '" />' +
                                         '<i class="zmdi zmdi-download zmdi-hc-fw"></i></div>' +
-                                        '<div class="t_3dot w100p">' + name + '</div>' +
+                                        '<div class="t_3dot w100p" title="' + name + '">' + name + '</div>' +
                                         '</div>';
                                 } else if (suffix == 'jpg' || suffix == 'gif' ||
                                     suffix == 'png' || suffix == 'bmp') {
@@ -1361,7 +1361,7 @@ function buildDetail(options) {
                                         '<img src="' + src + '?imageMogr2/auto-orient/thumbnail/!100x100r" class="center-img" />' +
                                         '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                         '</div>' +
-                                        '<div class="t_3dot w100p">' + name + '</div>' +
+                                        '<div class="t_3dot w100p" title="' + name + '">' + name + '</div>' +
                                         '</div>';
                                 } else {
                                     imgsHtml += '<div class="img-ctn" data-src="' + src1 + '" style="display: inline-block;position: relative;">' +
@@ -1369,7 +1369,7 @@ function buildDetail(options) {
                                         '<img width="100" src="' + defaultFile + '" />' +
                                         '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                         '</div>' +
-                                        '<div class="t_3dot w100p">' + name + '</div>' +
+                                        '<div class="t_3dot w100p" title="' + name + '">' + name + '</div>' +
                                         '</div>';
                                 }
                             });
@@ -1444,7 +1444,7 @@ function buildDetail(options) {
                                     '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
                                     '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                     '</div>' +
-                                    '<div class="t_3dot w100p">' + name + '</div>' +
+                                    '<div class="t_3dot w100p" title="' + name + '">' + name + '</div>' +
                                     '</div>';
                             } else if (suffix == 'jpg' || suffix == 'gif' ||
                                 suffix == 'png' || suffix == 'bmp') {
@@ -1454,7 +1454,7 @@ function buildDetail(options) {
                                     '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
                                     '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                     '</div>' +
-                                    '<div class="t_3dot w100p">' + name + '</div>' +
+                                    '<div class="t_3dot w100p" title="' + name + '">' + name + '</div>' +
                                     '</div>';
                             } else {
                                 imgsHtml += '<div class="img-ctn" data-src="' + src1 + '" style="display: inline-block;position: relative;">' +
@@ -1463,7 +1463,7 @@ function buildDetail(options) {
                                     '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
                                     '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                     '</div>' +
-                                    '<div class="t_3dot w100p">' + name + '</div>' +
+                                    '<div class="t_3dot w100p" title="' + name + '">' + name + '</div>' +
                                     '</div>';
                             }
                         });
@@ -1746,7 +1746,7 @@ function uploadInit() {
                                 '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
                                 '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                 '</div>' +
-                                '<div class="t_3dot w100p">' + file.name + '</div>' +
+                                '<div class="t_3dot w100p" title="' + file.name + '">' + file.name + '</div>' +
                                 '<div class="progress-wrap">' +
                                 '<div class="progress-infos">等待...</div>' +
                                 '<div class="progress progress-striped" style="display: none;">' +
@@ -1763,7 +1763,7 @@ function uploadInit() {
                                 '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
                                 '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                 '</div>' +
-                                '<div class="t_3dot w100p">' + file.name + '</div>' +
+                                '<div class="t_3dot w100p" title="' + file.name + '">' + file.name + '</div>' +
                                 '<div class="progress-wrap"><div class="progress-infos">等待...</div>' +
                                 '<div class="progress progress-striped" style="display: none;">' +
                                 '<div class="progress-bar progress-bar-info" style="height: 20px;"></div>' +
@@ -1777,7 +1777,7 @@ function uploadInit() {
                                 '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
                                 '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                 '</div>' +
-                                '<div class="t_3dot w100p">' + file.name + '</div>' +
+                                '<div class="t_3dot w100p" title="' + file.name + '">' + file.name + '</div>' +
                                 '<div class="progress-wrap"><div class="progress-infos">等待...</div>' +
                                 '<div class="progress progress-striped" style="display: none;">' +
                                 '<div class="progress-bar progress-bar-info" style="height: 20px;"></div>' +
@@ -2486,7 +2486,7 @@ function buildDetail1(options) {
                                     '<img width="100" src="' + suffixMap[suffix] + '" />' +
                                     '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                     '</div>' +
-                                    '<div class="t_3dot w100p">' + name + '</div>' +
+                                    '<div class="t_3dot w100p" title="' + name + '">' + name + '</div>' +
                                     '</div>';
                             } else if (suffix == 'jpg' || suffix == 'gif' ||
                                 suffix == 'png' || suffix == 'bmp') {
@@ -2495,7 +2495,7 @@ function buildDetail1(options) {
                                     '<img src="' + src + '?imageMogr2/auto-orient/thumbnail/!100x100r" style="max-width: 300px;" />' +
                                     '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                     '</div>' +
-                                    '<div class="t_3dot w100p">' + name + '</div>' +
+                                    '<div class="t_3dot w100p" title="' + name + '">' + name + '</div>' +
                                     '</div>';
                             } else {
                                 imgsHtml += '<div class="img-ctn" data-src="' + src1 + '" style="display: inline-block;position: relative;">' +
@@ -2503,7 +2503,7 @@ function buildDetail1(options) {
                                     '<img width="100" src="' + defaultFile + '" />' +
                                     '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                     '</div>' +
-                                    '<div class="t_3dot w100p">' + name + '</div>' +
+                                    '<div class="t_3dot w100p" title="' + name + '">' + name + '</div>' +
                                     '</div>';
                             }
                         });
@@ -2569,7 +2569,7 @@ function buildDetail1(options) {
                                 '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
                                 '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                 '</div>' +
-                                '<div class="t_3dot w100p">' + name + '</div>' +
+                                '<div class="t_3dot w100p" title="' + name + '">' + name + '</div>' +
                                 '</div>';
                         } else if (suffix == 'jpg' || suffix == 'gif' ||
                             suffix == 'png' || suffix == 'bmp') {
@@ -2579,7 +2579,7 @@ function buildDetail1(options) {
                                 '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
                                 '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                 '</div>' +
-                                '<div class="t_3dot w100p">' + name + '</div>' +
+                                '<div class="t_3dot w100p" title="' + name + '">' + name + '</div>' +
                                 '</div>';
                         } else {
                             imgsHtml += '<div class="img-ctn" data-src="' + src1 + '" style="display: inline-block;position: relative;">' +
@@ -2588,7 +2588,7 @@ function buildDetail1(options) {
                                 '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
                                 '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                 '</div>' +
-                                '<div class="t_3dot w100p">' + name + '</div>' +
+                                '<div class="t_3dot w100p" title="' + name + '">' + name + '</div>' +
                                 '</div>';
                         }
                     });

@@ -25,6 +25,11 @@ $(function() {
                 var list = $("#repayList").data("list");
                 for(var i = list.length; i;){
                 	list[--i].jbBank = jbBank;
+                	if( isNaN(list[i].yhAmount) ){
+                	    toastr.warning("导入的数据中\"还款金额\"包含非数值");
+                	    return;
+                    }
+                    list[i].yhAmount = +list[i].yhAmount * 1000;
                 }
                 reqApi({
                 	code: "617070",
@@ -39,8 +44,7 @@ $(function() {
     },{
     	title: "返回",
     	handler: goBack
-    }]
-    	
+    }];
     
     buildDetail(options);
     

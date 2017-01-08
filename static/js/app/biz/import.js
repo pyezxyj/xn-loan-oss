@@ -19,7 +19,7 @@ $(function() {
         search: true,
         key: 'jb_bank',
         formatter: Dict.getNameForList('jb_bank'),
-        required:true,
+        required:true
     },  {
         field: 'yhDatetime',
         title: '应还时间',

@@ -1,6 +1,7 @@
-$(function() {
+$(function () {
 
     var code = getQueryString('code');
+    var carCode = getQueryString('car_code');
     var view = !!getQueryString('v');
 
     var fields = [{
@@ -15,7 +16,7 @@ $(function() {
         title: '贷款品种',
         field: 'loanType',
         formatter: Dict.getNameForList('loan_type'),
-        key:'loan_type',
+        key: 'loan_type',
         readonly: true
     }, {
         title: '车行',
@@ -58,44 +59,45 @@ $(function() {
         fields: fields,
         code: code,
         detailCode: '617016',
-        editCode: '617013'
+        editCode: '617013',
+        view: view
     };
-    // options.buttons = [{
-    //     title: '返回',
-    //     handler: function() {
-    //         goBack();
-    //     }
-    // }];
-    // !view && options.buttons.unshift({
-    //     title: '保存',
-    //     handler: function() {
-    //         if ($('#jsForm').valid()) {
-    //             var data = $('#jsForm').serializeObject();
-    //             for (var i = 0, len = fields.length; i < len; i++) {
-    //                 var item = fields[i];
-    //                 if (item.equal && (!$('#' + item.field).is(':hidden') || !$('#' + item.field + 'Img').is(':hidden'))) {
-    //                     data[item.equal] = $('#' + item.field).val() || $('#' + item.field).attr('src');
-    //                 } else if (item.emptyValue && !data[item.field]) {
-    //                     data[item.field] = item.emptyValue;
-    //                 }
-    //             }
-    //             $('#jsForm').find('.btn-file [type=file]').parent().next().each(function(i, el) {
-    //                 var values = [];
-    //                 var imgs = $(el).find('.img-ctn');
-    //                 imgs.each(function(index, img) {
-    //                     values.push($(img).attr('data-src') || $(img).find('img').attr('src'));
-    //                 });
-    //                 data[el.id] = values.join('||');
-    //             });
-    //             data['id'] = data['code'];
-    //             reqApi({
-    //                 code: "617019",
-    //                 json: data
-    //             }).done(function() {
-    //                 sucDetail();
-    //             });
-    //         }
-    //     }
-    // });
+    options.buttons = [{
+        title: '返回',
+        handler: function () {
+            goBack();
+        }
+    }];
+    !view && options.buttons.unshift({
+        title: '保存',
+        handler: function () {
+            if ($('#jsForm').valid()) {
+                var data = $('#jsForm').serializeObject();
+                $('#jsForm').find('.btn-file [type=file]').parent().next().each(function (i, el) {
+                    var values = [];
+                    var imgs = $(el).find('.img-ctn');
+                    imgs.each(function (index, img) {
+                        values.push($(img).attr('data-src') || $(img).find('img').attr('src'));
+                    });
+                    data[el.id] = values.join('||');
+                });
+                for (var i = 0, len = fields.length; i < len; i++) {
+                    var item = fields[i];
+                    if (item.equal && (!$('#' + item.field).is(':hidden') || !$('#' + item.field + 'Img').is(':hidden'))) {
+                        data[item.equal] = $('#' + item.field).val() || $('#' + item.field).attr('src');
+                    } else if (item.emptyValue && !data[item.field]) {
+                        data[item.field] = item.emptyValue;
+                    }
+                }
+                data['code'] = carCode;
+                reqApi({
+                    code: "617013",
+                    json: data
+                }).done(function () {
+                    sucDetail();
+                });
+            }
+        }
+    });
     buildDetail(options);
 });

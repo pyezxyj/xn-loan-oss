@@ -186,6 +186,11 @@ $(function() {
         formatter: Dict.getNameForList('urgent'),
         readonly: true
     }, {
+        field: 'fkPdf',
+        title: '附件',
+        readonly: true,
+        type: "img"
+    }, {
         field: 'approveNote',
         title: '批复意见',
         maxlength: 255,
