@@ -1120,15 +1120,6 @@ function buildDetail(options) {
         });
     }
 
-    for (var i = 0, len = imgList.length; i < len; i++) {
-        (function (i) {
-            setTimeout(function () {
-                var item = imgList[i];
-                uploadInit.call($('#' + item.field));
-            }, 40);
-        })(i);
-    }
-
     $("#city-group").citySelect && $("#city-group").citySelect({
         required: false
     });
@@ -1329,7 +1320,7 @@ function buildDetail(options) {
                         if ($.isArray(realValue)) {
                             var imgHtml = '';
                             realValue.forEach(function (img) {
-                                imgHtml += '<img src="' + img + '" style="max-width: 300px;"/>';
+                                imgHtml += '<img src="' + src + '" style="max-width: 300px;"/>';
                             });
                             $('#' + item.field).html(imgHtml);
                         } else {
@@ -1350,39 +1341,42 @@ function buildDetail(options) {
 
                             sp.length && sp.forEach(function (item) {
                                 var suffix = item.slice(item.lastIndexOf('.') + 1);
-                                var src = (realValue.indexOf('http://') > -1 ? item : (OSS.picBaseUrl + '/' + item));
+                                var src = (item.indexOf('http://') > -1 ? item : (OSS.picBaseUrl + '/' + item));
+                                var src1 = (item.indexOf('http://') > -1 ? item.substring( item.lastIndexOf("/") + 1 ) : item);
+                                var name = src1.substring(0, src1.lastIndexOf("_")) + "." + suffix;
                                 if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' ||
                                     suffix == 'xls' || suffix == 'xlsx' || suffix == 'mp4' ||
                                     suffix == 'avi' || suffix == "rar" || suffix == "zip") {
 
-                                    imgsHtml += '<div class="img-ctn" data-src="' + src + '" style="display: inline-block;position: relative;">' +
+                                    imgsHtml += '<div class="img-ctn" data-src="' + src1 + '" style="display: inline-block;position: relative;">' +
                                         '<div class="center-img-wrap">' +
                                         '<img width="100" src="' + suffixMap[suffix] + '" />' +
                                         '<i class="zmdi zmdi-download zmdi-hc-fw"></i></div>' +
-                                        '<div class="t_3dot w100p">' + src.substring(src.lastIndexOf('/') + 1) + '</div>' +
+                                        '<div class="t_3dot w100p">' + name + '</div>' +
                                         '</div>';
                                 } else if (suffix == 'jpg' || suffix == 'gif' ||
                                     suffix == 'png' || suffix == 'bmp') {
-                                    imgsHtml += '<div class="img-ctn" data-src="' + src + '" style="display: inline-block;position: relative;">' +
+                                    imgsHtml += '<div class="img-ctn" data-src="' + src1 + '" style="display: inline-block;position: relative;">' +
                                         '<div class="center-img-wrap">' +
                                         '<img src="' + src + '?imageMogr2/auto-orient/thumbnail/!100x100r" class="center-img" />' +
                                         '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                         '</div>' +
-                                        '<div class="t_3dot w100p">' + src.substring(src.lastIndexOf('/') + 1) + '</div>' +
+                                        '<div class="t_3dot w100p">' + name + '</div>' +
                                         '</div>';
                                 } else {
-                                    imgsHtml += '<div class="img-ctn" data-src="' + src + '" style="display: inline-block;position: relative;">' +
+                                    imgsHtml += '<div class="img-ctn" data-src="' + src1 + '" style="display: inline-block;position: relative;">' +
                                         '<div class="center-img-wrap">' +
                                         '<img width="100" src="' + defaultFile + '" />' +
                                         '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                         '</div>' +
-                                        '<div class="t_3dot w100p">' + src.substring(src.lastIndexOf('/') + 1) + '</div>' +
+                                        '<div class="t_3dot w100p">' + name + '</div>' +
                                         '</div>';
                                 }
                             });
                             $('#' + item.field).html(imgsHtml);
                             $('#' + item.field).find('.zmdi-download').on('click', function (e) {
-                                window.open($(this).parent().attr('data-src'), '_blank');
+                                var dSrc = OSS.picBaseUrl + '/' + $(this).parents("[data-src]").attr('data-src');
+                                window.open(dSrc, '_blank');
                             });
                         }
 
@@ -1438,45 +1432,48 @@ function buildDetail(options) {
                         var defaultFile = __inline("../images/default_file.png");
                         sp.length && sp.forEach(function (item) {
                             var suffix = item.slice(item.lastIndexOf('.') + 1);
-                            var src = (realValue.indexOf('http://') > -1 ? item : (OSS.picBaseUrl + '/' + item));
+                            var src = (item.indexOf('http://') > -1 ? item : (OSS.picBaseUrl + '/' + item));
+                            var src1 = (item.indexOf('http://') > -1 ? item.substring( item.lastIndexOf("/") + 1 ) : item);
+                            var name = src1.substring(0, src1.lastIndexOf("_")) + "." + suffix;
                             if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' ||
                                 suffix == 'xls' || suffix == 'xlsx' || suffix == 'mp4' ||
                                 suffix == 'avi' || suffix == "zip" || suffix == "rar") {
-                                imgsHtml += '<div class="img-ctn" data-src="' + src + '" style="display: inline-block;position: relative;">' +
+                                imgsHtml += '<div class="img-ctn" data-src="' + src1 + '" style="display: inline-block;position: relative;">' +
                                     '<div class="center-img-wrap">' +
                                     '<img width="100" src="' + suffixMap[suffix] + '" />' +
                                     '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
                                     '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                     '</div>' +
-                                    '<div class="t_3dot w100p">' + src.substring(src.lastIndexOf('/') + 1) + '</div>' +
+                                    '<div class="t_3dot w100p">' + name + '</div>' +
                                     '</div>';
                             } else if (suffix == 'jpg' || suffix == 'gif' ||
                                 suffix == 'png' || suffix == 'bmp') {
-                                imgsHtml += '<div class="img-ctn" data-src="' + src + '" style="display: inline-block;position: relative;">' +
+                                imgsHtml += '<div class="img-ctn" data-src="' + src1 + '" style="display: inline-block;position: relative;">' +
                                     '<div class="center-img-wrap">' +
                                     '<img src="' + src + '?imageMogr2/auto-orient/thumbnail/!100x100r" class="center-img" />' +
                                     '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
                                     '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                     '</div>' +
-                                    '<div class="t_3dot w100p">' + src.substring(src.lastIndexOf('/') + 1) + '</div>' +
+                                    '<div class="t_3dot w100p">' + name + '</div>' +
                                     '</div>';
                             } else {
-                                imgsHtml += '<div class="img-ctn" data-src="' + src + '" style="display: inline-block;position: relative;">' +
+                                imgsHtml += '<div class="img-ctn" data-src="' + src1 + '" style="display: inline-block;position: relative;">' +
                                     '<div class="center-img-wrap">' +
                                     '<img width="100" src="' + defaultFile + '" />' +
                                     '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
                                     '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                     '</div>' +
-                                    '<div class="t_3dot w100p">' + src.substring(src.lastIndexOf('/') + 1) + '</div>' +
+                                    '<div class="t_3dot w100p">' + name + '</div>' +
                                     '</div>';
                             }
                         });
                         $('#' + item.field).html(imgsHtml);
                         $('#' + item.field).find('.zmdi-close-circle-o').on('click', function (e) {
-                            $(this).parent().remove();
+                            $(this).parents("[data-src]").remove();
                         });
                         $('#' + item.field).find('.zmdi-download').on('click', function (e) {
-                            window.open($(this).parent().attr('data-src'), '_blank');
+                            var dSrc = OSS.picBaseUrl + '/' + $(this).parents("[data-src]").attr('data-src');
+                            window.open(dSrc, '_blank');
                         });
                     } else if (item.type == 'radio') {
                         $('input[name=' + item.field + '][value=' + displayValue + ']').prop('checked', true);
@@ -1614,7 +1611,14 @@ function buildDetail(options) {
         $('.form-title').hide();
         $('.btn').hide();
     }
-
+    for (var i = 0, len = imgList.length; i < len; i++) {
+        (function (i) {
+            setTimeout(function () {
+                var item = imgList[i];
+                uploadInit.call($('#' + item.field));
+            }, 1);
+        })(i);
+    }
     chosen();
 }
 
@@ -1823,6 +1827,7 @@ function uploadInit() {
                 var domain = up.getOption('domain');
                 var res = $.parseJSON(info);
                 var sourceLink = domain + res.key; //获取上传成功后的文件的Url
+                var sourceLink1 = res.key; //获取上传成功后的文件的Url
 
                 //printLog(sourceLink);
 
@@ -1836,18 +1841,19 @@ function uploadInit() {
                     if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' ||
                         suffix == 'xls' || suffix == 'xlsx' || suffix == "mp4" ||
                         suffix == "avi" || suffix == "rar" || suffix == "zip") {
-                        imgCtn.attr("data-src", sourceLink);
+                        imgCtn.attr("data-src", sourceLink1);
                     } else if (suffix == 'jpg' || suffix == 'gif' ||
                         suffix == 'png' || suffix == 'bmp') {
                         imgCtn.find("img").attr("src", sourceLink + "?imageMogr2/auto-orient/thumbnail/!100x100r");
-                        imgCtn.attr("data-src", sourceLink);
+                        imgCtn.attr("data-src", sourceLink1);
                     } else {
-                        imgCtn.attr("data-src", sourceLink);
+                        imgCtn.attr("data-src", sourceLink1);
                     }
-
-                    imgCtn.find('.zmdi-download').on('click', function (e) {
-                        window.open(imgCtn.attr('data-src'), '_blank');
-                    });  //zmdi-name
+                    (function (imgCtn, sourceLink) {
+                        imgCtn.find('.zmdi-download').on('click', function (e) {
+                            window.open(sourceLink, '_blank');
+                        });  //zmdi-name
+                    })(imgCtn, sourceLink);
                 }
             },
             'Error': function (up, err, errTip) {
@@ -2211,17 +2217,8 @@ function buildDetail1(options) {
             format: item.type == 'datetime' ? 'YYYY-MM-DD hh:mm:ss' : 'YYYY-MM-DD'
         });
     }
-    for (var i = 0, len = imgList.length; i < len; i++) {
-        (function (i) {
-            setTimeout(function () {
-                var item = imgList[i];
-                uploadInit.call($('#' + item.field + "-model"));
-            }, 40);
-        })(i);
 
-    }
-
-    $("#city-group-model").citySelect && $("#city-group").citySelect({
+    $("#city-group-model").citySelect && $("#city-group-model").citySelect({
         required: false
     });
 
@@ -2266,7 +2263,15 @@ function buildDetail1(options) {
             }
         }
     }
+    for (var i = 0, len = imgList.length; i < len; i++) {
+        (function (i) {
+            setTimeout(function () {
+                var item = imgList[i];
+                uploadInit.call($('#' + item.field + "-model"));
+            }, 40);
+        })(i);
 
+    }
     if (!code) {
         if (options.record) {
             addData(options.record);
@@ -2469,41 +2474,43 @@ function buildDetail1(options) {
                         var src = file.name
                         sp.length && sp.forEach(function (item) {
                             var suffix = item.slice(item.lastIndexOf('.') + 1);
-                            var src = (realValue.indexOf('http://') > -1 ? item : (OSS.picBaseUrl + '/' + item));
-
+                            var src = (item.indexOf('http://') > -1 ? item : (OSS.picBaseUrl + '/' + item));
+                            var src1 = (item.indexOf('http://') > -1 ? item.substring( item.lastIndexOf("/") + 1 ) : item);
+                            var name = src1.substring(0, src1.lastIndexOf("_")) + "." + suffix;
                             if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' ||
                                 suffix == 'xls' || suffix == 'xlsx' || suffix == "mp4" ||
                                 suffix == "avi" || suffix == "rar" || suffix == "zip") {
 
-                                imgsHtml += '<div class="img-ctn" data-src="' + src + '" style="display: inline-block;position: relative;">' +
+                                imgsHtml += '<div class="img-ctn" data-src="' + src1 + '" style="display: inline-block;position: relative;">' +
                                     '<div class="center-img-wrap">' +
                                     '<img width="100" src="' + suffixMap[suffix] + '" />' +
                                     '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                     '</div>' +
-                                    '<div class="t_3dot w100p">' + src.substring(src.lastIndexOf('/') + 1) + '</div>' +
+                                    '<div class="t_3dot w100p">' + name + '</div>' +
                                     '</div>';
                             } else if (suffix == 'jpg' || suffix == 'gif' ||
                                 suffix == 'png' || suffix == 'bmp') {
-                                imgsHtml += '<div class="img-ctn" data-src="' + src + '" style="display: inline-block;position: relative;">' +
+                                imgsHtml += '<div class="img-ctn" data-src="' + src1 + '" style="display: inline-block;position: relative;">' +
                                     '<div class="center-img-wrap">' +
                                     '<img src="' + src + '?imageMogr2/auto-orient/thumbnail/!100x100r" style="max-width: 300px;" />' +
                                     '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                     '</div>' +
-                                    '<div class="t_3dot w100p">' + src.substring(src.lastIndexOf('/') + 1) + '</div>' +
+                                    '<div class="t_3dot w100p">' + name + '</div>' +
                                     '</div>';
                             } else {
-                                imgsHtml += '<div class="img-ctn" data-src="' + src + '" style="display: inline-block;position: relative;">' +
+                                imgsHtml += '<div class="img-ctn" data-src="' + src1 + '" style="display: inline-block;position: relative;">' +
                                     '<div class="center-img-wrap">' +
                                     '<img width="100" src="' + defaultFile + '" />' +
                                     '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                     '</div>' +
-                                    '<div class="t_3dot w100p">' + src.substring(src.lastIndexOf('/') + 1) + '</div>' +
+                                    '<div class="t_3dot w100p">' + name + '</div>' +
                                     '</div>';
                             }
                         });
                         $('#' + item.field + "-model").html(imgsHtml);
                         $('#' + item.field + "-model").find('.zmdi-download').on('click', function (e) {
-                            window.open($(this).parent().attr('data-src'), '_blank');
+                            var dSrc = OSS.picBaseUrl + '/' + $(this).parents("[data-src]").attr('data-src');
+                            window.open(dSrc, '_blank');
                         });
                     }
 
@@ -2550,45 +2557,48 @@ function buildDetail1(options) {
                     var defaultFile = __inline("../images/default_file.png");
                     sp.length && sp.forEach(function (item) {
                         var suffix = item.slice(item.lastIndexOf('.') + 1);
-                        var src = (realValue.indexOf('http://') > -1 ? item : (OSS.picBaseUrl + '/' + item));
+                        var src = (item.indexOf('http://') > -1 ? item : (OSS.picBaseUrl + '/' + item));
+                        var src1 = (item.indexOf('http://') > -1 ? item.substring( item.lastIndexOf("/") + 1 ) : item);
+                        var name = src1.substring(0, src1.lastIndexOf("_")) + "." + suffix;
                         if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' ||
                             suffix == 'xls' || suffix == 'xlsx' || suffix == "mp4" ||
                             suffix == "avi" || suffix == "rar" || suffix == "zip") {
-                            imgsHtml += '<div class="img-ctn" data-src="' + src + '" style="display: inline-block;position: relative;">' +
+                            imgsHtml += '<div class="img-ctn" data-src="' + src1 + '" style="display: inline-block;position: relative;">' +
                                 '<div class="center-img-wrap">' +
                                 '<img width="100" src="' + suffixMap[suffix] + '" />' +
                                 '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
                                 '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                 '</div>' +
-                                '<div class="t_3dot w100p">' + src.substring(src.lastIndexOf('/') + 1) + '</div>' +
+                                '<div class="t_3dot w100p">' + name + '</div>' +
                                 '</div>';
                         } else if (suffix == 'jpg' || suffix == 'gif' ||
                             suffix == 'png' || suffix == 'bmp') {
-                            imgsHtml += '<div class="img-ctn" data-src="' + src + '" style="display: inline-block;position: relative;">' +
+                            imgsHtml += '<div class="img-ctn" data-src="' + src1 + '" style="display: inline-block;position: relative;">' +
                                 '<div class="center-img-wrap">' +
                                 '<img src="' + src + '?imageMogr2/auto-orient/thumbnail/!100x100r" style="max-width: 300px;" />' +
                                 '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
                                 '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                 '</div>' +
-                                '<div class="t_3dot w100p">' + src.substring(src.lastIndexOf('/') + 1) + '</div>' +
+                                '<div class="t_3dot w100p">' + name + '</div>' +
                                 '</div>';
                         } else {
-                            imgsHtml += '<div class="img-ctn" data-src="' + src + '" style="display: inline-block;position: relative;">' +
+                            imgsHtml += '<div class="img-ctn" data-src="' + src1 + '" style="display: inline-block;position: relative;">' +
                                 '<div class="center-img-wrap">' +
                                 '<img width="100" src="' + defaultFile + '" />' +
                                 '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
                                 '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                 '</div>' +
-                                '<div class="t_3dot w100p">' + src.substring(src.lastIndexOf('/') + 1) + '</div>' +
+                                '<div class="t_3dot w100p">' + name + '</div>' +
                                 '</div>';
                         }
                     });
                     $('#' + item.field + "-model").html(imgsHtml);
                     $('#' + item.field + "-model").find('.zmdi-close-circle-o').on('click', function (e) {
-                        $(this).parent().remove();
+                        $(this).parents("[data-src]").remove();
                     });
                     $('#' + item.field + "-model").find('.zmdi-download').on('click', function (e) {
-                        window.open($(this).parent().attr('data-src'), '_blank');
+                        var dSrc = OSS.picBaseUrl + '/' + $(this).parents("[data-src]").attr('data-src');
+                        window.open(dSrc, '_blank');
                     });
                 } else if (item.type == 'radio') {
                     $('input[name=' + item.field + '-model][value=' + displayValue + ']').prop('checked', true);

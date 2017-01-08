@@ -160,7 +160,7 @@ $(function () {
         title: '月供',
         readonly: true,
         afterSet: function (v, data) {
-            var bj = data.loanAmount,
+            var bj = +data.loanAmount / 1000,
                 ll = data.rate,
                 t = data.loanTerm;
             var result = calculateMonthlyPayments(bj, ll, t);

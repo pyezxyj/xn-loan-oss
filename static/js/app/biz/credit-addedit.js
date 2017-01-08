@@ -9,15 +9,15 @@ $(function () {
         type: 'citySelect',
         readonly: view,
         onChange: function (province, city, area) {
-            if (data.province == data.city && data.city != data.area) {
-                data.city = data.area;
+            if (province == city && city != area) {
+                city = area;
             }
             if (!city) {
-                data['city'] = province;
-                data['area'] = province;
+                city = province;
+                area = province;
             } else if (!area) {
-                data['city'] = province;
-                data['area'] = city;
+                city = province;
+                area = city;
             }
             var salesman = $('#salesman');
             salesman.renderDropdown({
@@ -34,7 +34,7 @@ $(function () {
             });
         },
         afterSet: function (v, data) {
-            if(view){
+            if (view) {
                 if (data.province == data.city && data.city != data.area) {
                     data.city = data.area;
                 }
@@ -168,6 +168,18 @@ $(function () {
                         data[item.equal] = $('#' + item.field).val() || $('#' + item.field).attr('src');
                     } else if (item.emptyValue && !data[item.field]) {
                         data[item.field] = item.emptyValue;
+                    }
+                }
+                if ($('#jsForm').find('#province')[0]) {
+                    var province = $('#province').val();
+                    var city = $('#city').val();
+                    var area = $('#area').val();
+                    if (!city) {
+                        data['city'] = province;
+                        data['area'] = province;
+                    } else if (!area) {
+                        data['city'] = province;
+                        data['area'] = city;
                     }
                 }
                 data['id'] = data['code'];
