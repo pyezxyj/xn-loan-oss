@@ -14,6 +14,10 @@ $(function() {
     })
 
     var fields = [{
+    	field: 'approver',
+    	type: 'hidden',
+    	value: sessionStorage.getItem('userName')
+    }, {
         title: '档案号',
         field: 'creditOrderCode',
         type:'select',
@@ -21,6 +25,7 @@ $(function() {
     },{
         title: '业务编号',
         field: 'creditOrderCode1',
+        '[value]': 'creditOrderCode',
         readonly: true
     },  {
         title: '贷款品种',
@@ -109,18 +114,16 @@ $(function() {
         field: 'copier',
         required: true,
         type: 'select',
-        listCode: "617062",
+        listCode: "805055",
         keyName:'userId',
         valueName: "loginName",
         params: {
             roleCode: "SR2017010713402529122",
             status: "0"
-        },
-        readonly:true
+        }
     },{
-    	field:'remark',
-    	title:'备注',
-        readonly:true
+    	field:'approveNote',
+    	title:'备注'
     }];
 
     var options = {
@@ -132,28 +135,30 @@ $(function() {
         options.buttons = [{
             title: '通过',
             handler: function() {
-                var data = { "code": code };
-                data["remark"] = $("#remark").val();
-                data["approveResult"] = "1";
-                reqApi({
-                    code: "617062",
-                    json: data
-                }).done(function() {
-                    sucDetail();
-                });
+            	if ($('#jsForm').valid()) {
+                    var data = $('#jsForm').serializeObject();
+	                data["approveResult"] = "1";
+	                reqApi({
+	                    code: "617062",
+	                    json: data
+	                }).done(function() {
+	                    sucDetail();
+	                });
+            	}
             }
         }, {
             title: '不通过',
             handler: function() {
-                var data = { "code": code };
-                data["remark"] = $("#remark").val();
-                data["approveResult"] = "0";
-                reqApi({
-                    code: "617062",
-                    json: data
-                }).done(function() {
-                    sucDetail();
-                });
+            	if ($('#jsForm').valid()) {
+                    var data = $('#jsForm').serializeObject();
+	                data["approveResult"] = "0";
+	                reqApi({
+	                    code: "617062",
+	                    json: data
+	                }).done(function() {
+	                    sucDetail();
+	                });
+            	}
             }
         }, {
             title: '返回',

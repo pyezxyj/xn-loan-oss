@@ -11,8 +11,8 @@ $(function() {
         params: {
         	status:"13"
         },
-        keyName: "userId",
-        valueName: "loginName",
+        keyName: "code",
+        valueName: "code",
         required: true,
         onChange: function(value){
         	value && reqApi({
@@ -42,7 +42,7 @@ $(function() {
         title: '拟贷金额',
         field: 'loanAmount',
         readonly: true,
-        formatter: moneyFormat,
+        formatter:moneyFormat
     }, {
         field: 'realName',
         title: '借款人',
@@ -113,7 +113,7 @@ $(function() {
 
     buildDetail({
         fields: fields,
-        editCode: '617060'
+        addCode: '617060'
     });
 
 });

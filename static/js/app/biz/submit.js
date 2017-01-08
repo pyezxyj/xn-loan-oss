@@ -4,7 +4,7 @@ $(function() {
         title: '',
         checkbox: true
     }, {
-        field: 'code',
+        field: 'creditOrderCode',
         title: '档案号',
         search:true,
         type:'select'
@@ -16,6 +16,8 @@ $(function() {
         title: '收件人'
     },{
         field: 'logiCompany',
+        formatter: Dict.getNameForList('wl_company'),
+        key:"wl_company",
         title: '快递公司'
     }, {
         field: 'logiCode',
@@ -46,7 +48,7 @@ $(function() {
              toastr.info("请选择记录");
              return;
          }
-         window.location.href = "submit_receive.html?code=" + selRecords[0].code + "code1=" + selRecords[0].creditOrderCode;
+         window.location.href = "submit_receive.html?code=" + selRecords[0].code + "&code1=" + selRecords[0].creditOrderCode;
      });
      $("#checkedBtn").on("click", function() {
          var selRecords = $('#tableList').bootstrapTable('getSelections');
@@ -54,6 +56,6 @@ $(function() {
               toastr.info("请选择记录");
               return;
           }
-          window.location.href = "submit_checked.html?code=" + selRecords[0].code + "code1=" + selRecords[0].creditOrderCode;
+          window.location.href = "submit_checked.html?code=" + selRecords[0].code + "&code1=" + selRecords[0].creditOrderCode;
       });
 });

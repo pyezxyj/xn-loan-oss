@@ -14,11 +14,11 @@ $(function() {
     }, {
         field: 'dyStartDatetime',
         title: '抵押时间',
-        formatter: dateTimeFormat
+        formatter: dateFormat
     },{
         field: 'dyEndDatetime',
         title: '抵押到期',
-        formatter: dateTimeFormat
+        formatter: dateFormat
     }, {
         field: 'status',
         title: '状态',
