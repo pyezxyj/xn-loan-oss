@@ -62,12 +62,14 @@ $(function() {
         title: '抵押时间',
         field: 'dyStartDatetime',
         type: "date",
+        formatter:dateFormat,
         required:true,
         readonly: view
     },{
         title: '抵押到期',
         field: 'dyEndDatetime',
         type: "date",
+        formatter:dateFormat,
         required:true,
         readonly: view
     },{

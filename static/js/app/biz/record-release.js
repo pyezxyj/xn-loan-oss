@@ -12,11 +12,11 @@ $(function() {
         title: '抵押物',
         readonly: true,
         formatter: function(v, data){
-        	return data.carNo + " + " + v
+        	return data.licenseNo + " + " + v
         }
     }, {
         title: '车辆号码',
-        field: 'carNo',
+        field: 'licenseNo',
         readonly: true
     }, {
         title: '车架号',
@@ -32,12 +32,14 @@ $(function() {
         readonly: true,
     },{
         title: '贷款结清日期',
-        field: 'loanEndDatetime',
+        field: 'loanSettleDatetime',
+        formatter:dateFormat,
         type: 'date',
         required:true
     },{
         title: '权证取出日期',
-        field: 'fetchDatetime',
+        field: 'propertyOutDatetime',
+        formatter:dateFormat,
         type: 'date',
         required:true
     },{
@@ -54,7 +56,7 @@ $(function() {
     var options = {
             fields: fields,
             code: code,
-            detailCode:'617032',
+            detailCode:'617035',
      		view: view
         };
 

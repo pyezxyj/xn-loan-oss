@@ -1,37 +1,36 @@
 $(function() {
     var code = getQueryString('code');
     var view = !!getQueryString('v');
-    var code = "";
+  
     var fields = [{
-    	field:'code',
-    	type:'hidden',
-    	title:'编号'
-    },{
-    	title: '汽车编号',
-    	field: 'carCode',
-    	type: 'hidden'
-    }, {
         title: '保险公司',
         field: 'company',
+        readonly:view,
         required: true
     }, {
         field: 'type',
         title: '保险类型',
         required: true,
+        readonly:view
     }, {
         title: '保单号',
         field: 'orderNo',
-        required: true
+        required: true,
+        readonly:view
     }, {
         title: '起始日期',
         field: 'startDatetime',
         type: 'date',
-        required: true
+        required: true,
+        formatter:dateTimeFormat,
+        readonly:view
     }, {
         title: '终止日期',
         field: 'endDatetime',
+        formatter:dateTimeFormat,
         type: 'date',
-        required: true
+        required: true,
+        readonly:view
     }, {
         title: '',
         field: 'insureTypeList',
@@ -48,20 +47,26 @@ $(function() {
             field: 'type',
             title: '险种',
             required: true,
+            readonly: view,
             maxlength: 32
         }, {
             field: 'amount',
             title: '金额',
-            required: true
+            amount: true,
+            required: true,
+            readonly: view,
         }]
     }, {
         field: 'amount',
         title: '保险金额',
-        required: true
+        amount: true,
+        required: true,
+        readonly:view
     }, {
         field: 'remark',
         title: '备注',
-        maxlength:255
+        maxlength:255,
+        readonly:view
     }];
 
     var options = {
