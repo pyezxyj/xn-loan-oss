@@ -4,10 +4,6 @@ $(function() {
     var view = !!getQueryString('v');
 
     var fields = [{
-    	title:'编号',
-    	field:'code',
-    	type:'hidden'
-    },{
         title: '车辆品牌',
         field: 'brand',
         readonly: true
@@ -17,7 +13,7 @@ $(function() {
         readonly: true
     }, {
         title: '车辆号码',
-        field: 'carNo',
+        field: 'licenseNo',
         required:true,
         readonly: view
     },{
@@ -43,14 +39,15 @@ $(function() {
     },{
         title: '购车日期',
         field: 'buyDatetime',
-        type: "datetime",
+        type: "date",
         required:true,
         readonly: view
     },{
         title: '购置税金额',
         field: 'buyTax',
         required:true,
-        readonly: view
+        readonly: view,
+        amount: true
     },{
         title: 'GPS厂商',
         field: 'gpsVendor',
@@ -64,24 +61,19 @@ $(function() {
     },{
         title: '抵押时间',
         field: 'dyStartDatetime',
-        type: "datetime",
+        type: "date",
         required:true,
         readonly: view
     },{
         title: '抵押到期',
         field: 'dyEndDatetime',
-        type: "datetime",
+        type: "date",
         required:true,
         readonly: view
     },{
         title: '经办人',
         field: 'agent',
         required:true,
-        readonly: view
-    },{
-    	title:'备注',
-    	field:'remark',
-    	maxlength:255,
         readonly: view
     },{
         title: '完税材料',

@@ -1685,7 +1685,7 @@ function uploadInit() {
         //若未指定uptoken_url,则必须指定 uptoken ,uptoken由其他程序生成
         unique_names: false,
         // 默认 false，key为文件名。若开启该选项，SDK会为每个文件自动生成key（文件名）
-        // save_key: true,
+         save_key: false,
         // 默认 false。若在服务端生成uptoken的上传策略中指定了 `sava_key`，则开启，SDK在前端将不对key进行任何处理
         //domain: 'http://oi99f4peg.bkt.clouddn.com/',
         domain: OSS.picBaseUrl + "/",
@@ -1860,16 +1860,20 @@ function uploadInit() {
 
                 // 隐藏进度条
                 editor.hideUploadProgress && editor.hideUploadProgress();
-            }
+            },
             // Key 函数如果有需要自行配置，无特殊需要请注释
             //,
-            // 'Key': function(up, file) {
-            //     // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
-            //     // 该配置必须要在 unique_names: false , save_key: false 时才生效
-            //     var key = "";
-            //     // do something with key here
-            //     return key
-            // }
+             'Key': function(up, file) {
+                 // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
+                 // 该配置必须要在 unique_names: false , save_key: false 时才生效
+//                 var key = "";
+                 // do something with key here
+            	 var sourceLink = file.name;
+                 var suffix = sourceLink.slice(0, sourceLink.lastIndexOf('.'));
+                 var suffix1 = sourceLink.slice(sourceLink.lastIndexOf('.') + 1);
+                 suffix = suffix + "_" + (new Date().getTime());
+                 return suffix + "." + suffix1;
+             }
         }
     });
     // domain 为七牛空间（bucket)对应的域名，选择某个空间后，可通过"空间设置->基本设置->域名设置"查看获取

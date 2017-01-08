@@ -3,10 +3,10 @@ $(function() {
     var view = !!getQueryString('v');
     var code = "";
     var fields = [{
-    	title: '车主',
-    	field: 'realName',
-    	type: 'hidden'
-    }, {
+    	field:'code',
+    	type:'hidden',
+    	title:'编号'
+    },{
     	title: '汽车编号',
     	field: 'carCode',
     	type: 'hidden'

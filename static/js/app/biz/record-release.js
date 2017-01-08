@@ -33,12 +33,12 @@ $(function() {
     },{
         title: '贷款结清日期',
         field: 'loanEndDatetime',
-        type: 'datetime',
+        type: 'date',
         required:true
     },{
         title: '权证取出日期',
         field: 'fetchDatetime',
-        type: 'datetime',
+        type: 'date',
         required:true
     },{
     	field: 'approveNote',
