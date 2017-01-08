@@ -2712,19 +2712,14 @@ function calculateSecurityLevel(password) {
 }
 //计算月供
 //bj:本金、ll:年利率(百分比)、t:贷款周期(数据字典)
-function calculateMonthlyPayments(bj, ll, t) {
+function calculateMonthlyPayments(bj, ll, time) {
     var result = "-";
     bj = (bj + "").replace(/,/g, "");
     ll = (ll + "").replace(/,/g, "");
-    if ($.isNumeric(bj) && $.isNumeric(ll) && t != undefined && t !== "") {
+    if ($.isNumeric(bj) && $.isNumeric(ll) && $.isNumeric(time)) {
         ll = +ll / 1200;    //除以12个月，再除以100，因为传入的是百分比
         bj = +bj;
-        var time =
-            t == "0" ? 12 :
-                t == "1" ? 18 :
-                    t == "2" ? 24 :
-                        t == "3" ? 30 :
-                            t == "4" ? 36 : -1;
+        time = +time;
         if (time !== -1) {
             var a1 = Math.pow(ll + 1, time);
             result = (a1 * bj * ll) / (a1 - 1);
