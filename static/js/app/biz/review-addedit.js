@@ -36,8 +36,9 @@ $(function() {
         readonly: true
     }, {
         title: '拟贷金额',
-        field: 'loanAmount',
+        field: 'loanAmount1',
         formatter: moneyFormat,
+        '[value]': 'loanAmount',
         readonly: true
     }, {
         title: '借款信息',
@@ -85,43 +86,59 @@ $(function() {
     }, {
         field: 'bank',
         title: '代扣卡开户行',
-        required: true
+        required: true,
+        readonly: true
     }, {
         field: 'branch',
         title: '支行',
-        required: true
+        required: true,
+        readonly: true
     }, {
-        field: 'cardNo',
+        field: 'bankcardNo',
         title: '代扣卡号码',
         readonly: true
     }, {
         field: 'brand',
         title: '汽车品牌',
-        readonly: true
+        readonly: true,
+        afterSet: function (v, data) {
+            $("#brand").html(data.carList[0].brand);
+        }
     }, {
         field: 'model',
         title: '汽车型号',
-        readonly: true
+        readonly: true,
+        afterSet: function (v, data) {
+            $("#model").html(data.carList[0].model);
+        }
     }, {
         field: 'price',
         title: '车价',
         formatter: moneyFormat,
-        readonly: true
+        readonly: true,
+        afterSet: function (v, data) {
+            $("#price").html( moneyFormat(data.carList[0].price) );
+        }
     }, {
         field: 'firstAmount',
         title: '首付款',
         formatter: moneyFormat,
-        readonly: true
+        readonly: true,
+        afterSet: function (v, data) {
+            $("#firstAmount").html( moneyFormat(data.carList[0].firstAmount) );
+        }
     }, {
         field: 'firstRate',
         title: '首付比例(%)',
         readonly: true,
         afterSet: function(v, data) {
-            var firstPay = data.firstAmount;
-            var price = data.price;
-            if ($.isNumeric(price) && $.isNumeric(firstPay)) {
-                var rate = (+firstPay * 100 / +price).toFixed(2);
-                $("#firstRate").html(rate);
+            if(data.carList.length) {
+                var firstPay = data.carList[0].firstAmount;
+                var price = data.carList[0].price;
+                if ($.isNumeric(price) && $.isNumeric(firstPay)) {
+                    var rate = (+firstPay * 100 / +price).toFixed(2);
+                    $("#firstRate").html(rate);
+                }
             }
         }
     }, {
@@ -144,17 +161,24 @@ $(function() {
         field: 'termAmount',
         title: '月供',
         readonly: true,
-        formatter: moneyFormat
+        formatter: moneyFormat,
+        afterSet: function (v, data) {
+            var bj = +data.loanAmount / 1000,
+                ll = data.rate,
+                t = data.loanTerm;
+            var result = calculateMonthlyPayments(bj, ll, t);
+            $("#termAmount").html(result);
+        }
     }, {
         field: 'fee',
         title: '服务费',
         readonly: true
     }, {
-        field: 'urgency',
+        field: 'urgent',
         title: '紧急度',
         type: 'select',
-        key: 'urgency',
-        formatter: Dict.getNameForList('urgency'),
+        key: 'urgent',
+        formatter: Dict.getNameForList('urgent'),
         readonly: true
     }, {
         field: 'qkPdf',

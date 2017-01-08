@@ -3,9 +3,10 @@ $(function() {
     var code = getQueryString('code');
     var getIdKindName = Dict.getNameForList("id_kind");
     var fields = [{
-        field: 'code',
+        field: 'code1',
         title: '业务编号',
-        readonly: true
+        readonly: true,
+        '[value]': "code"
     }, {
         title: '贷款品种',
         field: 'loanType',

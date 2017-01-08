@@ -28,13 +28,13 @@ $(function() {
     }, {
         field: 'bank',
         title: '车行卡开户行',
-        required: true
+        readonly: true
     }, {
         field: 'branch',
         title: '车行卡开户支行',
-        required: true
+        readonly: true
     }, {
-        field: 'cardNo',
+        field: 'bankcardNo',
         title: '车行卡号码',
         readonly: true
     }, {

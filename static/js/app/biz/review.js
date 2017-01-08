@@ -40,7 +40,7 @@ $(function() {
     buildList({
         router: 'review',
         columns: columns,
-        pageCode: '617016',
+        pageCode: '617015',
         searchParams: {
             statusList: [10, 11, 15]
         }

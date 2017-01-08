@@ -4,7 +4,7 @@ $(function() {
 
     var fields = [{
         title: '借款人',
-        field: 'userName',
+        field: 'realName',
         readonly: true
     }, {
         field: 'idNo',

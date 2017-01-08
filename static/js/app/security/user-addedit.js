@@ -22,8 +22,7 @@ $(function() {
 	}, {
 		title: '所属地区',
 		field: 'citySelect',
-		type: 'citySelect',
-		required: true
+		type: 'citySelect'
 	}, {
 		title: '备注',
 		field: 'remark',

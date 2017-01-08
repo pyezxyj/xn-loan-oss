@@ -9,14 +9,18 @@ $(function () {
         type: 'citySelect',
         readonly: view,
         onChange: function (province, city, area) {
-            //$("#salesman").val()
-            var prev = $("#salesman").prev();
-            if (prev.hasClass("chosen-container")) {
-                prev.remove();
-                $('#salesman').empty();
+            if (data.province == data.city && data.city != data.area) {
+                data.city = data.area;
+            }
+            if (!city) {
+                data['city'] = province;
+                data['area'] = province;
+            } else if (!area) {
+                data['city'] = province;
+                data['area'] = city;
             }
             var salesman = $('#salesman');
-            salesman.renderDropdown($.extend({
+            salesman.renderDropdown({
                 listCode: "805055",
                 params: {
                     roleCode: "SR2016122515012575166",
@@ -27,15 +31,17 @@ $(function () {
                 },
                 keyName: "userId",
                 valueName: "loginName"
-            }));
-            salesman.chosen && salesman.not('.norender').chosen({search_contains: true, allow_single_deselect: true});
-            salesman.chosen && salesman.not('.norender').chosen()
-                .change(function () {
-                    var that = this;
-                    setTimeout(function () {
-                        $(that).parent().height($(that).prev().height());
-                    }, 1);
-                });
+            });
+        },
+        afterSet: function (v, data) {
+            if(view){
+                if (data.province == data.city && data.city != data.area) {
+                    data.city = data.area;
+                }
+                $('#province').html(data.province);
+                $('#city').html(data.city);
+                (data.city != data.area) && $('#area').html(data.area);
+            }
         }
     }, {
         title: '业务员',

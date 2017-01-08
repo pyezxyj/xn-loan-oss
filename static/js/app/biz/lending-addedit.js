@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
     var code = getQueryString('code');
 
     var fields = [{
@@ -36,10 +36,9 @@ $(function() {
         readonly: true
     }, {
         title: '拟贷金额',
-        field: 'loanAmount',
-        formatter: function(v) {
-            return moneyFormat(+v);
-        },
+        field: 'loanAmount1',
+        amount: true,
+        '[value]': 'loanAmount',
         readonly: true
     }, {
         title: '借款人信息',
@@ -92,7 +91,7 @@ $(function() {
             isNotFace: true,
             tm: true
         }, {
-            field: 'workAddress',
+            field: 'address',
             title: '单位地址',
             required: true,
             isNotFace: true,
@@ -107,7 +106,7 @@ $(function() {
         title: '支行',
         required: true
     }, {
-        field: 'cardNo',
+        field: 'bankcardNo',
         title: '代扣卡号码',
         required: true,
         bankCard: true
@@ -126,7 +125,7 @@ $(function() {
         title: '车价',
         amount: true,
         required: true,
-        onKeyup: function(value) {
+        onKeyup: function (value) {
             var firstPay = $("#firstPay").val().replace(/,/g, "");
             var price = value.replace(/,/g, "");
             if ($.isNumeric(price) && $.isNumeric(firstPay)) {
@@ -139,7 +138,7 @@ $(function() {
         title: '首付款',
         required: true,
         amount: true,
-        onKeyup: function(value) {
+        onKeyup: function (value) {
             var price = $("#price").val().replace(/,/g, "");
             var firstPay = value.replace(/,/g, "");
             if ($.isNumeric(price) && $.isNumeric(firstPay)) {
@@ -151,12 +150,14 @@ $(function() {
         field: 'firstRate',
         title: '首付比例(%)',
         readonly: true,
-        afterSet: function(v, data) {
-            var firstPay = data.firstAmount;
-            var price = data.price;
-            if ($.isNumeric(price) && $.isNumeric(firstPay)) {
-                var rate = (+firstPay * 100 / +price).toFixed(2);
-                $("#firstRate").html(rate);
+        afterSet: function (v, data) {
+            if (data.carList.length) {
+                var firstPay = data.carList[0].firstAmount;
+                var price = data.carList[0].price;
+                if ($.isNumeric(price) && $.isNumeric(firstPay)) {
+                    var rate = (+firstPay * 100 / +price).toFixed(2);
+                    $("#firstRate").html(rate);
+                }
             }
         }
     }, {
@@ -200,17 +201,25 @@ $(function() {
         field: 'termAmount',
         title: '月供',
         readonly: true,
-        formatter: moneyFormat
+        required: true,
+        // formatter: moneyFormat,
+        afterSet: function (v, data) {
+            var bj = +data.loanAmount / 1000,
+                ll = data.rate,
+                t = data.loanTerm;
+            var result = calculateMonthlyPayments(bj, ll, t);
+            $("#termAmount").html(result);
+        }
     }, {
         field: 'fee',
         title: '服务费',
         required: true
     }, {
-        field: 'urgency',
+        field: 'urgent',
         title: '紧急度',
         type: 'select',
-        key: 'urgency',
-        formatter: Dict.getNameForList('urgency'),
+        key: 'urgent',
+        formatter: Dict.getNameForList('urgent'),
         required: true
     }];
 
@@ -222,19 +231,27 @@ $(function() {
 
     options.buttons = [{
         title: '返回',
-        handler: function() {
+        handler: function () {
             goBack();
         }
     }];
 
     options.buttons.unshift({
         title: '确认',
-        handler: function() {
+        handler: function () {
             if ($('#jsForm').valid()) {
                 var termAmount = $("#termAmount").text();
-                if(!termAmount){
+                if (!termAmount) {
                     toastr.info("月供不能为空");
                     return;
+                }
+                var creditPeopleList = $('#creditPeopleListList').bootstrapTable('getData');
+                for (var i = 0; i < creditPeopleList.length; i++) {
+                    if ( !(creditPeopleList[i].mobile && creditPeopleList[i].workUnit &&
+                        creditPeopleList[i].workPhone && creditPeopleList[i].address) ) {
+                        toastr.info("借款人信息未填完整");
+                        return;
+                    }
                 }
                 var data = $('#jsForm').serializeObject();
                 for (var i = 0, len = fields.length; i < len; i++) {
@@ -245,21 +262,21 @@ $(function() {
                         data[item.field] = item.emptyValue;
                     }
                 }
-                $('#jsForm').find('.btn-file [type=file]').parent().next().each(function(i, el) {
+                $('#jsForm').find('.btn-file [type=file]').parent().next().each(function (i, el) {
                     var values = [];
                     var imgs = $(el).find('.img-ctn');
-                    imgs.each(function(index, img) {
+                    imgs.each(function (index, img) {
                         values.push($(img).attr('data-src') || $(img).find('img').attr('src'));
                     });
                     data[el.id] = values.join('||');
                 });
                 data['termAmount'] = termAmount;
                 data['id'] = data['code'];
-                data["creditPeopleList"] = $('#creditPeopleListList').bootstrapTable('getData');
+                data["creditPeopleList"] = creditPeopleList;
                 reqApi({
                     code: "617005",
                     json: data
-                }).done(function() {
+                }).done(function () {
                     sucDetail();
                 });
             }

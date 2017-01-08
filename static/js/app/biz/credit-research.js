@@ -2,6 +2,9 @@ $(function () {
 
     var code = getQueryString('code');
     var idKindList = Dict.getNameForList('id_kind');
+    var creditResultDict = Dict.getNameForList('credit_result');
+    var courtResultDict = Dict.getNameForList('court_result');
+
     var fields = [{
         title: '业务员',
         field: 'salesman',
@@ -101,29 +104,49 @@ $(function () {
         title: '资信结果',
         type: 'select',
         key: 'credit_result',
-        formatter: Dict.getNameForList('credit_result'),
-        required: true
+        formatter: creditResultDict,
+        required: true,
+        afterSet: function (v, data) {
+            if(data.creditPeopleList && data.creditPeopleList.length){
+                $("#creditResult").val( data.creditPeopleList[0].creditResult );
+            }
+        }
     }, {
         field: 'creditDescript',
         title: '资信描述',
         required: true,
         type: "textarea",
         normalArea: true,
-        maxLength: 255
+        maxLength: 255,
+        afterSet: function (v, data) {
+            if(data.creditPeopleList && data.creditPeopleList.length){
+                $("#creditDescript").val(data.creditPeopleList[0].creditDescript);
+            }
+        }
     }, {
         field: 'courtResult',
         title: '法院结果',
         type: 'select',
         key: 'court_result',
-        formatter: Dict.getNameForList('court_result'),
-        required: true
+        formatter: courtResultDict,
+        required: true,
+        afterSet: function (v, data) {
+            if(data.creditPeopleList && data.creditPeopleList.length){
+                $("#courtResult").val( data.creditPeopleList[0].courtResult );
+            }
+        }
     }, {
         field: 'courtDescript',
         title: '法院描述',
         required: true,
         type: "textarea",
         normalArea: true,
-        maxLength: 255
+        maxLength: 255,
+        afterSet: function (v, data) {
+            if(data.creditPeopleList && data.creditPeopleList.length){
+                $("#courtDescript").val(data.creditPeopleList[0].courtDescript);
+            }
+        }
     }];
 
     buildDetail({

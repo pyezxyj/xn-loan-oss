@@ -50,7 +50,7 @@ $(function() {
     buildList({
         router: 'manage',
         columns: columns,
-        pageCode: '617003',
+        pageCode: '617015',
         searchParams: {
             statusList: [12]
         }
