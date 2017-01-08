@@ -45,7 +45,10 @@ $(function() {
     buildList({
         router: 'import',
         columns: columns,
-        pageCode: '617083'
+        pageCode: '617083',
+        searchParams: {
+            status: "1"
+        }
     });
    
     $("#compareBtn").on("click", function() {

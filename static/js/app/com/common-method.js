@@ -4,13 +4,11 @@
  * @param format
  * @returns
  */
-function dateFormat(date, format) {
+function dateFormat(date) {
     if (date == '' || typeof(date) == 'undefined') {
         return '-';
     }
-    if (format == '' || format == null || format == undefined) {
-        format = "yyyy-MM-dd HH:mm:ss";
-    }
+    var format = "yyyy-MM-dd";
 
     date = new Date(date);
     var o = {
@@ -37,7 +35,7 @@ function dateTimeFormat(date) {
     if (date == '' || typeof(date) == 'undefined') {
         return '-';
     }
-    format = "yyyy-MM-dd HH:mm:ss";
+    var format = "yyyy-MM-dd HH:mm:ss";
     date = new Date(date);
     var o = {
         'M+': date.getMonth() + 1, //month
