@@ -22,12 +22,12 @@ $(function() {
         field: 'startDatetime',
         type: 'date',
         required: true,
-        formatter:dateTimeFormat,
+        formatter:dateFormat,
         readonly:view
     }, {
         title: '终止日期',
         field: 'endDatetime',
-        formatter:dateTimeFormat,
+        formatter:dateFormat,
         type: 'date',
         required: true,
         readonly:view

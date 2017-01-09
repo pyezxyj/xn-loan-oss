@@ -40,6 +40,7 @@ $(function() {
         title: '购车日期',
         field: 'buyDatetime',
         type: "date",
+        formatter:dateFormat,
         required:true,
         readonly: view
     },{
