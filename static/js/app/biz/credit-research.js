@@ -10,7 +10,7 @@ $(function () {
         field: 'salesman',
         required: true,
         type: 'select',
-        listCode: "805055",
+        listCode: "805060",
         keyName: "userId",
         valueName: "loginName",
         params: {
@@ -105,7 +105,7 @@ $(function () {
                 sp.forEach(function (item, i) {
                     var src = (item.indexOf('http://') > -1 ? item : (OSS.picBaseUrl + '/' + item));
                     i && (html += "、");
-                    html += '<a href="' + src + '" target="_blank">' + value + '</a>';
+                    html += '<a href="' + src + '" target="_blank" style="line-height: inherit;">' + value + '</a>';
                 });
                 return html;
             },

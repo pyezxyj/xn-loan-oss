@@ -64,14 +64,20 @@ function urlDispatch(code) {
 
 function reqApi(options) {
     var url = urlDispatch(options.code) + "/api";
+    var commonParams = {
+        token: sessionStorage.getItem('token') || '',
+        updater: sessionStorage.getItem('userName'),
+        systemCode: sessionStorage.getItem('systemCode')
+    };
+    //车贷权限控制
+    if(options.code == "617015"){
+        commonParams["userId"] = getUserId();
+        commonParams["level"] = getRoleLevel();
+    }
 
     var params = {
         code: options.code,
-        json: JSON.stringify($.extend({
-            token: sessionStorage.getItem('token') || '',
-            updater: sessionStorage.getItem('userName'),
-            systemCode: sessionStorage.getItem('systemCode')
-        }, options.json))
+        json: JSON.stringify($.extend(commonParams, options.json))
     };
     var cache_url = url + JSON.stringify(params);
     if (!options.cache) { // cache: true 多个相同的请求只发送一次请求

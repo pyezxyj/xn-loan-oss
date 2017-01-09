@@ -18,6 +18,17 @@ $(function(){
 		sessionStorage.setItem('roleCode', data.roleCode);
 		sessionStorage.setItem('userName', data.loginName);
 	});
+
+	reqApi({
+		code: '805022',
+		cache: true,
+		sync: true,
+		json: {
+			'code': sessionStorage.getItem('roleCode')
+		}
+	}).then(function (data) {
+		sessionStorage.setItem('roleLevel', data.level);
+    });
 	
 	// 设置根目录
 	window.parentCode = 'CCDSM201600001000000000';

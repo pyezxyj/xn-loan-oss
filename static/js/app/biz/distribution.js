@@ -25,7 +25,7 @@ $(function() {
     }, {
         field: 'dcUser',
         title: '调查人',
-        listCode: "805055",
+        listCode: "805060",
         keyName: "userId",
         type: "select",
         valueName: "loginName",
@@ -52,8 +52,7 @@ $(function() {
         columns: columns,
         pageCode: '617015',
         searchParams: {
-            statusList: [1, 2],
-            userId: getUserId()
+            statusList: [1, 2]
         }
     });
     $("#edit1Btn").on("click", function () {

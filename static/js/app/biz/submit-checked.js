@@ -114,7 +114,7 @@ $(function() {
         field: 'copier',
         required: true,
         type: 'select',
-        listCode: "805055",
+        listCode: "805060",
         keyName:'userId',
         valueName: "loginName",
         params: {

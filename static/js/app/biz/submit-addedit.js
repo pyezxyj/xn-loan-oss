@@ -2,18 +2,6 @@ $(function () {
 
     var code = getQueryString('code');
     var loanTypeDict = Dict.getNameForList('loan_type');
-    var jj = {
-        field: 'creditOrderCode',
-        title: '档案号',
-        required: true,
-        type: 'select',
-        pageCode: '617015',
-        params: {
-            status: "13"
-        },
-        keyName: 'code',
-        valueName: 'code'
-    };
 
     var fields = [
         {

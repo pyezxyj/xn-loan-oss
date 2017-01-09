@@ -385,7 +385,9 @@ $.fn.renderDropdown = function (data, keyName, valueName, defaultOption, filter)
 $.fn.renderDropdown2 = function (data, defaultOption) {
     var html = "<option value=''></option>" + (defaultOption || '');
     for (var k in data) {
-        html += "<option value='" + k + "'>" + data[k] + "</option>";
+        if(data.hasOwnProperty(k)){
+            html += "<option value='" + k + "'>" + data[k] + "</option>";
+        }
     }
     this.html(html);
 };
@@ -485,6 +487,10 @@ function getUserName() {
 
 function getSystemId() {
     return sessionStorage.getItem('systemCode');
+}
+
+function getRoleLevel() {
+    return sessionStorage.getItem('roleLevel');
 }
 
 
@@ -871,6 +877,11 @@ function buildList(options) {
                 if (!searchFormParams[p]) {
                     delete searchFormParams[p];
                 }
+            }
+            //车贷权限控制
+            if(options.pageCode == "617015"){
+                json["userId"] = getUserId();
+                json["level"] = getRoleLevel();
             }
             $.extend(json, options.searchParams, searchFormParams, {
                 token: sessionStorage.getItem('token'),
@@ -1589,6 +1600,12 @@ function buildDetail(options) {
                                 $("#province").on("change", function (e) {
                                     i.onChange($("#province").val(), $("#city").val(), $("#area").val());
                                 });
+                                $("#city").on("change", function (e) {
+                                    i.onChange($("#province").val(), $("#city").val(), $("#area").val());
+                                });
+                                $("#area").on("change", function (e) {
+                                    i.onChange($("#province").val(), $("#city").val(), $("#area").val());
+                                });
                             })(item);
                         }
                         $('#city').trigger('change');
@@ -1695,6 +1712,20 @@ function buildDetail(options) {
                     columns: item.columns,
                     data: []
                 });
+            } else if (item.type == 'citySelect') {
+                if (item.onChange) {
+                    (function (i) {
+                        $("#province").on("change", function (e) {
+                            i.onChange($("#province").val(), $("#city").val(), $("#area").val());
+                        });
+                        $("#city").on("change", function (e) {
+                            i.onChange($("#province").val(), $("#city").val(), $("#area").val());
+                        });
+                        $("#area").on("change", function (e) {
+                            i.onChange($("#province").val(), $("#city").val(), $("#area").val());
+                        });
+                    })(item);
+                }
             }
         }
         for (var i = 0, len = imgList.length; i < len; i++) {

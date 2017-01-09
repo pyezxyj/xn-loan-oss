@@ -5,7 +5,7 @@ $(function () {
         title: '业务员',
         field: 'salesman',
         type: 'select',
-        listCode: "805055",
+        listCode: "805060",
         keyName: "userId",
         valueName: "loginName",
         params: {

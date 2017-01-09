@@ -2,6 +2,32 @@ $(function () {
     var code = getQueryString('code');
     var view = !!getQueryString('v');
     var idKindList = Dict.getNameForList('id_kind');
+    var sale;
+    if (view) {
+        sale = {
+            title: '业务员',
+            field: 'salesman',
+            required: true,
+            type: 'select',
+            listCode: "805060",
+            keyName: "userId",
+            valueName: "loginName",
+            params: {
+                roleCode: "SR2016122515012575166",
+                status: "0"
+            },
+            readonly: view
+        };
+    } else {
+        sale = {
+            title: '业务员',
+            field: 'salesman',
+            required: true,
+            type: 'select',
+            data: {},
+            readonly: view
+        };
+    }
 
     var fields = [{
         title: "地区",
@@ -17,12 +43,12 @@ $(function () {
                 city = "";
                 area = "";
             } else if (!area) {
-                city = province;
                 area = city;
+                city = province;
             }
             var salesman = $('#salesman');
             salesman.renderDropdown({
-                listCode: "805055",
+                listCode: "805060",
                 params: {
                     roleCode: "SR2016122515012575166",
                     status: "0",
@@ -44,20 +70,7 @@ $(function () {
                 (data.city != data.area) && $('#area').html(data.area);
             }
         }
-    }, {
-        title: '业务员',
-        field: 'salesman',
-        required: true,
-        type: 'select',
-        listCode: "805055",
-        keyName: "userId",
-        valueName: "loginName",
-        params: {
-            roleCode: "SR2016122515012575166",
-            status: "0"
-        },
-        readonly: view
-    }, {
+    }, sale, {
         field: 'carStore',
         title: '车行',
         type: 'select',
@@ -138,7 +151,7 @@ $(function () {
                 sp.forEach(function (item, i) {
                     var src = (item.indexOf('http://') > -1 ? item : (OSS.picBaseUrl + '/' + item));
                     i && (html += "、");
-                    html += '<a href="' + src + '" target="_blank">' + value + '</a>';
+                    html += '<a href="' + src + '" target="_blank" style="line-height: inherit;">' + value + '</a>';
                 });
                 return html;
             },

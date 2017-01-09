@@ -40,13 +40,42 @@ $(function() {
         field: 'dcUser',
         title: '调查员',
         type: "select",
-        listCode: "805055",
-        keyName: "userId",
-        required: true,
-        valueName: "loginName",
-        params: {
-            roleCode: "SR2016122515014423585",
-            status: "0"
+        // listCode: "805060",
+        // keyName: "userId",
+        // required: true,
+        // valueName: "loginName",
+        // params: {
+        //     roleCode: "SR2016122515014423585",
+        //     status: "0"
+        // },
+        data: {},
+        afterSet: function (v, data) {
+            var province = data.province;
+            var city = data.city;
+            var area = data.area;
+            if (province == city && city != area) {
+                city = area;
+            }
+            if (!city) {
+                city = "";
+                area = "";
+            } else if (!area) {
+                area = city;
+                city = province;
+            }
+            var dcUser = $('#dcUser');
+            dcUser.renderDropdown({
+                listCode: "805060",
+                params: {
+                    roleCode: "SR2016122515014423585",
+                    status: "0",
+                    province: province,
+                    city: city,
+                    area: area
+                },
+                keyName: "userId",
+                valueName: "loginName"
+            });
         },
         required: true
     }, {
