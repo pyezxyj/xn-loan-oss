@@ -5,20 +5,23 @@ $(function() {
         title: '',
         checkbox: true
     },{
-        field: '',
+        field: 'area',
         title: '地区'
     }, {
-        field: '',
+        field: 'num',
         title: '业务数量'
     }, {
-        field: '',
-        title: '平均耗时'
+        field: 'time',
+        title: '平均耗时（时）',
+        formatter: function(v) {
+           return ((+v/3600).toFixed(2));
+        },
     },{
-        field: '',
+        field: 'money',
         title: '垫资总量',
         formatter: moneyFormat
     }, {
-        field: '',
+        field: 'sjAmount',
         title: '收款总量',
         formatter:moneyFormat
     }];

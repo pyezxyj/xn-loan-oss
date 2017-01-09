@@ -138,7 +138,7 @@ $(function () {
         required: true,
         type: "textarea",
         normalArea: true,
-        maxLength: 255,
+        maxlength: 255,
         afterSet: function (v, data) {
             if(data.creditPeopleList && data.creditPeopleList.length){
                 $("#creditDescript").val(data.creditPeopleList[0].creditDescript);
@@ -162,7 +162,7 @@ $(function () {
         required: true,
         type: "textarea",
         normalArea: true,
-        maxLength: 255,
+        maxlength: 255,
         afterSet: function (v, data) {
             if(data.creditPeopleList && data.creditPeopleList.length){
                 $("#courtDescript").val(data.creditPeopleList[0].courtDescript);
