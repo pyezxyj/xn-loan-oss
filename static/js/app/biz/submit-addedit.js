@@ -15,52 +15,59 @@ $(function() {
         valueName: "code",
         required: true,
         onChange: function(value){
-        	value && reqApi({
-        		code: '617016',
-        		json: {
-        			code: value
-        		}
-        	}).done(function(data){
-        		$("#code1").html(value);
-        		$("#loanType").html( loanTypeDict(data.loanType) );
-        		$("#loanAmount").html( moneyFormat(data.loanAmount) );
-        		$("#realName").html(data.realName);
-        		$("#idNo").html(data.idNo);
-        	});
+            if(value){
+                $("#code1, #loanType, #loanAmount, #realName, #idNo").parent().show();
+                reqApi({
+                    code: '617016',
+                    json: {
+                        code: value
+                    }
+                }).done(function(data){
+                    $("#code1").html(value);
+                    $("#loanType").html( loanTypeDict(data.loanType) );
+                    $("#loanAmount").html( moneyFormat(data.loanAmount) );
+                    $("#realName").html(data.realName);
+                    $("#idNo").html(data.idNo);
+                });
+                return;
+            }
+            $("#code1, #loanType, #loanAmount, #realName, #idNo").parent().hide();
         }
     },{
         title: '业务编号',
         field: 'code1',
-        readonly: true
+        readonly: true,
+        hidden: true
     },  {
         title: '贷款品种',
         field: 'loanType',
         formatter: loanTypeDict,
         key:"loan_type",
         readonly: true,
+        hidden: true
     }, {
         title: '拟贷金额',
         field: 'loanAmount',
         readonly: true,
-        formatter:moneyFormat
+        formatter:moneyFormat,
+        hidden: true
     }, {
         field: 'realName',
         title: '借款人',
         readonly: true,
-       
+        hidden: true
     }, {
         field: 'idNo',
         title: '证件号码',
         readonly: true,
-       
+        hidden: true
     }, {
         field: 'type',
         title: '交接事件',
         formatter: Dict.getNameForList('jiao_event'),
         key:"jiao_event",
         type:'select',
-        required: true,
-        
+        required: true
     },{
         field: 'receiveCompany',
         title: '收件单位',
