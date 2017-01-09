@@ -15,7 +15,7 @@ $(function() {
     buildList({
         router: 'node',
         columns: columns,
-        pageCode: ''
+        pageCode: '617090'
     });
    
    

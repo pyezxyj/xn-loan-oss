@@ -2090,10 +2090,15 @@ function addEditTableListener1(addId, removeId, editId, tableId, columns, option
             toastr.info("请选择记录");
             return;
         }
-        $(tableId).bootstrapTable('remove', {
-            field: 'code',
-            values: [selRecords[0].code]
-        });
+        if(selRecords.length=1){
+        	confirm("确认删除该信息？").then(function() {
+        		$(tableId).bootstrapTable('remove', {
+                    field: 'code',
+                    values: [selRecords[0].code]
+                });
+    		});
+        }
+        
     });
 }
 

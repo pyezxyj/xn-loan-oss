@@ -9,8 +9,7 @@ $(function() {
     }, {
         field: 'realName',
         title: '借款人',
-        type:'select',
-        search: true
+        search:true
     }, {
         field: 'loanType',
         title: '贷款品种',

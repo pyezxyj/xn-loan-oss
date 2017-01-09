@@ -28,7 +28,7 @@ $(function() {
         title: '联系电话',
         readonly: true
     }, {
-        field: '请款资料补充说明',
+        field: 'remark',
         title: '备注',
         readonly: true
     }, {
