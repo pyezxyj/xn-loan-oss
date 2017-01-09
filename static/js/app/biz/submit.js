@@ -6,14 +6,7 @@ $(function() {
     }, {
         field: 'creditOrderCode',
         title: '档案号',
-        search:true,
-        type:'select',
-        listCode:"617020",
-        params: {
-        	status:"13"
-        },
-        keyName: "code",
-        valueName: "code"
+        search:true 
     }, {
         field: 'type',
         title: '交接事件',

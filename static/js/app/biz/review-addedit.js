@@ -172,7 +172,8 @@ $(function() {
     }, {
         field: 'fee',
         title: '服务费',
-        readonly: true
+        readonly: true,
+        formatter:moneyFormat
     }, {
         field: 'urgent',
         title: '紧急度',
