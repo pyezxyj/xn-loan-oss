@@ -34,7 +34,8 @@ $(function() {
         router: 'credit',
         columns: columns,
         searchParams: {
-            statusList: [0, 16]
+            statusList: [0, 16],
+            userId: getUserId()
         },
         pageCode: '617015'
     });

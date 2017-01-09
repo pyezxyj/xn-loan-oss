@@ -37,8 +37,8 @@ $(function() {
     }, {
         title: '拟贷金额',
         field: 'loanAmount1',
-        formatter: moneyFormat,
         '[value]': 'loanAmount',
+        amount: true,
         readonly: true
     }, {
         title: '借款信息',

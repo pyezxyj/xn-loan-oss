@@ -213,7 +213,8 @@ $(function () {
     }, {
         field: 'fee',
         title: '服务费',
-        required: true
+        required: true,
+        amount: true
     }, {
         field: 'urgent',
         title: '紧急度',

@@ -52,6 +52,19 @@ $(function () {
         required: true,
         readonly: true
     }, {
+        title: "地区",
+        field: "citySelect",
+        type: 'citySelect',
+        readonly: true,
+        afterSet: function (v, data) {
+            if (data.province == data.city && data.city != data.area) {
+                data.city = data.area;
+            }
+            $('#province').html(data.province);
+            $('#city').html(data.city);
+            (data.city != data.area) && $('#area').html(data.area);
+        }
+    }, {
         title: '借款人信息',
         field: 'creditPeopleList',
         type: 'o2m',
@@ -83,10 +96,18 @@ $(function () {
         }, {
             field: 'accreditPdf',
             title: '授权书',
-            type1: "img",
+            type: "img",
             required: true,
-            formatter: function (value, row) {
-                return '<a href="' + value + '" target="_blank">' + value + '</a>';
+            formatter: function (value) {
+                var sp = value && value.split('||') || [],
+                    html = "";
+                sp.length &&
+                sp.forEach(function (item, i) {
+                    var src = (item.indexOf('http://') > -1 ? item : (OSS.picBaseUrl + '/' + item));
+                    i && (html += "、");
+                    html += '<a href="' + src + '" target="_blank">' + value + '</a>';
+                });
+                return html;
             },
             formatter1: true
         }, {

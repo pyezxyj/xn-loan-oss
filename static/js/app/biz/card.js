@@ -32,7 +32,7 @@ $(function () {
         columns: columns,
         pageCode: '617015',
         searchParams: {
-            statusList: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17]
+            statusList: [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17]
         }
     });
 });

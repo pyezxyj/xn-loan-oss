@@ -52,7 +52,8 @@ $(function() {
         columns: columns,
         pageCode: '617015',
         searchParams: {
-            statusList: [1, 2]
+            statusList: [1, 2],
+            userId: getUserId()
         }
     });
     $("#edit1Btn").on("click", function () {
