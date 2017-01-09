@@ -320,14 +320,22 @@ $.fn.serializeObject = function () {
             if ($('#' + this.name).parent('li').attr('type') == 'amount') {
                 value = moneyParse(value);
             }
-            o[this.name] = value;
+            if ($('#' + this.name).attr('multiple')) {
+                var values = [];
+                $('#' + this.name).prev().find('.search-choice').each(function (i, item) {
+                    values.push($(item).attr('data-value'));
+                });
+                o[this.name] = values;
+            } else {
+                o[this.name] = value;
+            }
         }
     });
     return o;
 };
 
-$.fn.renderDropdown = function (data, keyName, valueName, defaultOption) {
-    var value, listCode, params;
+$.fn.renderDropdown = function (data, keyName, valueName, defaultOption, filter) {
+    var value, listCode, params, dict, filter = filter || '';
     if ($.isPlainObject(data)) {
         value = data.value;
         listCode = data.listCode;
@@ -335,6 +343,7 @@ $.fn.renderDropdown = function (data, keyName, valueName, defaultOption) {
         keyName = data.keyName;
         valueName = data.valueName;
         defaultOption = data.defaultOption;
+        dict = data.dict;
     }
     if (listCode) {
         reqApi({
@@ -346,11 +355,25 @@ $.fn.renderDropdown = function (data, keyName, valueName, defaultOption) {
         });
     }
     data = (data.data && data.data.list) || data.data || data || [];
+    if (dict) {
+        dict.forEach(function (item) {
+            var dictData = Dict.getName(item[1]);
+            data.forEach(function (i) {
+                i[item[0] + 'Name'] = Dict.findName(dictData, i[item[0]]);
+            });
+
+        });
+    }
     keyName = keyName || 'dkey';
     valueName = valueName || 'dvalue';
     var html = "<option value=''></option>" + (defaultOption || '');
+    var filters = filter.split(',');
     for (var i = 0; i < data.length; i++) {
-        html += "<option value='" + data[i][keyName] + "'>" + (data[i][valueName] || valueName.temp(data[i])) + "</option>";
+        if (filter && filters.indexOf(data[i][keyName]) > -1) {
+            html += "<option value='" + data[i][keyName] + "'>" + (data[i][valueName] || valueName.temp(data[i])) + "</option>";
+        } else if (!filter) {
+            html += "<option value='" + data[i][keyName] + "'>" + (data[i][valueName] || valueName.temp(data[i])) + "</option>";
+        }
     }
     this.html(html);
     if (value) {
@@ -527,9 +550,11 @@ function zipImg(file, pos) {
 //后退
 function goBack() {
     if ('referrer' in document) {
+        if (/top\.html/.test(window.document.referrer)) {
+            window.history.back();
+            return;
+        }
         window.location = document.referrer;
-        /* OR */
-        //location.replace(document.referrer);
     } else {
         window.history.back();
     }
@@ -555,12 +580,14 @@ function objectArrayFilter(arr, keys) {
 
 function buildList(options) {
 
+    options = options || {};
+
     if (options.type != 'o2m') {
         showPermissionControl();
-
     }
 
-    options = options || {};
+    options.router = options.router || /.*\/([^\/]*)\.html/.exec(location.href)[1];
+
     var html = '<ul>';
     var dropDownList = [];
     var urlParams = options.urlParams;
@@ -600,6 +627,22 @@ function buildList(options) {
         if (item.data) {
             var data = item.data;
             $('#' + item.field).renderDropdown2(data);
+            if (item.pageCode) {
+                $('#' + item.field)[0].pageOptions = {
+                    pageCode: item.pageCode,
+                    keyName: item.keyName,
+                    valueName: item.valueName,
+                    dict: item.dict,
+                    searchName: item.searchName
+                };
+                $('#' + item.field)[0].pageParams = {
+                    start: 1,
+                    limit: 10
+                };
+                $.extend($('#' + item.field)[0].pageParams, item.params || {});
+                $('#' + item.field)[0].pageParams.start += 1;
+            }
+
             (function (d) {
                 item.formatter = function (v) {
                     return d[v] || d[+v];
@@ -607,7 +650,7 @@ function buildList(options) {
             })(data);
 
         } else if (item.key) {
-            $('#' + item.field).renderDropdown(Dict.getName(item.key), '', '', item.defaultOption ? '<option value="0">' + item.defaultOption + '</option>' : '');
+            $('#' + item.field).renderDropdown(Dict.getName(item.key), '', '', item.defaultOption ? '<option value="0">' + item.defaultOption + '</option>' : '', item.filter || '');
         } else if (item.listCode) {
             var data = $('#' + item.field).renderDropdown($.extend({
                 listCode: item.listCode,
@@ -621,6 +664,9 @@ function buildList(options) {
             }
             for (var j = 0, len1 = data.length; j < len1; j++) {
                 dataDict[data[j][item.keyName]] = data[j][item.valueName] || item.valueName.temp(data[j]);
+                if (item.amount) {
+                    dataDict[data[j][item.keyName]] = moneyFormat(dataDict[data[j][item.keyName]]);
+                }
             }
 
             item.formatter = (function (d) {
@@ -717,6 +763,11 @@ function buildList(options) {
             toastr.info("请选择一条记录");
             return;
         }
+        if (options.beforeDetail) {
+            if (!options.beforeDetail(selRecords[0])) {
+                return;
+            }
+        }
         var codeParams = '';
         if (options.uid) {
 
@@ -759,6 +810,11 @@ function buildList(options) {
         } else if (selRecords.length >= 2) {
             toastr.info("请选择一条记录");
             return;
+        }
+        if (options.beforeCheck) {
+            if (!options.beforeCheck(selRecords[0])) {
+                return;
+            }
         }
         var codeParams = '';
         if (options.uid) {
@@ -810,7 +866,13 @@ function buildList(options) {
             var json = {};
             json.start = params.offset / params.limit + 1;
             json.limit = params.limit;
-            $.extend(json, $('.search-form').serializeObject(), options.searchParams, {
+            var searchFormParams = $('.search-form').serializeObject();
+            for (var p in searchFormParams) {
+                if (!searchFormParams[p]) {
+                    delete searchFormParams[p];
+                }
+            }
+            $.extend(json, options.searchParams, searchFormParams, {
                 token: sessionStorage.getItem('token'),
                 systemCode: sessionStorage.getItem('systemCode')
             });
@@ -824,8 +886,8 @@ function buildList(options) {
         queryParamsType: 'limit',
         responseHandler: function (res) {
             return {
-                rows: res.data.list,
-                total: res.data.totalCount
+                rows: res.data.list || res.data,
+                total: res.data.totalCount || res.data.length
             };
         },
         pagination: true,
@@ -858,11 +920,8 @@ function buildDetail(options) {
     var title = $('.left-menu .active a', window.parent.frames[1] ? window.parent.frames[1].document : document).html();
     $('#page-title').html(title);
     var html = '<input type="hidden" id="code" name="code" class="control-def" />';
-    var dropDownList = [],
-        rules = {},
-        textareaList = [];
-    var dateTimeList = [],
-        imgList = [];
+    var dropDownList = [], rules = {}, textareaList = [];
+    var dateTimeList = [], imgList = [];
     for (var i = 0, len = fields.length; i < len; i++) {
         var item = fields[i];
         rules[item.field] = {};
@@ -947,6 +1006,8 @@ function buildDetail(options) {
                     html += '<input type="radio" id="radio' + k + '" name="' + item.field + '" value="' + rd.key + '"><label title="' + (rd.value || '') + '" for="radio' + k + '" class="radio-text"><i class="zmdi ' + (rd.icon || '') + ' zmdi-hc-5x"></i></label>';
                 }
                 html += '</li>';
+            } else if (item.type == 'password') {
+                html += '<input id="'+item.field+'" type="password" name="'+item.field+'" class="control-def" '+(item.placeholder ? ('placeholder="'+item.placeholder+'"') : '')+'/></li>'
             } else if (item.type == 'select') {
                 dropDownList.push(item);
                 html += '<select ' + (item.multiple ? 'multiple' : '') + ' id="' + item.field + '" name="' + item.field + '" class="control-def"></select></li>';
@@ -1044,9 +1105,19 @@ function buildDetail(options) {
                     data[item.equal] = $('#' + item.field).val() || $('#' + item.field).attr('src');
                 } else if (item.emptyValue && !data[item.field]) {
                     data[item.field] = item.emptyValue;
+                } else if (item.readonly && item.pass) {
+                    data[item.field] = $('#' + item.field).attr('data-value') || $('#' + item.field).html();
+                }
+                if (item.type == 'select' && item.passValue) {
+                    data[item.field] = $('#' + item.field).find('option:selected').html();
                 }
             }
             data['id'] = data['code'];
+            if (options.beforeSubmit) {
+                if (!options.beforeSubmit(data)) {
+                    return;
+                }
+            }
             reqApi({
                 code: code ? options.editCode : options.addCode,
                 json: data
@@ -1071,6 +1142,43 @@ function buildDetail(options) {
                 keyName: item.keyName,
                 valueName: item.valueName
             }, (item.defaultOption ? {defaultOption: '<option value="0">' + item.defaultOption + '</option>'} : {})));
+            if (item.pageCode) {
+                $('#' + item.field)[0].pageOptions = {
+                    pageCode: item.pageCode,
+                    keyName: item.keyName,
+                    valueName: item.valueName,
+                    dict: item.dict,
+                    searchName: item.searchName
+                };
+                $('#' + item.field)[0].pageParams = {
+                    start: 1,
+                    limit: 10
+                };
+                $.extend($('#' + item.field)[0].pageParams, item.params || {});
+                $('#' + item.field)[0].pageParams.start += 1;
+            }
+        } else if (item.pageCode) {
+            var pageParams = {
+                start: 1,
+                limit: 10
+            };
+            $.extend(pageParams, item.params || {});
+            data = $('#' + item.field).renderDropdown($.extend({
+                listCode: item.pageCode,
+                params: pageParams,
+                keyName: item.keyName,
+                valueName: item.valueName,
+                dict: item.dict
+            }, (item.defaultOption ? {defaultOption: '<option value="0">'+item.defaultOption+'</option>'} : {})));
+            $('#' + item.field)[0].pageOptions = {
+                pageCode: item.pageCode,
+                keyName: item.keyName,
+                valueName: item.valueName,
+                dict: item.dict,
+                searchName: item.searchName
+            };
+            $('#' + item.field)[0].pageParams = pageParams;
+            $('#' + item.field)[0].pageParams.start += 1;
         }
         if (item.onChange) {
 
@@ -1100,7 +1208,7 @@ function buildDetail(options) {
         ];
         //如果你只需要上传图片功能，而不需要插入网络图片功能
         editor.config.printLog = false;
-        editor.config.menuFixed = false; 
+        editor.config.menuFixed = false;
         editor.config.hideLinkImg = true;
         editor.config.customUpload = true; // 设置自定义上传的开关
         editor.config.customUploadInit = uploadInit; // 配置自定义上传初始化事件，uploadInit方法在上面定义了
@@ -1137,6 +1245,7 @@ function buildDetail(options) {
             })(item);
 
         }
+
     }
 
     var detailParams = {code: code, id: code};
@@ -1158,6 +1267,9 @@ function buildDetail(options) {
             }
 
         }
+    }
+    if (options.beforeDetail) {
+        options.beforeDetail(detailParams);
     }
 
     if (code) {
@@ -1276,13 +1388,16 @@ function buildDetail(options) {
                             }
                         }
                         $('#' + item.field).html('<div class="zmdi ' + selectOne.icon + ' zmdi-hc-5x" title="' + selectOne.value + '"></div>');
-                    } else if (item.type == 'select' && (item.listCode || item.detailCode)) {
+                    } else if (item.type == 'select' && (item.pageCode || item.listCode || item.detailCode)) {
                         var params = {};
+                        if (!item.detailCode && item.pageCode) {
+                            params = {start: 1, limit: 1000000000};
+                        }
                         var realValue = data[item['[value]']] || displayValue || '';
                         if (item.value && item.value.call) {
                             realValue = item.value(data);
                         }
-                        params[item.keyName] = realValue;
+                        params[item.detailSearchName || item.keyName] = realValue;
                         item.params && $.extend(params, item.params);
                         if (!realValue) {
                             $('#' + item.field).html('-');
@@ -1291,7 +1406,7 @@ function buildDetail(options) {
                         } else {
                             (function (i, displayValue) {
                                 reqApi({
-                                    code: i.detailCode || i.listCode,
+                                    code: i.detailCode || i.listCode || i.pageCode,
                                     json: params
                                 }).then(function (d) {
                                     var data;
@@ -1340,7 +1455,7 @@ function buildDetail(options) {
                             sp.length && sp.forEach(function (item) {
                                 var suffix = item.slice(item.lastIndexOf('.') + 1);
                                 var src = (item.indexOf('http://') > -1 ? item : (OSS.picBaseUrl + '/' + item));
-                                var src1 = (item.indexOf('http://') > -1 ? item.substring( item.lastIndexOf("/") + 1 ) : item);
+                                var src1 = (item.indexOf('http://') > -1 ? item.substring(item.lastIndexOf("/") + 1) : item);
                                 var name = src1.substring(0, src1.lastIndexOf("_")) + "." + suffix;
                                 if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' ||
                                     suffix == 'xls' || suffix == 'xlsx' || suffix == 'mp4' ||
@@ -1431,7 +1546,7 @@ function buildDetail(options) {
                         sp.length && sp.forEach(function (item) {
                             var suffix = item.slice(item.lastIndexOf('.') + 1);
                             var src = (item.indexOf('http://') > -1 ? item : (OSS.picBaseUrl + '/' + item));
-                            var src1 = (item.indexOf('http://') > -1 ? item.substring( item.lastIndexOf("/") + 1 ) : item);
+                            var src1 = (item.indexOf('http://') > -1 ? item.substring(item.lastIndexOf("/") + 1) : item);
                             var name = src1.substring(0, src1.lastIndexOf("_")) + "." + suffix;
                             if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' ||
                                 suffix == 'xls' || suffix == 'xlsx' || suffix == 'mp4' ||
@@ -1614,7 +1729,7 @@ function buildDetail(options) {
             setTimeout(function () {
                 var item = imgList[i];
                 uploadInit.call($('#' + item.field));
-            }, 1);
+            }, 10);
         })(i);
     }
     chosen();
@@ -1687,7 +1802,7 @@ function uploadInit() {
         //若未指定uptoken_url,则必须指定 uptoken ,uptoken由其他程序生成
         unique_names: false,
         // 默认 false，key为文件名。若开启该选项，SDK会为每个文件自动生成key（文件名）
-         save_key: false,
+        save_key: false,
         // 默认 false。若在服务端生成uptoken的上传策略中指定了 `sava_key`，则开启，SDK在前端将不对key进行任何处理
         //domain: 'http://oi99f4peg.bkt.clouddn.com/',
         domain: OSS.picBaseUrl + "/",
@@ -1867,17 +1982,17 @@ function uploadInit() {
             },
             // Key 函数如果有需要自行配置，无特殊需要请注释
             //,
-             'Key': function(up, file) {
-                 // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
-                 // 该配置必须要在 unique_names: false , save_key: false 时才生效
+            'Key': function (up, file) {
+                // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
+                // 该配置必须要在 unique_names: false , save_key: false 时才生效
 //                 var key = "";
-                 // do something with key here
-            	 var sourceLink = file.name;
-                 var suffix = sourceLink.slice(0, sourceLink.lastIndexOf('.'));
-                 var suffix1 = sourceLink.slice(sourceLink.lastIndexOf('.') + 1);
-                 suffix = suffix + "_" + (new Date().getTime());
-                 return suffix + "." + suffix1;
-             }
+                // do something with key here
+                var sourceLink = file.name;
+                var suffix = sourceLink.slice(0, sourceLink.lastIndexOf('.'));
+                var suffix1 = sourceLink.slice(sourceLink.lastIndexOf('.') + 1);
+                suffix = suffix + "_" + (new Date().getTime());
+                return suffix + "." + suffix1;
+            }
         }
     });
     // domain 为七牛空间（bucket)对应的域名，选择某个空间后，可通过"空间设置->基本设置->域名设置"查看获取
@@ -1907,7 +2022,7 @@ function sucList() {
 
 function sucDetail() {
     toastr.success('操作成功');
-    sleep(1500).then(function () {
+    sleep(1000).then(function () {
         goBack();
     });
 }
@@ -2122,6 +2237,8 @@ function buildDetail1(options) {
                     html += '<input type="radio" id="radio' + k + '" name="' + item.field + '" value="' + rd.key + '"><label title="' + (rd.value || '') + '" for="radio' + k + '" class="radio-text"><i class="zmdi ' + (rd.icon || '') + ' zmdi-hc-5x"></i></label>';
                 }
                 html += '</li>';
+            } else if (item.type == 'password') {
+                html += '<input id="'+item.field+'" type="password" name="'+item.field+'" class="control-def" '+(item.placeholder ? ('placeholder="'+item.placeholder+'"') : '')+'/></li>'
             } else if (item.type == 'select') {
                 dropDownList.push(item);
                 html += '<select ' + (item.multiple ? 'multiple' : '') + ' id="' + item.field + '-model" name="' + item.field + '" class="control-def"></select></li>';
@@ -2165,12 +2282,49 @@ function buildDetail1(options) {
         } else if (item.key) {
             data = $('#' + item.field + "-model").renderDropdown(Dict.getName(item.key), '', '', item.defaultOption ? '<option value="0">' + item.defaultOption + '</option>' : '');
         } else if (item.listCode) {
-            data = $('#' + item.field + "-model").renderDropdown($.extend({
+            data = $('#' + item.field).renderDropdown($.extend({
                 listCode: item.listCode,
                 params: item.params,
                 keyName: item.keyName,
                 valueName: item.valueName
-            }, (item.defaultOption ? {defaultOption: '<option value="0">' + item.defaultOption + '</option>'} : {})));
+            }, (item.defaultOption ? {defaultOption: '<option value="0">'+item.defaultOption+'</option>'} : {})));
+            if (item.pageCode) {
+                $('#' + item.field)[0].pageOptions = {
+                    pageCode: item.pageCode,
+                    keyName: item.keyName,
+                    valueName: item.valueName,
+                    dict: item.dict,
+                    searchName: item.searchName
+                };
+                $('#' + item.field)[0].pageParams = {
+                    start: 1,
+                    limit: 10
+                };
+                $.extend($('#' + item.field)[0].pageParams, item.params || {});
+                $('#' + item.field)[0].pageParams.start += 1;
+            }
+        } else if (item.pageCode) {
+            var pageParams = {
+                start: 1,
+                limit: 10
+            };
+            $.extend(pageParams, item.params || {});
+            data = $('#' + item.field).renderDropdown($.extend({
+                listCode: item.pageCode,
+                params: pageParams,
+                keyName: item.keyName,
+                valueName: item.valueName,
+                dict: item.dict
+            }, (item.defaultOption ? {defaultOption: '<option value="0">'+item.defaultOption+'</option>'} : {})));
+            $('#' + item.field)[0].pageOptions = {
+                pageCode: item.pageCode,
+                keyName: item.keyName,
+                valueName: item.valueName,
+                dict: item.dict,
+                searchName: item.searchName
+            };
+            $('#' + item.field)[0].pageParams = pageParams;
+            $('#' + item.field)[0].pageParams.start += 1;
         }
         if (item.onChange) {
 
@@ -2285,21 +2439,23 @@ function buildDetail1(options) {
             }
         }
     }
-
+    if (options.beforeDetail) {
+        options.beforeDetail(detailParams);
+    }
     if (code) {
-        reqApi({
-            code: options.detailCode,
-            json: detailParams
-        }).done(function (data) {
-            data = data.creditAuditList;
-            for (var k = 0; k < data.length; k++) {
-                if (data[k].code == code) {
-                    break;
-                }
-            }
-            data = data[k] || data[0];
-            addData(data);
-        });
+        // reqApi({
+        //     code: options.detailCode,
+        //     json: detailParams
+        // }).done(function (data) {
+        //     data = data.creditAuditList;
+        //     for (var k = 0; k < data.length; k++) {
+        //         if (data[k].code == code) {
+        //             break;
+        //         }
+        //     }
+        //     data = data[k] || data[0];
+        //     addData(data);
+        // });
     } else {
         $('#model-form').modal('show');
     }
@@ -2409,13 +2565,16 @@ function buildDetail1(options) {
                         }
                     }
                     $('#' + item.field + "-model").html('<div class="zmdi ' + selectOne.icon + ' zmdi-hc-5x" title="' + selectOne.value + '"></div>');
-                } else if (item.type == 'select' && (item.listCode || item.detailCode)) {
+                } else if (item.type == 'select' && (item.pageCode || item.listCode || item.detailCode)) {
                     var params = {};
+                    if (!item.detailCode && item.pageCode) {
+                        params = {start: 1, limit: 1000000000};
+                    }
                     var realValue = data[item['[value]']] || displayValue || '';
                     if (item.value && item.value.call) {
                         realValue = item.value(data);
                     }
-                    params[item.keyName] = realValue;
+                    params[item.detailSearchName || item.keyName] = realValue;
                     item.params && $.extend(params, item.params);
                     if (!realValue) {
                         $('#' + item.field + "-model").html('-');
@@ -2424,7 +2583,7 @@ function buildDetail1(options) {
                     } else {
                         (function (i, displayValue) {
                             reqApi({
-                                code: i.detailCode || i.listCode,
+                                code: i.detailCode || i.listCode || i.pageCode,
                                 json: params
                             }).then(function (d) {
                                 var data;
@@ -2473,7 +2632,7 @@ function buildDetail1(options) {
                         sp.length && sp.forEach(function (item) {
                             var suffix = item.slice(item.lastIndexOf('.') + 1);
                             var src = (item.indexOf('http://') > -1 ? item : (OSS.picBaseUrl + '/' + item));
-                            var src1 = (item.indexOf('http://') > -1 ? item.substring( item.lastIndexOf("/") + 1 ) : item);
+                            var src1 = (item.indexOf('http://') > -1 ? item.substring(item.lastIndexOf("/") + 1) : item);
                             var name = src1.substring(0, src1.lastIndexOf("_")) + "." + suffix;
                             if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' ||
                                 suffix == 'xls' || suffix == 'xlsx' || suffix == "mp4" ||
@@ -2556,7 +2715,7 @@ function buildDetail1(options) {
                     sp.length && sp.forEach(function (item) {
                         var suffix = item.slice(item.lastIndexOf('.') + 1);
                         var src = (item.indexOf('http://') > -1 ? item : (OSS.picBaseUrl + '/' + item));
-                        var src1 = (item.indexOf('http://') > -1 ? item.substring( item.lastIndexOf("/") + 1 ) : item);
+                        var src1 = (item.indexOf('http://') > -1 ? item.substring(item.lastIndexOf("/") + 1) : item);
                         var name = src1.substring(0, src1.lastIndexOf("_")) + "." + suffix;
                         if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' ||
                             suffix == 'xls' || suffix == 'xlsx' || suffix == "mp4" ||
@@ -2933,7 +3092,7 @@ function getImportDataFun(options, dw) {
             reader.onload = function (e) {
                 if (typeof console !== 'undefined') console.log("onload", new Date(), rABS, use_worker);
                 var data = e.target.result;
-                try{
+                try {
                     if (use_worker) {
                         xw(data, process_wb);
                     } else {
@@ -2946,8 +3105,8 @@ function getImportDataFun(options, dw) {
                         }
                         process_wb(wb);
                     }
-                }catch (e){
-                	options.error && options.error();
+                } catch (e) {
+                    options.error && options.error();
                     toastr.info("导入失败");
                 }
             };
