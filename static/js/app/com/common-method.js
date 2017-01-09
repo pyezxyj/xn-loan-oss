@@ -1439,39 +1439,25 @@ function buildDetail(options) {
                         } else {
                             var sp = realValue && realValue.split('||') || [];
                             var imgsHtml = '';
-                            var suffixMap = {
-                                'docx': __inline('../images/word.png'),
-                                'doc': __inline('../images/word.png'),
-                                'xls': __inline('../images/excel.png'),
-                                'xlsx': __inline('../images/excel.png'),
-                                'pdf': __inline('../images/pdf.png'),
-                                'mp4': __inline('../images/avi.png'),
-                                'avi': __inline('../images/avi.png'),
-                                'rar': __inline('../images/rar.png'),
-                                'zip': __inline('../images/rar.png')
-                            };
-                            var defaultFile = __inline("../images/default_file.png");
+                            var defaultFile = getDefaultFileIcon();
 
                             sp.length && sp.forEach(function (item) {
                                 var suffix = item.slice(item.lastIndexOf('.') + 1);
                                 var src = (item.indexOf('http://') > -1 ? item : (OSS.picBaseUrl + '/' + item));
                                 var src1 = (item.indexOf('http://') > -1 ? item.substring(item.lastIndexOf("/") + 1) : item);
                                 var name = src1.substring(0, src1.lastIndexOf("_")) + "." + suffix;
-                                if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' ||
-                                    suffix == 'xls' || suffix == 'xlsx' || suffix == 'mp4' ||
-                                    suffix == 'avi' || suffix == "rar" || suffix == "zip") {
+                                if ( isDocOrAviOrZip(suffix) ) {
 
                                     imgsHtml += '<div class="img-ctn" data-src="' + src1 + '" style="display: inline-block;position: relative;">' +
                                         '<div class="center-img-wrap">' +
-                                        '<img width="100" src="' + suffixMap[suffix] + '" />' +
+                                        '<img width="100" src="' + getDocOrAviOrZipIcon(suffix) + '" />' +
                                         '<i class="zmdi zmdi-download zmdi-hc-fw"></i></div>' +
                                         '<div class="t_3dot w100p" title="' + name + '">' + name + '</div>' +
                                         '</div>';
-                                } else if (suffix == 'jpg' || suffix == 'gif' ||
-                                    suffix == 'png' || suffix == 'bmp') {
+                                } else if ( isAcceptImg(suffix) ) {
                                     imgsHtml += '<div class="img-ctn" data-src="' + src1 + '" style="display: inline-block;position: relative;">' +
                                         '<div class="center-img-wrap">' +
-                                        '<img src="' + src + '?imageMogr2/auto-orient/thumbnail/!100x100r" class="center-img" />' +
+                                        '<img src="' + src + OSS.picShow + '" class="center-img" />' +
                                         '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                         '</div>' +
                                         '<div class="t_3dot w100p" title="' + name + '">' + name + '</div>' +
@@ -1531,39 +1517,25 @@ function buildDetail(options) {
                         var realValue = data[item['[value]']] || displayValue || '';
                         var sp = realValue && realValue.split('||') || [];
                         var imgsHtml = '';
-                        var suffixMap = {
-                            'docx': __inline('../images/word.png'),
-                            'doc': __inline('../images/word.png'),
-                            'xls': __inline('../images/excel.png'),
-                            'xlsx': __inline('../images/excel.png'),
-                            'pdf': __inline('../images/pdf.png'),
-                            'avi': __inline('../images/avi.png'),
-                            'mp4': __inline('../images/avi.png'),
-                            'rar': __inline('../images/rar.png'),
-                            'zip': __inline('../images/rar.png')
-                        };
-                        var defaultFile = __inline("../images/default_file.png");
+                        var defaultFile = getDefaultFileIcon();
                         sp.length && sp.forEach(function (item) {
                             var suffix = item.slice(item.lastIndexOf('.') + 1);
                             var src = (item.indexOf('http://') > -1 ? item : (OSS.picBaseUrl + '/' + item));
                             var src1 = (item.indexOf('http://') > -1 ? item.substring(item.lastIndexOf("/") + 1) : item);
                             var name = src1.substring(0, src1.lastIndexOf("_")) + "." + suffix;
-                            if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' ||
-                                suffix == 'xls' || suffix == 'xlsx' || suffix == 'mp4' ||
-                                suffix == 'avi' || suffix == "zip" || suffix == "rar") {
+                            if (isDocOrAviOrZip(suffix)) {
                                 imgsHtml += '<div class="img-ctn" data-src="' + src1 + '" style="display: inline-block;position: relative;">' +
                                     '<div class="center-img-wrap">' +
-                                    '<img width="100" src="' + suffixMap[suffix] + '" />' +
+                                    '<img width="100" src="' + getDocOrAviOrZipIcon(suffix) + '" />' +
                                     '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
                                     '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                     '</div>' +
                                     '<div class="t_3dot w100p" title="' + name + '">' + name + '</div>' +
                                     '</div>';
-                            } else if (suffix == 'jpg' || suffix == 'gif' ||
-                                suffix == 'png' || suffix == 'bmp') {
+                            } else if (isAcceptImg(suffix)) {
                                 imgsHtml += '<div class="img-ctn" data-src="' + src1 + '" style="display: inline-block;position: relative;">' +
                                     '<div class="center-img-wrap">' +
-                                    '<img src="' + src + '?imageMogr2/auto-orient/thumbnail/!100x100r" class="center-img" />' +
+                                    '<img src="' + src + OSS.picShow + '" class="center-img" />' +
                                     '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
                                     '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                     '</div>' +
@@ -1831,31 +1803,18 @@ function uploadInit() {
         init: {
             'FilesAdded': function (up, files) {
                 if (editor.append) {
-                    var defaultImg = __inline("../images/default_img.png");
-                    var defaultFile = __inline("../images/default_file.png");
+                    var defaultImg = getDefaultImgIcon();
+                    var defaultFile = getDefaultFileIcon();
                     plupload.each(files, function (file) {
                         // 文件添加进队列后,处理相关的事情
                         var sourceLink = file.name;
                         var suffix = sourceLink.slice(sourceLink.lastIndexOf('.') + 1);
                         var imgCtn;
-                        if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' ||
-                            suffix == 'xls' || suffix == 'xlsx' || suffix == "mp4" ||
-                            suffix == "avi" || suffix == 'rar' || suffix == 'zip') {
-                            var suffixMap = {
-                                'docx': __inline('../images/word.png'),
-                                'doc': __inline('../images/word.png'),
-                                'xls': __inline('../images/excel.png'),
-                                'xlsx': __inline('../images/excel.png'),
-                                'pdf': __inline('../images/pdf.png'),
-                                'mp4': __inline('../images/avi.png'),
-                                'avi': __inline('../images/avi.png'),
-                                'rar': __inline('../images/rar.png'),
-                                'zip': __inline('../images/rar.png')
-                            };
+                        if ( isDocOrAviOrZip(suffix) ) {
                             imgCtn = $(
                                 '<div id="' + file.id + '" class="img-ctn" style="display: inline-block;position: relative;vertical-align: top;">' +
                                 '<div class="center-img-wrap">' +
-                                '<img width="100" src="' + suffixMap[suffix] + '"/>' +
+                                '<img width="100" src="' + getDocOrAviOrZipIcon(suffix) + '"/>' +
                                 '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
                                 '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                 '</div>' +
@@ -1866,10 +1825,8 @@ function uploadInit() {
                                 '<div class="progress-bar progress-bar-info" style="height: 20px;"></div>' +
                                 '</div>' +
                                 '</div>' +
-
                                 '</div>').appendTo(editor);
-                        } else if (suffix == 'jpg' || suffix == 'gif' ||
-                            suffix == 'png' || suffix == 'bmp') {
+                        } else if ( isAcceptImg(suffix) ) {
                             imgCtn = $('<div id="' + file.id + '" class="img-ctn" style="display: inline-block;position: relative;vertical-align: top;">' +
                                 '<div class="center-img-wrap">' +
                                 '<img src="' + defaultImg + '" class="center-img"/>' +
@@ -1951,13 +1908,10 @@ function uploadInit() {
                     imgCtn.find(".progress-wrap").hide();
                     var suffix = sourceLink.slice(sourceLink.lastIndexOf('.') + 1);
 
-                    if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' ||
-                        suffix == 'xls' || suffix == 'xlsx' || suffix == "mp4" ||
-                        suffix == "avi" || suffix == "rar" || suffix == "zip") {
+                    if ( isDocOrAviOrZip(suffix) ) {
                         imgCtn.attr("data-src", sourceLink1);
-                    } else if (suffix == 'jpg' || suffix == 'gif' ||
-                        suffix == 'png' || suffix == 'bmp') {
-                        imgCtn.find("img").attr("src", sourceLink + "?imageMogr2/auto-orient/thumbnail/!100x100r");
+                    } else if ( isAcceptImg(suffix) ) {
+                        imgCtn.find("img").attr("src", sourceLink + OSS.picShow);
                         imgCtn.attr("data-src", sourceLink1);
                     } else {
                         imgCtn.attr("data-src", sourceLink1);
@@ -2616,40 +2570,26 @@ function buildDetail1(options) {
                     } else {
                         var sp = realValue && realValue.split('||') || [];
                         var imgsHtml = '';
-                        var suffixMap = {
-                            'docx': __inline('../images/word.png'),
-                            'doc': __inline('../images/word.png'),
-                            'xls': __inline('../images/excel.png'),
-                            'xlsx': __inline('../images/excel.png'),
-                            'pdf': __inline('../images/pdf.png'),
-                            'mp4': __inline('../images/avi.png'),
-                            'avi': __inline('../images/avi.png'),
-                            'rar': __inline('../images/rar.png'),
-                            'zip': __inline('../images/rar.png')
-                        };
-                        var defaultFile = __inline("../images/default_file.png");
-                        var src = file.name
+
+                        var defaultFile = getDefaultFileIcon();
                         sp.length && sp.forEach(function (item) {
                             var suffix = item.slice(item.lastIndexOf('.') + 1);
                             var src = (item.indexOf('http://') > -1 ? item : (OSS.picBaseUrl + '/' + item));
                             var src1 = (item.indexOf('http://') > -1 ? item.substring(item.lastIndexOf("/") + 1) : item);
                             var name = src1.substring(0, src1.lastIndexOf("_")) + "." + suffix;
-                            if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' ||
-                                suffix == 'xls' || suffix == 'xlsx' || suffix == "mp4" ||
-                                suffix == "avi" || suffix == "rar" || suffix == "zip") {
+                            if ( isDocOrAviOrZip(suffix) ) {
 
                                 imgsHtml += '<div class="img-ctn" data-src="' + src1 + '" style="display: inline-block;position: relative;">' +
                                     '<div class="center-img-wrap">' +
-                                    '<img width="100" src="' + suffixMap[suffix] + '" />' +
+                                    '<img width="100" src="' + getDocOrAviOrZipIcon(suffix) + '" />' +
                                     '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                     '</div>' +
                                     '<div class="t_3dot w100p" title="' + name + '">' + name + '</div>' +
                                     '</div>';
-                            } else if (suffix == 'jpg' || suffix == 'gif' ||
-                                suffix == 'png' || suffix == 'bmp') {
+                            } else if ( isAcceptImg(suffix) ) {
                                 imgsHtml += '<div class="img-ctn" data-src="' + src1 + '" style="display: inline-block;position: relative;">' +
                                     '<div class="center-img-wrap">' +
-                                    '<img src="' + src + '?imageMogr2/auto-orient/thumbnail/!100x100r" style="max-width: 300px;" />' +
+                                    '<img src="' + src + OSS.picShow + '" style="max-width: 300px;" />' +
                                     '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                     '</div>' +
                                     '<div class="t_3dot w100p" title="' + name + '">' + name + '</div>' +
@@ -2700,39 +2640,25 @@ function buildDetail1(options) {
                     var realValue = data[item['[value]']] || displayValue || '';
                     var sp = realValue && realValue.split('||') || [];
                     var imgsHtml = '';
-                    var suffixMap = {
-                        'docx': __inline('../images/word.png'),
-                        'doc': __inline('../images/word.png'),
-                        'xls': __inline('../images/excel.png'),
-                        'xlsx': __inline('../images/excel.png'),
-                        'pdf': __inline('../images/pdf.png'),
-                        'avi': __inline('../images/avi.png'),
-                        'mp4': __inline('../images/avi.png'),
-                        'rar': __inline('../images/rar.png'),
-                        'zip': __inline('../images/rar.png')
-                    };
-                    var defaultFile = __inline("../images/default_file.png");
+                    var defaultFile = getDefaultFileIcon();
                     sp.length && sp.forEach(function (item) {
                         var suffix = item.slice(item.lastIndexOf('.') + 1);
                         var src = (item.indexOf('http://') > -1 ? item : (OSS.picBaseUrl + '/' + item));
                         var src1 = (item.indexOf('http://') > -1 ? item.substring(item.lastIndexOf("/") + 1) : item);
                         var name = src1.substring(0, src1.lastIndexOf("_")) + "." + suffix;
-                        if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' ||
-                            suffix == 'xls' || suffix == 'xlsx' || suffix == "mp4" ||
-                            suffix == "avi" || suffix == "rar" || suffix == "zip") {
+                        if ( isDocOrAviOrZip(suffix) ) {
                             imgsHtml += '<div class="img-ctn" data-src="' + src1 + '" style="display: inline-block;position: relative;">' +
                                 '<div class="center-img-wrap">' +
-                                '<img width="100" src="' + suffixMap[suffix] + '" />' +
+                                '<img width="100" src="' + getDocOrAviOrZipIcon(suffix) + '" />' +
                                 '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
                                 '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                 '</div>' +
                                 '<div class="t_3dot w100p" title="' + name + '">' + name + '</div>' +
                                 '</div>';
-                        } else if (suffix == 'jpg' || suffix == 'gif' ||
-                            suffix == 'png' || suffix == 'bmp') {
+                        } else if ( isAcceptImg(suffix) ) {
                             imgsHtml += '<div class="img-ctn" data-src="' + src1 + '" style="display: inline-block;position: relative;">' +
                                 '<div class="center-img-wrap">' +
-                                '<img src="' + src + '?imageMogr2/auto-orient/thumbnail/!100x100r" style="max-width: 300px;" />' +
+                                '<img src="' + src + OSS.picShow + '" style="max-width: 300px;" />' +
                                 '<i class="zmdi zmdi-close-circle-o zmdi-hc-fw"></i>' +
                                 '<i class="zmdi zmdi-download zmdi-hc-fw"></i>' +
                                 '</div>' +
@@ -3114,4 +3040,41 @@ function getImportDataFun(options, dw) {
             else reader.readAsArrayBuffer(f);
         }
     }
+}
+function isDocOrAviOrZip(suffix){
+    if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' ||
+        suffix == 'xls' || suffix == 'xlsx' || suffix == "mp4" ||
+        suffix == "avi" || suffix == "rar" || suffix == "zip") {
+        return true;
+    }
+    return false;
+}
+function getDocOrAviOrZipIcon(suffix) {
+    var suffixMap = {
+        'docx': __inline('../images/word.png'),
+        'doc': __inline('../images/word.png'),
+        'xls': __inline('../images/excel.png'),
+        'xlsx': __inline('../images/excel.png'),
+        'pdf': __inline('../images/pdf.png'),
+        'avi': __inline('../images/avi.png'),
+        'mp4': __inline('../images/avi.png'),
+        'rar': __inline('../images/rar.png'),
+        'zip': __inline('../images/rar.png')
+    };
+    return suffixMap[suffix];
+}
+function isAcceptImg(suffix){
+    if (suffix == 'jpg' || suffix == 'gif' ||
+        suffix == 'png' || suffix == 'bmp') {
+        return true;
+    }
+    return false;
+}
+function getDefaultImgIcon(){
+    var src = __inline("../images/default_img.png");
+    return src;
+}
+function getDefaultFileIcon(){
+    var src = __inline("../images/default_file.png");
+    return src;
 }
