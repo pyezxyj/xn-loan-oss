@@ -8,13 +8,14 @@ $(function () {
         field: "citySelect",
         type: 'citySelect',
         readonly: view,
+        required: true,
         onChange: function (province, city, area) {
             if (province == city && city != area) {
                 city = area;
             }
             if (!city) {
-                city = province;
-                area = province;
+                city = "";
+                area = "";
             } else if (!area) {
                 city = province;
                 area = city;
@@ -118,7 +119,8 @@ $(function () {
             formatter: idKindList,
             type: 'select',
             key: 'id_kind',
-            required: true
+            required: true,
+            value: "1"
         }, {
             field: 'idNo',
             required: true,
@@ -127,10 +129,18 @@ $(function () {
         }, {
             field: 'accreditPdf',
             title: '授权书',
-            type1: "img",
+            type: "img",
             required: true,
-            formatter: function (value, row) {
-                return '<a href="' + value + '" target="_blank">' + value + '</a>';
+            formatter: function (value) {
+                var sp = value && value.split('||') || [],
+                    html = "";
+                sp.length &&
+                sp.forEach(function (item, i) {
+                    var src = (item.indexOf('http://') > -1 ? item : (OSS.picBaseUrl + '/' + item));
+                    i && (html += "、");
+                    html += '<a href="' + src + '" target="_blank">' + value + '</a>';
+                });
+                return html;
             },
             formatter1: true
         }, {

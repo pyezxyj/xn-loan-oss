@@ -992,9 +992,9 @@ function buildDetail(options) {
         } else if (item.readonly) {
             if (item.type == "citySelect") {
                 html += '<li class="clearfix" style="display:inline-block;"><label>' + item.title + ':</label>' +
-                    '<span id="province" name="province"></span>' +
-                    '<span id="city" name="city"></span>' +
-                    '<span id="area" name="area"></span></li>'
+                    '<span id="province" name="province" style="display: inline-block;"></span>' +
+                    '<span id="city" name="city" style="display: inline-block;padding: 0 8px;"></span>' +
+                    '<span id="area" name="area" style="display: inline-block;"></span></li>'
             } else {
                 html += '<li class="clearfix" type="' + (item.amount ? 'amount' : '') + '" style="' + (item.width ? ('width: ' + item.width + ';display:inline-block;') : '') + (item.hidden ? 'display: none;' : '') + '"><label>' + item.title + ':</label><span id="' + item.field + '" name="' + item.field + '"></span></li>';
             }
@@ -2116,7 +2116,7 @@ function buildDetail1(options) {
         if (!('readonly' in item) && options.view) {
             item.readonly = true;
         }
-        if (item.type == 'img' || item.type1 == "img") {
+        if (item.type == 'img') {
             rules[item.field + 'Img'] = {};
             rules[item.field + 'Img'].required = item.required;
             rules[item.field + 'Img'].isNotFace = false;
@@ -2196,7 +2196,7 @@ function buildDetail1(options) {
             } else if (item.type == 'select') {
                 dropDownList.push(item);
                 html += '<select ' + (item.multiple ? 'multiple' : '') + ' id="' + item.field + '-model" name="' + item.field + '" class="control-def"></select></li>';
-            } else if (item.type == 'img' || item.type1 == "img") {
+            } else if (item.type == 'img') {
                 imgList.push(item);
                 html += '<div class="btn-file"><span>选择文件</span>' +
                     '<input type="file" tabindex="1" id="' + item.field + 'Img-model" name="' + item.field + 'Img" />' +
@@ -2559,7 +2559,7 @@ function buildDetail1(options) {
                     }
 
 
-                } else if (item.type == 'img' || item.type1 == 'img') {
+                } else if (item.type == 'img') {
                     var realValue = data[item['[value]']] || displayValue || '';
                     if ($.isArray(realValue)) {
                         var imgHtml = '';
@@ -2636,7 +2636,7 @@ function buildDetail1(options) {
 
                 }
             } else {
-                if (item.type == 'img' || item.type1 == "img") {
+                if (item.type == 'img') {
                     var realValue = data[item['[value]']] || displayValue || '';
                     var sp = realValue && realValue.split('||') || [];
                     var imgsHtml = '';
