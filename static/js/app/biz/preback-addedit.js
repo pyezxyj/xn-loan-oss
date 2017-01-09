@@ -27,7 +27,7 @@ $(function() {
         required: true,
         readonly: true
     }, {
-        field: '',
+        field: 'totalAmount',
         title: '剩余欠款',
         required: true,
         readonly: true

@@ -12,14 +12,16 @@ $(function() {
         title: '借款人',
         search: true
     },{
-        field: '',
-        title: '剩余欠款'
+        field: 'totalAmount',
+        title: '剩余欠款',
+        formatter:moneyFormat
     },{
-        field: '',
+        field: 'totalTerm',
         title: '剩余期数'
     }, {
-        field: '',
-        title: '每期金额'
+        field: 'yhAmount',
+        title: '每期金额',
+        formatter:moneyFormat
     },{
         field: 'remark',
         title: '备注',
@@ -30,7 +32,7 @@ $(function() {
     buildList({
         router: 'preback',
         columns: columns,
-        pageCode: '617083',
+        pageCode: '617085',
         searchParams: {
             status: "6"
         }
