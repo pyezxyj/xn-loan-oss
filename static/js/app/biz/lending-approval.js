@@ -175,17 +175,17 @@ $(function() {
             $("#termAmount").html(result);
         }
     }, {
-        field: 'fee',
-        title: '服务费',
-        readonly: true,
-        formatter: moneyFormat
-    }, {
         field: 'urgent',
         title: '紧急度',
         type: 'select',
         key: 'urgent',
         formatter: Dict.getNameForList('urgent'),
         readonly: true
+    }, {
+        field: 'fee',
+        title: '服务费',
+        readonly: true,
+        formatter: moneyFormat
     }, {
         field: 'fkPdf',
         title: '附件',
@@ -242,7 +242,7 @@ $(function() {
         title: '调额通过',
         handler: function() {
             if ($('#jsForm').valid()) {
-                var termAmount = $("#termAmount").text();
+                var termAmount = $("#termAmount").html();
                 if (!termAmount) {
                     toastr.warning("月供不能为空");
                     return;

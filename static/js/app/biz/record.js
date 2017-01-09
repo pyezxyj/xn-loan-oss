@@ -22,9 +22,11 @@ $(function() {
     }, {
         field: 'status',
         title: '状态',
-        formatter: Dict.getNameForList('car_status'),
-        key:'car_status',
-        type: 'select',
+        data: {
+            '1': '待释放',
+            '2': '已释放'
+        },
+        type: "select",
         search: true
     }, {
         field: 'remark',
@@ -35,7 +37,10 @@ $(function() {
     buildList({
         router: 'record',
         columns: columns,
-        pageCode: '617036'
+        pageCode: '617036',
+        searchParams: {
+            statusList: [1, 2]
+        }
     });
     $("#releaseBtn").on("click", function() {
         var selRecords = $('#tableList').bootstrapTable('getSelections');
