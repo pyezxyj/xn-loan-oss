@@ -1277,6 +1277,14 @@ function buildDetail(options) {
             code: options.detailCode,
             json: detailParams
         }).done(function (data) {
+            for (var i = 0, len = imgList.length; i < len; i++) {
+                (function (i) {
+                    setTimeout(function () {
+                        var item = imgList[i];
+                        uploadInit.call($('#' + item.field));
+                    }, 10);
+                })(i);
+            }
             $('#code').val(data.code || data.id);
             for (var i = 0, len = fields.length; i < len; i++) {
                 var item = fields[i];
@@ -1689,20 +1697,20 @@ function buildDetail(options) {
                 });
             }
         }
+        for (var i = 0, len = imgList.length; i < len; i++) {
+            (function (i) {
+                setTimeout(function () {
+                    var item = imgList[i];
+                    uploadInit.call($('#' + item.field));
+                }, 10);
+            })(i);
+        }
     }
 
     if (!window.parent.frames[1]) {
         $('.place').hide();
         $('.form-title').hide();
         $('.btn').hide();
-    }
-    for (var i = 0, len = imgList.length; i < len; i++) {
-        (function (i) {
-            setTimeout(function () {
-                var item = imgList[i];
-                uploadInit.call($('#' + item.field));
-            }, 10);
-        })(i);
     }
     chosen();
 }

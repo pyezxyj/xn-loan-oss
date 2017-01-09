@@ -168,17 +168,17 @@ $(function () {
         }
         // formatter: moneyFormat
     }, {
-        field: 'fee',
-        title: '服务费',
-        readonly: true,
-        formatter: moneyFormat
-    }, {
         field: 'urgent',
         title: '紧急度',
         type: 'select',
         key: 'urgent',
         formatter: Dict.getNameForList('urgent'),
         readonly: true
+    }, {
+        field: 'fee',
+        title: '服务费',
+        readonly: true,
+        formatter: moneyFormat
     }, {
         field: 'approveNote',
         title: '备注',

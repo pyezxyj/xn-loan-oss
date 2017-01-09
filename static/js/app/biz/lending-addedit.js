@@ -211,17 +211,17 @@ $(function () {
             $("#termAmount").html(result);
         }
     }, {
-        field: 'fee',
-        title: '服务费',
-        required: true,
-        amount: true
-    }, {
         field: 'urgent',
         title: '紧急度',
         type: 'select',
         key: 'urgent',
         formatter: Dict.getNameForList('urgent'),
         required: true
+    }, {
+        field: 'fee',
+        title: '服务费',
+        required: true,
+        amount: true
     }];
 
     var options = {

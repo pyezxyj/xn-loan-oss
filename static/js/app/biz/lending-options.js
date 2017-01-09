@@ -167,16 +167,16 @@ $(function() {
             $("#termAmount").html(result);
         }
     }, {
-        field: 'fee',
-        title: '服务费',
-        formatter: moneyFormat,
-        readonly: true
-    }, {
         field: 'urgent',
         title: '紧急度',
         type: 'select',
         key: 'urgent',
         formatter: Dict.getNameForList('urgent'),
+        readonly: true
+    }, {
+        field: 'fee',
+        title: '服务费',
+        formatter: moneyFormat,
         readonly: true
     }, {
         field: 'remark',
