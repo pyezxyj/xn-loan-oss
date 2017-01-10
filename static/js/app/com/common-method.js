@@ -1042,8 +1042,8 @@ function buildDetail(options) {
                     '<select id="area" name="area" class="control-def dist"></select></div></li>';
                 if (item.required) {
                     rules.province = {required: true};
-                    rules.city = {required: true};
-                    rules.area = {required: true};
+                    // rules.city = {required: true};
+                    // rules.area = {required: true};
                 }
 
             } else if (item.type == 'datetime' || item.type == 'date') {
@@ -1098,18 +1098,18 @@ function buildDetail(options) {
                 });
                 data[el.id] = values.join('||');
             });
-            if ($('#jsForm').find('#province')[0]) {
-                var province = $('#province').val();
-                var city = $('#city').val();
-                var area = $('#area').val();
-                if (!city) {
-                    data['city'] = province;
-                    data['area'] = province;
-                } else if (!area) {
-                    data['city'] = province;
-                    data['area'] = city;
-                }
-            }
+            // if ($('#jsForm').find('#province')[0]) {
+            //     var province = $('#province').val();
+            //     var city = $('#city').val();
+            //     var area = $('#area').val();
+            //     if (!city) {
+            //         data['city'] = province;
+            //         data['area'] = province;
+            //     } else if (!area) {
+            //         data['city'] = province;
+            //         data['area'] = city;
+            //     }
+            // }
             for (var i = 0, len = fields.length; i < len; i++) {
                 var item = fields[i];
                 if (item.equal && (!$('#' + item.field).is(':hidden') || !$('#' + item.field + 'Img').is(':hidden'))) {
@@ -1499,14 +1499,15 @@ function buildDetail(options) {
                         }
 
                     } else if (item.type == "citySelect") {
-                        if (data.province == data.city && data.city == data.area) {
-
-                        } else if (data.province == data.city && data.city != data.area) {
-                            data.city = data.area;
-                        }
+                        // if (data.province == data.city && data.city == data.area) {
+                        //     data.city = "";
+                        //     data.area = "";
+                        // } else if (data.province == data.city && data.city != data.area) {
+                        //     data.city = data.area;
+                        // }
                         $('#province').html(data.province);
-                        $('#city').html(data.city);
-                        (data.city != data.area) && $('#area').html(data.area);
+                        data.city && $('#city').html(data.city);
+                        data.area && $('#area').html(data.area);
                     } else {
                         if (item.field && item.field.indexOf('-') > -1) {
                             $('#' + item.field).html((item.amount ? moneyFormat(displayValue) : displayValue) || '-');
@@ -1586,15 +1587,16 @@ function buildDetail(options) {
                     } else if (item.type == 'textarea' && item.normalArea) {
                         $('#' + item.field).val(data[item.field]);
                     } else if (item.type == 'citySelect') {
-                        if (data.province == data.city && data.city == data.area) {
-
-                        } else if (data.province == data.city && data.city != data.area) {
-                            data.city = data.area;
-                        }
+                        // if (data.province == data.city && data.city == data.area) {
+                        //     data.city = "";
+                        //     data.area = "";
+                        // } else if (data.province == data.city && data.city != data.area) {
+                        //     data.city = data.area;
+                        // }
                         $('#province').val(data.province);
                         $('#province').trigger('change');
-                        $('#city').val(data.city);
-                        $('#area').val(data.area);
+                        data.city && $('#city').val(data.city);
+                        data.area && $('#area').val(data.area);
                         if (item.onChange) {
                             (function (i) {
                                 $("#province").on("change", function (e) {
@@ -1608,7 +1610,7 @@ function buildDetail(options) {
                                 });
                             })(item);
                         }
-                        $('#city').trigger('change');
+                        data.city ? $('#city').trigger('change') : $('#province').trigger('change');
                     } else if (item.type == "o2m" && item.editTable) {
                         var innerHtml = '';
                         if (item.addeditTable) {
@@ -2059,18 +2061,18 @@ function addEditTableListener1(addId, removeId, editId, tableId, columns, option
                 var id = el.id.substring(0, el.id.length - 6);
                 data[id] = values.join('||');
             });
-            if ($("#model-form").find('#province-model')[0]) {
-                var province = $('#province-model').val();
-                var city = $('#city-model').val();
-                var area = $('#area-model').val();
-                if (!city) {
-                    data['city'] = province;
-                    data['area'] = province;
-                } else if (!area) {
-                    data['city'] = province;
-                    data['area'] = city;
-                }
-            }
+            // if ($("#model-form").find('#province-model')[0]) {
+            //     var province = $('#province-model').val();
+            //     var city = $('#city-model').val();
+            //     var area = $('#area-model').val();
+            //     if (!city) {
+            //         data['city'] = province;
+            //         data['area'] = province;
+            //     } else if (!area) {
+            //         data['city'] = province;
+            //         data['area'] = city;
+            //     }
+            // }
             for (var i = 0, len = columns.length; i < len; i++) {
                 var item = columns[i];
                 if (item.hidden1) {
@@ -2734,16 +2736,17 @@ function buildDetail1(options) {
                 } else if (item.type == 'textarea' && item.normalArea) {
                     $('#' + item.field + "-model").val(data[item.field]);
                 } else if (item.type == 'citySelect') {
-                    if (data.province == data.city && data.city == data.area) {
-
-                    } else if (data.province == data.city && data.city != data.area) {
-                        data.city = data.area;
-                    }
+                    // if (data.province == data.city && data.city == data.area) {
+                    //     data.city = "";
+                    //     data.area = "";
+                    // } else if (data.province == data.city && data.city != data.area) {
+                    //     data.city = data.area;
+                    // }
                     $('#province-model').val(data.province);
                     $('#province-model').trigger('change');
-                    $('#city-model').val(data.city);
-                    $('#city-model').trigger('change');
-                    $('#area-model').val(data.area);
+                    data.city && $('#city-model').val(data.city);
+                    data.city && $('#city-model').trigger('change');
+                    data.area && $('#area-model').val(data.area);
                 } else {
                     $('#' + item.field + "-model").val(item.amount ? moneyFormat(displayValue) : displayValue);
                 }

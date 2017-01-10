@@ -187,7 +187,7 @@ $(function() {
         type: "img",
         readonly: true
     }, {
-        field: 'remark',
+        field: 'approveNote',
         title: '备注',
         isNotFace: true,
         maxlength: 255

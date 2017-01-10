@@ -53,17 +53,17 @@ $(function() {
             var province = data.province;
             var city = data.city;
             var area = data.area;
-            if (province == city && city != area) {
-                city = area;
-            }
-            if (!city) {
-                city = "";
-                area = "";
-            } else if (!area) {
-                area = city;
-                city = province;
-            }
+            // if (province == city && city == area) {
+            //     city = "";
+            //     area = "";
+            // } else if (province == city && city != area) {
+            //     city = area;
+            // }
             var dcUser = $('#dcUser');
+            if(!province){
+                dcUser.renderDropdown2({});
+                return;
+            }
             dcUser.renderDropdown({
                 listCode: "805060",
                 params: {

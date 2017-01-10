@@ -10,9 +10,9 @@ $(function () {
             required: true,
             type: 'select',
             pageCode: '617015',
-            params: {
-                status: "13"
-            },
+            // params: {
+            //     status: "13"
+            // },
             keyName: 'code',
             valueName: 'code',
             onChange: function (value) {

@@ -57,12 +57,15 @@ $(function () {
         type: 'citySelect',
         readonly: true,
         afterSet: function (v, data) {
-            if (data.province == data.city && data.city != data.area) {
-                data.city = data.area;
-            }
+            // if (data.province == data.city && data.city == data.area) {
+            //     data.city = "";
+            //     data.area = "";
+            // } else if (data.province == data.city && data.city != data.area) {
+            //     data.city = data.area;
+            // }
             $('#province').html(data.province);
-            $('#city').html(data.city);
-            (data.city != data.area) && $('#area').html(data.area);
+            data.city && $('#city').html(data.city);
+            data.area && $('#area').html(data.area);
         }
     }, {
         title: '借款人信息',

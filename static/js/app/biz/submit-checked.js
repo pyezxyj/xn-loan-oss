@@ -8,10 +8,10 @@ $(function() {
     reqApi({
     	code:"617016",
     	json:{"code":creditOrderCode},
-    	aync:true
+        sync:true
     }).done(function(data1){
     	data=data1;
-    })
+    });
 
     var fields = [{
     	field: 'approver',
@@ -20,8 +20,7 @@ $(function() {
     }, {
         title: '档案号',
         field: 'creditOrderCode',
-        type:'select',
-        readonly: true,
+        readonly: true
     },{
         title: '业务编号',
         field: 'creditOrderCode1',

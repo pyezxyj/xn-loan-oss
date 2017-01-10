@@ -1,6 +1,17 @@
 $(function() {
 
     var code = getQueryString('code');
+    var code1 = getQueryString('code1');
+    var data = {};
+    reqApi({
+        code: "617016",
+        json: {
+            code: code1
+        },
+        sync: true
+    }).then(function (data1) {
+        data = data1;
+    });
 
     var fields = [{
         title: '业务编号',
@@ -10,13 +21,17 @@ $(function() {
         title: '贷款品种',
         field: 'loanType',
         key: 'loan_type',
-        formatter: Dict.getNameForList('loan_type'),
+        formatter: function(){
+            return Dict.getNameForList('loan_type')(data.loanType);
+        },
         readonly: true
     }, {
         title: '拟贷金额',
         field: 'loanAmount',
         readonly: true,
-        formatter: moneyFormat
+        formatter: function(){
+            return moneyFormat(data.loanAmount);
+        }
     }, {
         field: 'realName',
         title: '借款人',
@@ -29,7 +44,7 @@ $(function() {
     }, {
         field: 'totalAmount',
         title: '剩余欠款',
-        required: true,
+        amount: true,
         readonly: true
     },{
         title: '备注',
@@ -40,7 +55,7 @@ $(function() {
     buildDetail({
         fields: fields,
         code: code,
-        detailCode: '617082',
+        detailCode: '617086',
         editCode: '617075'
     });
 

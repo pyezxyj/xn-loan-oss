@@ -10,6 +10,8 @@ $(function() {
     }, {
         field: 'type',
         title: '交接事件',
+        formatter: Dict.getNameForList('jiao_event'),
+        key:"jiao_event"
     },{
         field: 'deliverer',
         title: '收件人'

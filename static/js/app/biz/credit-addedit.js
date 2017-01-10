@@ -36,25 +36,30 @@ $(function () {
         readonly: view,
         required: true,
         onChange: function (province, city, area) {
-            if (province == city && city != area) {
-                city = area;
-            }
-            if (!city) {
-                city = "";
-                area = "";
-            } else if (!area) {
-                area = city;
-                city = province;
-            }
+            // if (!city) {
+            //     city = "";
+            //     area = "";
+            // } else if (!area) {
+            //     var prev = $("#area").prev();
+            //     if(prev.css("display") == "none"){
+            //         area = city;
+            //         city = province;
+            //     }
+            // }
+
             var salesman = $('#salesman');
+            if(!province){
+                salesman.renderDropdown2({});
+                return;
+            }
             salesman.renderDropdown({
                 listCode: "805060",
                 params: {
                     roleCode: "SR2016122515012575166",
                     status: "0",
                     province: province,
-                    city: city,
-                    area: area
+                    city: city || "",
+                    area: area || ""
                 },
                 keyName: "userId",
                 valueName: "loginName"
@@ -62,12 +67,15 @@ $(function () {
         },
         afterSet: function (v, data) {
             if (view) {
-                if (data.province == data.city && data.city != data.area) {
-                    data.city = data.area;
-                }
+                // if (data.province == data.city && data.city == data.area) {
+                //     data.city = "";
+                //     data.area = "";
+                // } else if (data.province == data.city && data.city != data.area) {
+                //     data.city = data.area;
+                // }
                 $('#province').html(data.province);
-                $('#city').html(data.city);
-                (data.city != data.area) && $('#area').html(data.area);
+                data.city && $('#city').html(data.city);
+                data.area && $('#area').html(data.area);
             }
         }
     }, sale, {
@@ -193,18 +201,18 @@ $(function () {
                         data[item.field] = item.emptyValue;
                     }
                 }
-                if ($('#jsForm').find('#province')[0]) {
-                    var province = $('#province').val();
-                    var city = $('#city').val();
-                    var area = $('#area').val();
-                    if (!city) {
-                        data['city'] = province;
-                        data['area'] = province;
-                    } else if (!area) {
-                        data['city'] = province;
-                        data['area'] = city;
-                    }
-                }
+                // if ($('#jsForm').find('#province')[0]) {
+                //     var province = $('#province').val();
+                //     var city = $('#city').val();
+                //     var area = $('#area').val();
+                //     if (!city) {
+                //         data['city'] = province;
+                //         data['area'] = province;
+                //     } else if (!area) {
+                //         data['city'] = province;
+                //         data['area'] = city;
+                //     }
+                // }
                 data['id'] = data['code'];
                 data["creditPeopleList"] = $('#creditPeopleListList').bootstrapTable('getData');
                 if (!data["creditPeopleList"].length) {

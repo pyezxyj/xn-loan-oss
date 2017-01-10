@@ -44,7 +44,7 @@ $(function() {
             toastr.info("请选择记录");
             return;
         }
-        window.location.href = "preback_addedit.html?code=" + selRecords[0].code;
+        window.location.href = "preback_addedit.html?code=" + selRecords[0].code + '&code1=' + selRecords[0].creditOrderCode;
     });
     
 });
