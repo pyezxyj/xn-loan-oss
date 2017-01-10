@@ -10,7 +10,7 @@ $(function () {
         type: 'select',
         pageCode: '617015',
         keyName: 'code',
-        valueName: 'code',
+        valueName:  '{{code.DATA}} - {{realName.DATA}}',
         onChange: function (value) {
             if (value) {
                 $("#code1, #loanType, #loanAmount, #realName, #idNo").parent().show();

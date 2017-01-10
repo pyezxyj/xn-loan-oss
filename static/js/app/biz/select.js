@@ -19,9 +19,6 @@ $(function() {
         title: '实还金额',
         amount: true
     }, {
-        field: 'overDays',
-        title: '逾期天数'
-    },{
         field: 'smsCount',
         title: '已发催款短信'
     },{
