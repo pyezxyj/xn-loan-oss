@@ -1636,6 +1636,10 @@ function buildDetail(options) {
                             columns: item.columns,
                             data: displayValue || []
                         });
+                    } else if (item.type == 'datetime' || item.type == 'date') {
+                        $('#' + item.field)
+                            .val( (item.type == 'datetime' ?
+                                    dateTimeFormat : dateFormat)(data[item.field]) );
                     } else {
                         $('#' + item.field).val(item.amount ? moneyFormat(displayValue) : displayValue);
                     }

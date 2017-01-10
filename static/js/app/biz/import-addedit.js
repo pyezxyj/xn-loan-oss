@@ -26,6 +26,7 @@ $(function() {
                 	list[--i].jbBank = jbBank;
                 	if( isNaN(list[i].yhAmount) ){
                 	    toastr.warning("导入的数据中\"还款金额\"包含非数值");
+                        $("#repayList").val("");
                 	    return;
                     }
                     list[i].yhAmount = +list[i].yhAmount * 1000;

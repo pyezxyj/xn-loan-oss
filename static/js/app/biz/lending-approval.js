@@ -251,7 +251,9 @@ $(function() {
                 data['approverUser'] = sessionStorage.getItem('userName');
                 data["approveResult"] = "3";
                 data["approveNote"] = $("#approveNote").val();
-                data["loanAmount"] = +$("#loanAmount").val() * 1000;
+                var loanAmount = $("#loanAmount").val();
+                loanAmount = loanAmount.replace(/,/g, "");
+                data["loanAmount"] = +loanAmount * 1000;
                 data['termAmount'] = +termAmount * 1000;
                 reqApi({
                     code: "617007",
