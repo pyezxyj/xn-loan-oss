@@ -12,7 +12,7 @@ $(function() {
     	sync: true
     }).done(function(data1){
     	data = data1;
-    })
+    });
 
     var fields = [{
         title: '档案号',
@@ -59,14 +59,12 @@ $(function() {
     }, {
         field: 'type',
         title: '交接事件',
-        formatter: Dict.getNameForList('jiao_event'),
         key:"jiao_event",
         type:'select',
         readonly: true
     },{
         field: 'receiveCompany',
         title: '收件单位',
-        formatter: Dict.getNameForList('receive_company'),
         key:"receive_company",
         readonly: true,
         type:'select'
@@ -77,32 +75,28 @@ $(function() {
     },{
         field: 'deliverCompany',
         title: '寄件单位', 
-        formatter: Dict.getNameForList('deli_company'),
         key:"deli_company",
         type:'select',
         readonly: true
     },{
     	field:'deliverer',
     	title:'寄件人',
-    	readonly: true,
+    	readonly: true
     },{
         field: 'typeNote',
         title: '移交说明',
-        readonly: true,
+        readonly: true
        
     },{
         field: 'logiCompany',
         title: '快递',
         type:'select',
-        formatter: Dict.getNameForList('wl_company'),
         key:"wl_company",
-        readonly: true,
-       
+        readonly: true
     },{
         field: 'logiCode',
         title: '快递单号',
-        readonly: true,
-       
+        readonly: true
     },{
         field: 'deliverDatetime',
         title: '寄件时间',

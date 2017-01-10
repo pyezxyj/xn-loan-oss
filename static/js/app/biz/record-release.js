@@ -12,7 +12,7 @@ $(function() {
         title: '抵押物',
         readonly: true,
         formatter: function(v, data){
-        	return data.licenseNo + " + " + v
+        	return data.licenseNo + " + " + v;
         }
     }, {
         title: '车辆号码',
@@ -29,7 +29,7 @@ $(function() {
     }, {
         title: '车座位数',
         field: 'seatNum',
-        readonly: true,
+        readonly: true
     },{
         title: '贷款结清日期',
         field: 'loanSettleDatetime',

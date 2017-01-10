@@ -5,7 +5,6 @@ $(function() {
         field: 'jbBank',
         type:"select",
         key: 'jb_bank',
-        formatter: Dict.getNameForList('jb_bank'),
         required:true
     }, {
         title: '数据源',

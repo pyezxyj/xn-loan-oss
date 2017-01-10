@@ -3,70 +3,34 @@ $(function () {
     var code = getQueryString('code');
     var loanTypeDict = Dict.getNameForList('loan_type');
 
-    var fields = [
-        {
-            field: 'creditOrderCode',
-            title: '档案号',
-            required: true,
-            type: 'select',
-            pageCode: '617015',
-            // params: {
-            //     status: "13"
-            // },
-            keyName: 'code',
-            valueName: 'code',
-            onChange: function (value) {
-                if (value) {
-                    $("#code1, #loanType, #loanAmount, #realName, #idNo").parent().show();
-                    reqApi({
-                        code: '617016',
-                        json: {
-                            code: value
-                        }
-                    }).done(function (data) {
-                        $("#code1").html(value);
-                        $("#loanType").html(loanTypeDict(data.loanType));
-                        $("#loanAmount").html(moneyFormat(data.loanAmount));
-                        $("#realName").html(data.realName);
-                        $("#idNo").html(data.idNo);
-                    });
-                    return;
-                }
-                $("#code1, #loanType, #loanAmount, #realName, #idNo").parent().hide();
+    var fields = [{
+        field: 'creditOrderCode',
+        title: '档案号',
+        required: true,
+        type: 'select',
+        pageCode: '617015',
+        keyName: 'code',
+        valueName: 'code',
+        onChange: function (value) {
+            if (value) {
+                $("#code1, #loanType, #loanAmount, #realName, #idNo").parent().show();
+                reqApi({
+                    code: '617016',
+                    json: {
+                        code: value
+                    }
+                }).done(function (data) {
+                    $("#code1").html(value);
+                    $("#loanType").html(loanTypeDict(data.loanType));
+                    $("#loanAmount").html(moneyFormat(data.loanAmount));
+                    $("#realName").html(data.realName);
+                    $("#idNo").html(data.idNo);
+                });
+                return;
             }
+            $("#code1, #loanType, #loanAmount, #realName, #idNo").parent().hide();
         }
-    //     {
-    //     title: '档案号',
-    //     field: 'creditOrderCode',
-    //     type: 'select',
-    //     listCode: '617020',
-    //     params: {
-    //         status: "13"
-    //     },
-    //     keyName: "code",
-    //     valueName: "code",
-    //     required: true,
-    //     onChange: function (value) {
-    //         if (value) {
-    //             $("#code1, #loanType, #loanAmount, #realName, #idNo").parent().show();
-    //             reqApi({
-    //                 code: '617016',
-    //                 json: {
-    //                     code: value
-    //                 }
-    //             }).done(function (data) {
-    //                 $("#code1").html(value);
-    //                 $("#loanType").html(loanTypeDict(data.loanType));
-    //                 $("#loanAmount").html(moneyFormat(data.loanAmount));
-    //                 $("#realName").html(data.realName);
-    //                 $("#idNo").html(data.idNo);
-    //             });
-    //             return;
-    //         }
-    //         $("#code1, #loanType, #loanAmount, #realName, #idNo").parent().hide();
-    //     }
-    // }
-    , {
+    }, {
         title: '业务编号',
         field: 'code1',
         readonly: true,
@@ -97,14 +61,12 @@ $(function () {
     }, {
         field: 'type',
         title: '交接事件',
-        formatter: Dict.getNameForList('jiao_event'),
         key: "jiao_event",
         type: 'select',
         required: true
     }, {
         field: 'receiveCompany',
         title: '收件单位',
-        formatter: Dict.getNameForList('receive_company'),
         key: "receive_company",
         required: true,
         type: 'select'
@@ -115,7 +77,6 @@ $(function () {
     }, {
         field: 'deliverCompany',
         title: '寄件单位',
-        formatter: Dict.getNameForList('deli_company'),
         key: "deli_company",
         type: 'select',
         required: true
@@ -130,11 +91,9 @@ $(function () {
     }, {
         field: 'logiCompany',
         title: '快递',
-        formatter: Dict.getNameForList('wl_company'),
         key: "wl_company",
         type: 'select',
-        required: true,
-
+        required: true
     }, {
         field: 'logiCode',
         title: '快递单号',

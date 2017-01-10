@@ -14,9 +14,7 @@ $(function() {
     }, {
         field: 'loanAmount',
         title: '核定贷款金额',
-        formatter: function(v) {
-            return moneyFormat(+v);
-        }
+        formatter: moneyFormat
     }, {
         field: 'realName',
         title: '借款人',

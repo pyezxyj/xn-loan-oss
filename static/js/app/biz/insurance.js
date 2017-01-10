@@ -10,8 +10,7 @@ $(function() {
         search:true
     }, {
         field: 'company',
-        title: '保险公司',
-
+        title: '保险公司'
     }, {
         field: 'type',
         title: '保险类型'
@@ -28,11 +27,10 @@ $(function() {
         formatter: dateFormat
     },  {
         field: 'smsCount',
-        title: '续保短信',
+        title: '续保短信'
     },{
     	title:'备注',
-    	field:'remark',
-    	maxlength:255
+    	field:'remark'
     }];
 
     buildList({

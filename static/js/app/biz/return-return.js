@@ -14,7 +14,6 @@ $(function() {
         field: 'loanType',
         type: 'select',
         key: 'loan_type',
-        formatter: Dict.getNameForList('loan_type'),
         readonly: true
     }, {
         title: '核定贷款金额',

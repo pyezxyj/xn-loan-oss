@@ -5,7 +5,7 @@ $(function() {
     	title: '业务员',
         field: 'salesman',
         type: 'select',
-        listCode: "805060",
+        listCode: "805055",
         keyName: "userId",
         valueName: "loginName",
         params: {
@@ -18,21 +18,18 @@ $(function() {
         title: '车行',
         type: 'select',
         key: 'car_type',
-        formatter: Dict.getNameForList('car_type'),
         readonly: true
     }, {
         title: '经办银行',
         field: 'jbBank',
         type: 'select',
         key: 'jb_bank',
-        formatter: Dict.getNameForList('jb_bank'),
         readonly: true
     }, {
         title: '贷款品种',
         field: 'loanType',
         type: 'select',
         key: 'loan_type',
-        formatter: Dict.getNameForList('loan_type'),
         readonly: true
     }, {
         title: '拟贷金额',
@@ -148,7 +145,6 @@ $(function() {
         title: '贷款期限',
         type: 'select',
         key: 'loan_term',
-        formatter: Dict.getNameForList('loan_term'),
         readonly: true
     }, {
         field: 'rate',
@@ -167,16 +163,14 @@ $(function() {
             $("#termAmount").html(result);
         }
     }, {
+        field: 'fee',
+        title: '服务费',
+        readonly: true
+    }, {
         field: 'urgent',
         title: '紧急度',
         type: 'select',
         key: 'urgent',
-        formatter: Dict.getNameForList('urgent'),
-        readonly: true
-    }, {
-        field: 'fee',
-        title: '服务费',
-        formatter: moneyFormat,
         readonly: true
     }, {
         field: 'remark',

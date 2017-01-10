@@ -385,7 +385,7 @@ $.fn.renderDropdown = function (data, keyName, valueName, defaultOption, filter)
 $.fn.renderDropdown2 = function (data, defaultOption) {
     var html = "<option value=''></option>" + (defaultOption || '');
     for (var k in data) {
-        if(data.hasOwnProperty(k)){
+        if (data.hasOwnProperty(k)) {
             html += "<option value='" + k + "'>" + data[k] + "</option>";
         }
     }
@@ -879,7 +879,7 @@ function buildList(options) {
                 }
             }
             //车贷权限控制
-            if(options.pageCode == "617015"){
+            if (options.pageCode == "617015") {
                 json["userId"] = getUserId();
                 json["level"] = getRoleLevel();
             }
@@ -1018,7 +1018,7 @@ function buildDetail(options) {
                 }
                 html += '</li>';
             } else if (item.type == 'password') {
-                html += '<input id="'+item.field+'" type="password" name="'+item.field+'" class="control-def" '+(item.placeholder ? ('placeholder="'+item.placeholder+'"') : '')+'/></li>'
+                html += '<input id="' + item.field + '" type="password" name="' + item.field + '" class="control-def" ' + (item.placeholder ? ('placeholder="' + item.placeholder + '"') : '') + '/></li>'
             } else if (item.type == 'select') {
                 dropDownList.push(item);
                 html += '<select ' + (item.multiple ? 'multiple' : '') + ' id="' + item.field + '" name="' + item.field + '" class="control-def"></select></li>';
@@ -1180,7 +1180,7 @@ function buildDetail(options) {
                 keyName: item.keyName,
                 valueName: item.valueName,
                 dict: item.dict
-            }, (item.defaultOption ? {defaultOption: '<option value="0">'+item.defaultOption+'</option>'} : {})));
+            }, (item.defaultOption ? {defaultOption: '<option value="0">' + item.defaultOption + '</option>'} : {})));
             $('#' + item.field)[0].pageOptions = {
                 pageCode: item.pageCode,
                 keyName: item.keyName,
@@ -1465,7 +1465,7 @@ function buildDetail(options) {
                                 var src = (item.indexOf('http://') > -1 ? item : (OSS.picBaseUrl + '/' + item));
                                 var src1 = (item.indexOf('http://') > -1 ? item.substring(item.lastIndexOf("/") + 1) : item);
                                 var name = src1.substring(0, src1.lastIndexOf("_")) + "." + suffix;
-                                if ( isDocOrAviOrZip(suffix) ) {
+                                if (isDocOrAviOrZip(suffix)) {
 
                                     imgsHtml += '<div class="img-ctn" data-src="' + src1 + '" style="display: inline-block;position: relative;">' +
                                         '<div class="center-img-wrap">' +
@@ -1473,7 +1473,7 @@ function buildDetail(options) {
                                         '<i class="zmdi zmdi-download zmdi-hc-fw"></i></div>' +
                                         '<div class="t_3dot w100p" title="' + name + '">' + name + '</div>' +
                                         '</div>';
-                                } else if ( isAcceptImg(suffix) ) {
+                                } else if (isAcceptImg(suffix)) {
                                     imgsHtml += '<div class="img-ctn" data-src="' + src1 + '" style="display: inline-block;position: relative;">' +
                                         '<div class="center-img-wrap">' +
                                         '<img src="' + src + OSS.picShow + '" class="center-img" />' +
@@ -1851,7 +1851,7 @@ function uploadInit() {
                         var sourceLink = file.name;
                         var suffix = sourceLink.slice(sourceLink.lastIndexOf('.') + 1);
                         var imgCtn;
-                        if ( isDocOrAviOrZip(suffix) ) {
+                        if (isDocOrAviOrZip(suffix)) {
                             imgCtn = $(
                                 '<div id="' + file.id + '" class="img-ctn" style="display: inline-block;position: relative;vertical-align: top;">' +
                                 '<div class="center-img-wrap">' +
@@ -1867,7 +1867,7 @@ function uploadInit() {
                                 '</div>' +
                                 '</div>' +
                                 '</div>').appendTo(editor);
-                        } else if ( isAcceptImg(suffix) ) {
+                        } else if (isAcceptImg(suffix)) {
                             imgCtn = $('<div id="' + file.id + '" class="img-ctn" style="display: inline-block;position: relative;vertical-align: top;">' +
                                 '<div class="center-img-wrap">' +
                                 '<img src="' + defaultImg + '" class="center-img"/>' +
@@ -1949,9 +1949,9 @@ function uploadInit() {
                     imgCtn.find(".progress-wrap").hide();
                     var suffix = sourceLink.slice(sourceLink.lastIndexOf('.') + 1);
 
-                    if ( isDocOrAviOrZip(suffix) ) {
+                    if (isDocOrAviOrZip(suffix)) {
                         imgCtn.attr("data-src", sourceLink1);
-                    } else if ( isAcceptImg(suffix) ) {
+                    } else if (isAcceptImg(suffix)) {
                         imgCtn.find("img").attr("src", sourceLink + OSS.picShow);
                         imgCtn.attr("data-src", sourceLink1);
                     } else {
@@ -2131,15 +2131,15 @@ function addEditTableListener1(addId, removeId, editId, tableId, columns, option
             toastr.info("请选择记录");
             return;
         }
-        if(selRecords.length=1){
-        	confirm("确认删除该信息？").then(function() {
-        		$(tableId).bootstrapTable('remove', {
+        if (selRecords.length = 1) {
+            confirm("确认删除该信息？").then(function () {
+                $(tableId).bootstrapTable('remove', {
                     field: 'code',
                     values: [selRecords[0].code]
                 });
-    		});
+            });
         }
-        
+
     });
 }
 
@@ -2238,7 +2238,7 @@ function buildDetail1(options) {
                 }
                 html += '</li>';
             } else if (item.type == 'password') {
-                html += '<input id="'+item.field+'" type="password" name="'+item.field+'" class="control-def" '+(item.placeholder ? ('placeholder="'+item.placeholder+'"') : '')+'/></li>'
+                html += '<input id="' + item.field + '" type="password" name="' + item.field + '" class="control-def" ' + (item.placeholder ? ('placeholder="' + item.placeholder + '"') : '') + '/></li>'
             } else if (item.type == 'select') {
                 dropDownList.push(item);
                 html += '<select ' + (item.multiple ? 'multiple' : '') + ' id="' + item.field + '-model" name="' + item.field + '" class="control-def"></select></li>';
@@ -2287,7 +2287,7 @@ function buildDetail1(options) {
                 params: item.params,
                 keyName: item.keyName,
                 valueName: item.valueName
-            }, (item.defaultOption ? {defaultOption: '<option value="0">'+item.defaultOption+'</option>'} : {})));
+            }, (item.defaultOption ? {defaultOption: '<option value="0">' + item.defaultOption + '</option>'} : {})));
             if (item.pageCode) {
                 $('#' + item.field)[0].pageOptions = {
                     pageCode: item.pageCode,
@@ -2315,7 +2315,7 @@ function buildDetail1(options) {
                 keyName: item.keyName,
                 valueName: item.valueName,
                 dict: item.dict
-            }, (item.defaultOption ? {defaultOption: '<option value="0">'+item.defaultOption+'</option>'} : {})));
+            }, (item.defaultOption ? {defaultOption: '<option value="0">' + item.defaultOption + '</option>'} : {})));
             $('#' + item.field)[0].pageOptions = {
                 pageCode: item.pageCode,
                 keyName: item.keyName,
@@ -2623,7 +2623,7 @@ function buildDetail1(options) {
                             var src = (item.indexOf('http://') > -1 ? item : (OSS.picBaseUrl + '/' + item));
                             var src1 = (item.indexOf('http://') > -1 ? item.substring(item.lastIndexOf("/") + 1) : item);
                             var name = src1.substring(0, src1.lastIndexOf("_")) + "." + suffix;
-                            if ( isDocOrAviOrZip(suffix) ) {
+                            if (isDocOrAviOrZip(suffix)) {
 
                                 imgsHtml += '<div class="img-ctn" data-src="' + src1 + '" style="display: inline-block;position: relative;">' +
                                     '<div class="center-img-wrap">' +
@@ -2632,7 +2632,7 @@ function buildDetail1(options) {
                                     '</div>' +
                                     '<div class="t_3dot w100p" title="' + name + '">' + name + '</div>' +
                                     '</div>';
-                            } else if ( isAcceptImg(suffix) ) {
+                            } else if (isAcceptImg(suffix)) {
                                 imgsHtml += '<div class="img-ctn" data-src="' + src1 + '" style="display: inline-block;position: relative;">' +
                                     '<div class="center-img-wrap">' +
                                     '<img src="' + src + OSS.picShow + '" style="max-width: 300px;" />' +
@@ -2692,7 +2692,7 @@ function buildDetail1(options) {
                         var src = (item.indexOf('http://') > -1 ? item : (OSS.picBaseUrl + '/' + item));
                         var src1 = (item.indexOf('http://') > -1 ? item.substring(item.lastIndexOf("/") + 1) : item);
                         var name = src1.substring(0, src1.lastIndexOf("_")) + "." + suffix;
-                        if ( isDocOrAviOrZip(suffix) ) {
+                        if (isDocOrAviOrZip(suffix)) {
                             imgsHtml += '<div class="img-ctn" data-src="' + src1 + '" style="display: inline-block;position: relative;">' +
                                 '<div class="center-img-wrap">' +
                                 '<img width="100" src="' + getDocOrAviOrZipIcon(suffix) + '" />' +
@@ -2701,7 +2701,7 @@ function buildDetail1(options) {
                                 '</div>' +
                                 '<div class="t_3dot w100p" title="' + name + '">' + name + '</div>' +
                                 '</div>';
-                        } else if ( isAcceptImg(suffix) ) {
+                        } else if (isAcceptImg(suffix)) {
                             imgsHtml += '<div class="img-ctn" data-src="' + src1 + '" style="display: inline-block;position: relative;">' +
                                 '<div class="center-img-wrap">' +
                                 '<img src="' + src + OSS.picShow + '" style="max-width: 300px;" />' +
@@ -2852,11 +2852,9 @@ function calculateMonthlyPayments(bj, ll, time) {
         ll = +ll / 1200;    //除以12个月，再除以100，因为传入的是百分比
         bj = +bj;
         time = +time;
-        if (time !== -1) {
-            var a1 = Math.pow(ll + 1, time);
-            result = (a1 * bj * ll) / (a1 - 1);
-            result = result.toFixed(2);
-        }
+        var a1 = Math.pow(ll + 1, time);
+        result = (a1 * bj * ll) / (a1 - 1);
+        result = result.toFixed(2);
     }
     return result;
 }
@@ -3088,7 +3086,7 @@ function getImportDataFun(options, dw) {
         }
     }
 }
-function isDocOrAviOrZip(suffix){
+function isDocOrAviOrZip(suffix) {
     if (suffix == 'docx' || suffix == 'doc' || suffix == 'pdf' ||
         suffix == 'xls' || suffix == 'xlsx' || suffix == "mp4" ||
         suffix == "avi" || suffix == "rar" || suffix == "zip") {
@@ -3110,18 +3108,18 @@ function getDocOrAviOrZipIcon(suffix) {
     };
     return suffixMap[suffix];
 }
-function isAcceptImg(suffix){
+function isAcceptImg(suffix) {
     if (suffix == 'jpg' || suffix == 'gif' ||
         suffix == 'png' || suffix == 'bmp') {
         return true;
     }
     return false;
 }
-function getDefaultImgIcon(){
+function getDefaultImgIcon() {
     var src = __inline("../images/default_img.png");
     return src;
 }
-function getDefaultFileIcon(){
+function getDefaultFileIcon() {
     var src = __inline("../images/default_file.png");
     return src;
 }

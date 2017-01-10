@@ -18,21 +18,18 @@ $(function () {
         title: '车行',
         type: 'select',
         key: 'car_type',
-        formatter: Dict.getNameForList('car_type'),
         readonly: true
     }, {
         title: '经办银行',
         field: 'jbBank',
         type: 'select',
         key: 'jb_bank',
-        formatter: Dict.getNameForList('jb_bank'),
         readonly: true
     }, {
         title: '贷款品种',
         field: 'loanType',
         type: 'select',
         key: 'loan_type',
-        formatter: Dict.getNameForList('loan_type'),
         readonly: true
     }, {
         title: '拟贷金额',
@@ -114,12 +111,18 @@ $(function () {
         field: 'brand',
         title: '汽车品牌',
         required: true,
-        isNotFace: true
+        isNotFace: true,
+        afterSet: function (v, data) {
+            $("#brand").val(data.carList && data.carList.length ? data.carList[0].brand : "");
+        }
     }, {
         field: 'model',
         title: '汽车型号',
         required: true,
-        isNotFace: true
+        isNotFace: true,
+        afterSet: function (v, data) {
+            $("#model").val(data.carList && data.carList.length ? data.carList[0].model : "");
+        }
     }, {
         field: 'price',
         title: '车价',
@@ -132,6 +135,9 @@ $(function () {
                 var rate = (+firstPay * 100 / +price).toFixed(2);
                 $("#firstRate").html(rate);
             }
+        },
+        afterSet: function (v, data) {
+            $("#price").val(data.carList && data.carList.length ? data.carList[0].price : "");
         }
     }, {
         field: 'firstAmount',
@@ -145,6 +151,9 @@ $(function () {
                 var rate = (+firstPay * 100 / +price).toFixed(2);
                 $("#firstRate").html(rate);
             }
+        },
+        afterSet: function (v, data) {
+            $("#firstAmount").val(data.carList && data.carList.length ? data.carList[0].firstAmount : "");
         }
     }, {
         field: 'firstRate',
@@ -177,7 +186,6 @@ $(function () {
         title: '贷款期限',
         type: 'select',
         key: 'loan_term',
-        formatter: Dict.getNameForList('loan_term'),
         required: true,
         onChange: function (value) {
             var bj = $("#loanAmount").val(),
@@ -202,7 +210,6 @@ $(function () {
         title: '月供',
         readonly: true,
         required: true,
-        // formatter: moneyFormat,
         afterSet: function (v, data) {
             var bj = +data.loanAmount / 1000,
                 ll = data.rate,
@@ -215,7 +222,6 @@ $(function () {
         title: '紧急度',
         type: 'select',
         key: 'urgent',
-        formatter: Dict.getNameForList('urgent'),
         required: true
     }, {
         field: 'fee',
@@ -246,14 +252,14 @@ $(function () {
                     toastr.warning("月供不能为空");
                     return;
                 }
-                if(!$.isNumeric(termAmount)){
+                if (!$.isNumeric(termAmount)) {
                     toastr.warning("月供必须为有效数字");
                     return;
                 }
                 var creditPeopleList = $('#creditPeopleListList').bootstrapTable('getData');
                 for (var i = 0; i < creditPeopleList.length; i++) {
-                    if ( !(creditPeopleList[i].mobile && creditPeopleList[i].workUnit &&
-                        creditPeopleList[i].workPhone && creditPeopleList[i].address) ) {
+                    if (!(creditPeopleList[i].mobile && creditPeopleList[i].workUnit &&
+                        creditPeopleList[i].workPhone && creditPeopleList[i].address)) {
                         toastr.info("借款人信息未填完整");
                         return;
                     }

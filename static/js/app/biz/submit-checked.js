@@ -45,7 +45,7 @@ $(function() {
         title: '借款人',
         afterSet:function(){
         	$("#realName").html(data.realName);
-        } ,
+        },
         readonly:true
     }, {
         field: 'idNo',
@@ -57,13 +57,11 @@ $(function() {
     }, {
         field: 'type',
         title: '交接事件',
-        formatter: Dict.getNameForList('jiao_event'),
         key:"jiao_event",
         readonly: true
     },{
         field: 'receiveCompany',
         title: '收件单位',
-        formatter: Dict.getNameForList('receive_company'),
         key:"receive_company",
         readonly: true
     },{
@@ -73,30 +71,27 @@ $(function() {
     },{
         field: 'deliverCompany',
         title: '寄件单位',
-        formatter: Dict.getNameForList('deli_company'),
         key:"deli_company",
         readonly: true
     },{
     	field:'deliverer',
     	title:'寄件人',
-    	readonly: true,
+    	readonly: true
     },{
         field: 'typeNote',
         title: '移交说明',
-        readonly: true,
+        readonly: true
        
     },{
         field: 'logiCompany',
         title: '快递',
-        formatter: Dict.getNameForList('wl_company'),
         key:"wl_company",
-        readonly: true,
+        readonly: true
        
     },{
         field: 'logiCode',
         title: '快递单号',
-        readonly: true,
-       
+        readonly: true
     },{
         field: 'deliverDatetime',
         title: '寄件时间',

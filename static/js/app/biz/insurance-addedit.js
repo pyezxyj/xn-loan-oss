@@ -55,7 +55,7 @@ $(function() {
             amount: true,
             formatter:moneyFormat,
             required: true,
-            readonly: view,
+            readonly: view
         }]
     }, {
         field: 'amount',

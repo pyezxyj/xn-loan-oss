@@ -151,7 +151,6 @@ $(function() {
         title: '贷款期限',
         type: 'select',
         key: 'loan_term',
-        formatter: Dict.getNameForList('loan_term'),
         readonly: true
     }, {
         field: 'rate',
@@ -179,7 +178,6 @@ $(function() {
         title: '紧急度',
         type: 'select',
         key: 'urgent',
-        formatter: Dict.getNameForList('urgent'),
         readonly: true
     }, {
         field: 'qkPdf',

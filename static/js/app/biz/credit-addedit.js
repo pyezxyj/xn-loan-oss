@@ -84,7 +84,6 @@ $(function () {
         type: 'select',
         required: true,
         key: 'car_type',
-        formatter: Dict.getNameForList('car_type'),
         readonly: view
     }, {
         title: '经办银行',
@@ -92,7 +91,6 @@ $(function () {
         type: 'select',
         required: true,
         key: 'jb_bank',
-        formatter: Dict.getNameForList('jb_bank'),
         readonly: view
     }, {
         title: '贷款品种',
@@ -100,7 +98,6 @@ $(function () {
         type: 'select',
         required: true,
         key: 'loan_type',
-        formatter: Dict.getNameForList('loan_type'),
         readonly: view
     }, {
         title: '拟贷金额',

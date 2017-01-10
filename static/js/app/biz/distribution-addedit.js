@@ -11,7 +11,6 @@ $(function() {
         title: '贷款品种',
         field: 'loanType',
         formatter: Dict.getNameForList('loan_type'),
-        key:'loan_type',
         readonly: true
     }, {
         title: '拟贷金额',
@@ -40,25 +39,11 @@ $(function() {
         field: 'dcUser',
         title: '调查员',
         type: "select",
-        // listCode: "805060",
-        // keyName: "userId",
-        // required: true,
-        // valueName: "loginName",
-        // params: {
-        //     roleCode: "SR2016122515014423585",
-        //     status: "0"
-        // },
         data: {},
         afterSet: function (v, data) {
             var province = data.province;
             var city = data.city;
             var area = data.area;
-            // if (province == city && city == area) {
-            //     city = "";
-            //     area = "";
-            // } else if (province == city && city != area) {
-            //     city = area;
-            // }
             var dcUser = $('#dcUser');
             if(!province){
                 dcUser.renderDropdown2({});

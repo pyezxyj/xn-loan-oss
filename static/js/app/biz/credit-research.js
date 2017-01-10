@@ -2,8 +2,8 @@ $(function () {
 
     var code = getQueryString('code');
     var idKindList = Dict.getNameForList('id_kind');
-    var creditResultDict = Dict.getNameForList('credit_result');
-    var courtResultDict = Dict.getNameForList('court_result');
+    // var creditResultDict = Dict.getNameForList('credit_result');
+    // var courtResultDict = Dict.getNameForList('court_result');
 
     var fields = [{
         title: '业务员',
@@ -24,7 +24,6 @@ $(function () {
         type: 'select',
         required: true,
         key: 'car_type',
-        formatter: Dict.getNameForList('car_type'),
         readonly: true
     }, {
         title: '经办银行',
@@ -32,7 +31,6 @@ $(function () {
         type: 'select',
         required: true,
         key: 'jb_bank',
-        formatter: Dict.getNameForList('jb_bank'),
         readonly: true
     }, {
         title: '贷款品种',
@@ -40,7 +38,6 @@ $(function () {
         type: 'select',
         required: true,
         key: 'loan_type',
-        formatter: Dict.getNameForList('loan_type'),
         readonly: true
     }, {
         title: '拟贷金额',
@@ -128,7 +125,6 @@ $(function () {
         title: '资信结果',
         type: 'select',
         key: 'credit_result',
-        formatter: creditResultDict,
         required: true,
         afterSet: function (v, data) {
             if(data.creditPeopleList && data.creditPeopleList.length){
@@ -152,7 +148,6 @@ $(function () {
         title: '法院结果',
         type: 'select',
         key: 'court_result',
-        formatter: courtResultDict,
         required: true,
         afterSet: function (v, data) {
             if(data.creditPeopleList && data.creditPeopleList.length){
