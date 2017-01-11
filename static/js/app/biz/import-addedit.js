@@ -24,6 +24,8 @@ $(function() {
                 var list = $("#repayList").data("list");
                 for(var i = list.length; i;){
                 	list[--i].jbBank = jbBank;
+                	var amount = list[i].yhAmount;
+                    list[i].yhAmount = amount.replace(/,|¥|\$/g,"").replace(/^\s*|\s*$/g, "");
                 	if( isNaN(list[i].yhAmount) ){
                 	    toastr.warning("导入的数据中\"还款金额\"包含非数值");
                         $("#repayList").val("");

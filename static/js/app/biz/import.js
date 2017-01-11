@@ -37,6 +37,10 @@ $(function() {
         title: '实还金额',
         formatter: moneyFormat
     }, {
+        field: 'overAmount',
+        title: '逾期金额',
+        formatter: moneyFormat
+    }, {
         field: 'remark',
         title: '备注',
         maxlength:255

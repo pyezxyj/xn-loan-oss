@@ -23,6 +23,7 @@ $(function() {
         field: 'status',
         title: '状态',
         data: {
+            '3': '待录入',
             '1': '待释放',
             '2': '已释放'
         },
@@ -39,7 +40,7 @@ $(function() {
         columns: columns,
         pageCode: '617036',
         searchParams: {
-            statusList: [1, 2]
+            statusList: [1, 2, 3]
         }
     });
     $("#releaseBtn").on("click", function() {
