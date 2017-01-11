@@ -20,6 +20,8 @@ $(function() {
     buildList({
         router: 'node',
         columns: columns,
+        pageSize:12,
+        pageList:[12],
         pageCode: '617090'
     });
    

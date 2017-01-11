@@ -905,8 +905,8 @@ function buildList(options) {
         sidePagination: 'server',
         totalRows: 0,
         pageNumber: 1,
-        pageSize: 10,
-        pageList: [10, 20, 30, 40, 50],
+        pageSize:options.pageSize|| 10,
+        pageList:options.pageList|| [10, 20, 30, 40, 50],
         columns: options.columns
     });
 
