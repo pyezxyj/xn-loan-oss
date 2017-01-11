@@ -114,7 +114,8 @@ $(function() {
         fields: fields,
         code: code,
         editCode: '617061',
-        detailCode: '617066'
+        detailCode: '617066',
+        saveText: '接收'
     });
 
 });

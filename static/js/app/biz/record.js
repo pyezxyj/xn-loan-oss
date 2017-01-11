@@ -43,13 +43,31 @@ $(function() {
             statusList: [1, 2, 3]
         }
     });
+    $("#edit1Btn").on("click", function () {
+        var selRecords = $('#tableList').bootstrapTable('getSelections');
+        if (selRecords.length <= 0) {
+            toastr.info("请选择记录");
+            return;
+        }
+        var selRecord = selRecords[0];
+        if(selRecord.status != "3"){
+            toastr.info("该条记录不是待录入状态");
+            return;
+        }
+        window.location.href = "record_addedit.html?code=" + selRecord.code;
+    });
     $("#releaseBtn").on("click", function() {
         var selRecords = $('#tableList').bootstrapTable('getSelections');
         if (selRecords.length <= 0) {
             toastr.info("请选择记录");
             return;
         }
-        window.location.href = "record_release.html?code=" + selRecords[0].code;
+        var selRecord = selRecords[0];
+        if(selRecord.status != "1"){
+            toastr.info("该条记录不是待释放状态");
+            return;
+        }
+        window.location.href = "record_release.html?code=" + selRecord.code;
     });
    
 });

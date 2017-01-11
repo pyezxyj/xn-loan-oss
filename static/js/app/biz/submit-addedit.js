@@ -112,7 +112,8 @@ $(function () {
 
     buildDetail({
         fields: fields,
-        addCode: '617060'
+        addCode: '617060',
+        saveText: '移交'
     });
 
 });

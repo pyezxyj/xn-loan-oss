@@ -30,7 +30,8 @@ $(function() {
         title: '车座位数',
         field: 'seatNum',
         required:true,
-        readonly: view
+        readonly: view,
+        "Z+": true
     },{
         title: '发票号码',
         field: 'invoiceNo',

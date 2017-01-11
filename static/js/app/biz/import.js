@@ -51,7 +51,7 @@ $(function() {
         columns: columns,
         pageCode: '617083',
         searchParams: {
-            status: "1"
+            statusList: ["1", "2", "3", "4", "5"]
         }
     });
    

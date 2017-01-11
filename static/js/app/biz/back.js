@@ -38,7 +38,19 @@ $(function() {
     }, {
         field: 'skDatetime',
         title: '收款时间',
-        formatter: dateFormat
+        formatter: function (v, data) {
+            var nodeList = data.nodeList,
+                date = "-";
+            if(nodeList && nodeList.length){
+                for(var i = 0; i < nodeList.length; i++){
+                    if(nodeList[i].type == "13"){
+                        date = nodeList[i].endDatetime;
+                        return date && dateFormat(date) || "-";
+                    }
+                }
+            }
+            return date;
+        }
     }];
 
     buildList({

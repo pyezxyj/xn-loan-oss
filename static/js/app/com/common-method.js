@@ -905,8 +905,8 @@ function buildList(options) {
         sidePagination: 'server',
         totalRows: 0,
         pageNumber: 1,
-        pageSize:options.pageSize|| 10,
-        pageList:options.pageList|| [10, 20, 30, 40, 50],
+        pageSize: options.pageSize || 10,
+        pageList: options.pageList || [10, 20, 30, 40, 50],
         columns: options.columns
     });
 
@@ -1071,7 +1071,7 @@ function buildDetail(options) {
         btnHtml += '</li>';
         html += btnHtml;
     } else {
-        html += '<li><input id="subBtn" type="button" class="btn margin-left-100" value="保存"/><input id="backBtn" type="button" class="btn margin-left-20" value="返回"/></li>';
+        html += '<li><input id="subBtn" type="button" class="btn margin-left-100" value="'+( options.saveText || "保存" )+'"/><input id="backBtn" type="button" class="btn margin-left-20" value="返回"/></li>';
     }
 
     $('#form-info').append(html);

@@ -6,7 +6,11 @@ $(function() {
         checkbox: true
     },{
         field: 'area',
-        title: '地区'
+        title: '地区',
+        formatter: function (v, data) {
+            var result = ( data.province || "" ) + ( data.city || "" ) + ( data.area || "" );
+            return result || "-";
+        }
     }, {
         field: 'num',
         title: '业务数量'
@@ -33,7 +37,10 @@ $(function() {
     buildList({
         router: 'area',
         columns: columns,
-        pageCode: '617092'
+        pageCode: '617092',
+        searchParams: {
+            status: "14"
+        }
     });
    
    
