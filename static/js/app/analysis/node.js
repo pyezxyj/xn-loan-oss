@@ -20,8 +20,8 @@ $(function() {
     buildList({
         router: 'node',
         columns: columns,
-        pageSize:13,
-        pageList:[13],
+        pageSize: 20,
+        pageList: [20],
         pageCode: '617090'
     });
 });

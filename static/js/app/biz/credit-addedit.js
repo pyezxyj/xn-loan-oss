@@ -198,18 +198,6 @@ $(function () {
                         data[item.field] = item.emptyValue;
                     }
                 }
-                // if ($('#jsForm').find('#province')[0]) {
-                //     var province = $('#province').val();
-                //     var city = $('#city').val();
-                //     var area = $('#area').val();
-                //     if (!city) {
-                //         data['city'] = province;
-                //         data['area'] = province;
-                //     } else if (!area) {
-                //         data['city'] = province;
-                //         data['area'] = city;
-                //     }
-                // }
                 data['id'] = data['code'];
                 data["creditPeopleList"] = $('#creditPeopleListList').bootstrapTable('getData');
                 if (!data["creditPeopleList"].length) {

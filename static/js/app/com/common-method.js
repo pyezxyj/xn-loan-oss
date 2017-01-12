@@ -614,6 +614,10 @@ function buildList(options) {
                 html += '<li><label>' + item.title + '</label><select ' + (item.multiple ? 'multiple' : '') + ' id="' + item.field + '" name="' + item.field + '"></select></li>';
             } else if (item.type == 'date') {
 
+            } else if (item.type == "citySelect") {
+                html += '<li class="clearfix" style="width:56%;"><label>' + item.title + '</label><div id="city-group"><select id="province" name="province" class="control-def prov"></select>' +
+                    '<select id="city" name="city" class="control-def city"></select>' +
+                    '<select id="area" name="area" class="control-def dist"></select></div></li>';
             } else {
                 html += '<li><label>' + item.title + '</label><input id="' + item.field + '" name="' + item.field + '" type="text"/></li>';
             }
@@ -689,6 +693,10 @@ function buildList(options) {
             $('#' + item.field).html('<option value=""></option>');
         }
     }
+
+    $("#city-group").citySelect && $("#city-group").citySelect({
+        required: false
+    });
 
     $('#searchBtn').click(function () {
         $('#tableList').bootstrapTable('refresh', {url: $('#tableList').bootstrapTable('getOptions').url});
@@ -1006,6 +1014,8 @@ function buildDetail(options) {
                     '<span id="province" name="province" style="display: inline-block;"></span>' +
                     '<span id="city" name="city" style="display: inline-block;padding: 0 8px;"></span>' +
                     '<span id="area" name="area" style="display: inline-block;"></span></li>'
+            } else if(item.type == 'o2m' && item.useData){
+                html += '<li class="clearfix" type="' + (item.amount ? 'amount' : '') + '" style="' + (item.width ? ('width: ' + item.width + ';display:inline-block;') : '') + (item.hidden ? 'display: none;' : '') + '"><label>' + item.title + '</label><div id="' + item.field + '" name="' + item.field + '"></div></li>';
             } else {
                 html += '<li class="clearfix" type="' + (item.amount ? 'amount' : '') + '" style="' + (item.width ? ('width: ' + item.width + ';display:inline-block;') : '') + (item.hidden ? 'display: none;' : '') + '"><label>' + item.title + ':</label><span id="' + item.field + '" name="' + item.field + '"></span></li>';
             }
@@ -1334,7 +1344,7 @@ function buildDetail(options) {
                         if (item.pageCode) {
                             $('#' + item.field).html('<table id="' + item.field + 'List"></table>');
                             var searchParams = {};
-                            searchParams[item['key']] = $('#code').val();
+                            searchParams[item['key']] = item.o2mvalue || $('#code').val();
                             var options1 = {
                                 columns: item.columns,
                                 pageCode: item.pageCode,
@@ -1345,6 +1355,9 @@ function buildDetail(options) {
                             item.detailFormatter && (options1.detailFormatter = item.detailFormatter);
                             buildList(options1);
                         } else {
+                            if(item.useData){
+                                displayValue = data || [];
+                            }
                             $('#' + item.field).html('<table id="' + item.field + 'List"></table>');
                             $('#' + item.field + 'List').bootstrapTable({
                                 striped: true,
@@ -1448,7 +1461,19 @@ function buildDetail(options) {
 
 
                     } else if (item.type == 'img') {
+                        var value1 = item.value1;
                         var realValue = data[item['[value]']] || displayValue || '';
+                        if(value1){
+                            value1 = value1.split(".");
+                            var temp = data[ value1[0] ];
+                            for(var k = 1; temp && k < value1.length; k++){
+                                if($.isArray(temp)){
+                                    temp = temp[0];
+                                }
+                                temp = temp && temp[ value1[k] ] || "";
+                            }
+                            realValue = temp || "";
+                        }
                         if ($.isArray(realValue)) {
                             var imgHtml = '';
                             realValue.forEach(function (img) {
