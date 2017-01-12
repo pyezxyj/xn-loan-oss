@@ -58,11 +58,13 @@ $(function() {
         field: 'type',
         title: '交接事件',
         key:"jiao_event",
+        formatter: Dict.getNameForList('jiao_event'),
         readonly: true
     },{
         field: 'receiveCompany',
         title: '收件单位',
         key:"receive_company",
+        formatter: Dict.getNameForList('receive_company'),
         readonly: true
     },{
     	field:'receiver',
@@ -72,6 +74,7 @@ $(function() {
         field: 'deliverCompany',
         title: '寄件单位',
         key:"deli_company",
+        formatter: Dict.getNameForList('deli_company'),
         readonly: true
     },{
     	field:'deliverer',

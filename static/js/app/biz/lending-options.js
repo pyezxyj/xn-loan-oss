@@ -165,6 +165,7 @@ $(function() {
     }, {
         field: 'fee',
         title: '服务费',
+        formatter:moneyFormat,
         readonly: true
     }, {
         field: 'urgent',

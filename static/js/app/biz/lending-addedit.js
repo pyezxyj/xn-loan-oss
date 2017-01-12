@@ -129,7 +129,7 @@ $(function () {
         amount: true,
         required: true,
         onKeyup: function (value) {
-            var firstPay = $("#firstPay").val().replace(/,/g, "");
+            var firstPay = $("#firstAmount").val().replace(/,/g, "");
             var price = value.replace(/,/g, "");
             if ($.isNumeric(price) && $.isNumeric(firstPay)) {
                 var rate = (+firstPay * 100 / +price).toFixed(2);
