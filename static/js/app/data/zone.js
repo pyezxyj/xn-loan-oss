@@ -5,19 +5,22 @@ $(function(){
 		title:'',
 		checkbox:true
 	},{
-		field:'',
+		field:'county',
 		title:'县市名称 '
 	},{
-		field:'',
+		field:'type',
 		title:'类型 ',
 		search:true,
+		key:"zone_type",
+		formatter: Dict.getNameForList("zone_type"),
 		type:'select'
 	},{
-		field:'',
+		field:'updater',
 		title:'最近修改人 '
 	},{
-		field:'',
-		title:'最近修改时间 '
+		title:'最近修改时间',
+		field:'updaterDatetime', 
+		formatter: dateTimeFormat
 	},{
 		field:'remark',
 		title:'备注'
@@ -26,7 +29,8 @@ $(function(){
 	buildList({
 		router:"zone",
 		columns:columns,
-		pageCode:''
+		pageCode:'617125',
+		deleteCode:'617121'
 	});
 	
 	

@@ -58,10 +58,10 @@ Dict.getName1 = function (type, key, value) {
     return result;
 };
 
-Dict.getNameForList = function(type) {
+Dict.getNameForList = function(type,code) {
 	var res;
 	reqApi({
-		code: '807706',
+		code: code ||'807706',
 		cache: true,
 		sync: true,
 		json: {

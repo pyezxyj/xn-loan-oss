@@ -3,13 +3,14 @@ $(function(){
     var view = !!getQueryString('v');
     
 	var fields=[{
-		field:'',
+		field:'county',
 		title:'县市名称 ',
 		required:true,
 		readonly:view
 	},{
-		field:'',
+		field:'type',
 		title:'类型 ',
+        key:'zone_type',
 		search:true,
 		type:'select',
 		required:true,
@@ -24,9 +25,9 @@ $(function(){
 	buildDetail({
 		code:code,
 		fields:fields,
-		addeCode:'',
-		editCode:'',
-		deleteCode:''
+		addCode:'617120',
+		editCode:'617122',
+		detailCode:'617126',
 	});
 	
 	

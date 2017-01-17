@@ -31,25 +31,19 @@ $(function () {
 
     var fields = [{
         title: "地区",
-        field: "citySelect",
-        type: 'citySelect',
+        field: "province",
+        type: 'select',
+        pageCode:"617127",
+        keyName:"code",
+        valueName:"{{county.DATA}}",
         readonly: view,
         required: true,
-        onChange: function (province, city, area) {
-            // if (!city) {
-            //     city = "";
-            //     area = "";
-            // } else if (!area) {
-            //     var prev = $("#area").prev();
-            //     if(prev.css("display") == "none"){
-            //         area = city;
-            //         city = province;
-            //     }
-            // }
-
+        onChange: function (data) {
             var salesman = $('#salesman');
-            if(!province){
+            var carStore = $("#carStore");
+            if(!data){
                 salesman.renderDropdown2({});
+                carStore.renderDropdown2({});
                 return;
             }
             salesman.renderDropdown({
@@ -57,34 +51,34 @@ $(function () {
                 params: {
                     roleCode: "SR2016122515012575166",
                     status: "0",
-                    province: province,
-                    city: city || "",
-                    area: area || ""
+                    province: data,
                 },
                 keyName: "userId",
                 valueName: "loginName"
             });
+            carStore.renderDropdown({
+                listCode: "617107",
+                params: {
+                    "district": data
+                },
+                keyName: "code",
+                valueName: "benelux"
+            });
         },
-        afterSet: function (v, data) {
-            if (view) {
-                // if (data.province == data.city && data.city == data.area) {
-                //     data.city = "";
-                //     data.area = "";
-                // } else if (data.province == data.city && data.city != data.area) {
-                //     data.city = data.area;
-                // }
-                $('#province').html(data.province);
-                data.city && $('#city').html(data.city);
-                data.area && $('#area').html(data.area);
-            }
-        }
+//        afterSet: function (v, data) {
+//            if (view) {
+//                $('#province').html(data.province);
+//                data.city && $('#city').html(data.city);
+//                data.area && $('#area').html(data.area);
+//            }
+//        }
     }, sale, {
         field: 'carStore',
         title: '车行',
         type: 'select',
-        required: true,
-        key: 'car_type',
-        readonly: view
+        data: {},
+        readonly: view,
+        required:true,
     }, {
         title: '经办银行',
         field: 'jbBank',

@@ -47,7 +47,7 @@ $(function () {
         field: 'citySelect',
         title: '地区',
         type: 'citySelect',
-        hidden: true,
+        visible: false,
         search: true
     }];
 

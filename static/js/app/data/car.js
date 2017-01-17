@@ -5,27 +5,25 @@ $(function() {
         title: '',
         checkbox: true
     },{
-    	field:'',
+    	field:'abbreviation',
     	title:"简称"
     },{
-    	field:'',
+    	field:'address',
     	title:"地址",
     },{
-       field:'',
+       field:'name',
        title:'联系人'
     },{
-    	field:'',
+    	field:'contacts',
     	title:"联系方式"
     },{
-        field: 'area',
+    	field: 'district',
         title: '地区',
-        type:"select",
+        listCode:"617127",
+        keyName:"code",
+        valueName:"{{county.DATA}}",
+        type: 'select',
         search:true,
-        formatter: function (v, data) {
-            var result = ( data.province || "" ) + ( data.city || "" ) + ( data.area || "" );
-            return result || "-";
-        }
-    
     },  {
     	title:'备注',
     	field:'remark'
@@ -35,10 +33,8 @@ $(function() {
     buildList({
         router: 'car',
         columns: columns,
-        pageCode: '',
-//        searchParams: {
-//            status: "14"
-//        }
+        pageCode: '617105',
+        deleteCode:"617101"
     });
    
    

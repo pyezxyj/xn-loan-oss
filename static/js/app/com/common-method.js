@@ -749,7 +749,10 @@ function buildList(options) {
         }
 
         confirm("确认是否删除该记录？").then(function () {
-            var codeParams = {code: selRecords[0].code};
+            var codeParams = {
+            		code: selRecords[0].code,
+            		id: selRecords[0].id
+            	};
             if (options.uid) {
                 codeParams = {};
                 options.uid.forEach(function (i) {

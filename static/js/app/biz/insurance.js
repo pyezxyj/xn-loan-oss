@@ -10,9 +10,16 @@ $(function() {
         search:true
     }, {
         field: 'company',
+        listCode:"617117",
+        keyName:"code",
+        valueName:"{{salutation.DATA}}",
+        type:"select",
         title: '保险公司'
     }, {
         field: 'type',
+		key:"zone_type",
+		formatter: Dict.getNameForList("zone_type"),
+		type:'select',
         title: '保险类型'
     },{
         field: 'orderNo',

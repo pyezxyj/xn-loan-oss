@@ -89,6 +89,7 @@ $(function() {
         field: 'logiCompany',
         title: '快递',
         key:"wl_company",
+        formatter: Dict.getNameForList('wl_company'),
         readonly: true
        
     },{

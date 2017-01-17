@@ -1,35 +1,52 @@
 $(function(){
-	var code = getQueryString('code');
+//	var code = getQueryString('code');
 	var view = getQueryString('v');
+	var id  = getQueryString("code");
 	
 	var fields=[{
-		title:'险种名称 ',
-		field:'',
-		type:"select",
-		key:"secure_type",
-		formatter:Dict.getNameForList("secure_type"),
-		required:true,
-		readony:view
+		title:"更新人",
+		field:"updater",
+		type:"hidden",
+	    value:sessionStorage.getItem('userName')
 	},{
-		title:'类型 ',
-		field:'',
+	   title:"",
+	   field:"type",
+	   value:'1',
+	   type:'hidden',
+	},{
+		title:"类型",
+		field:"parentKey",
 		type:'select',
+		key:"zone_type",
+		formatter: Dict.getNameForList("zone_type"),
 		required:true,
-		readony:view
+		readonly:view
+	},{
+		title:'保险名称',
+		field:'dvalue',
+		required:true,
+		readonly:view,
+		maxlength:32,
+	},{
+		title:'保险键',
+		field:'dkey',
+		maxlength:32,
+		required:true,
+		readonly:view
 	},{
 		title:'备注',
 		field:'remark',
 		maxlength:255,
-		required:true,
-		readony:view	
+		readonly:view	
 	}];
 	
 	  buildDetail({
-		  code:code,
+		  code:id,
 		  fields:fields,
-		  addCode:'',
-		  editCode:'',
-		  deleteCode:''
+		  //id:id,
+		  addCode:'617130',
+		  editCode:'617131',
+		  detailCode:"617137"
 	  });
 	
 })

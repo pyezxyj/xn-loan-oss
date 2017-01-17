@@ -5,93 +5,111 @@ $(function () {
  
     var fields = [{
         title: "全称",
-        field: "",
-        type: '',
+        field: "benelux",
+        maxlength:32,
         readonly: view,
         required: true,
     }, {
-        field: '',
+        field: 'abbreviation',
         title: '简称',
         required: true,
+        maxlength:32,
         readonly: view
     }, {
         title: '法人代表',
-        field: '',  
+        field: 'corporation',  
         required: true,
+        maxlength:32,
         readonly: view
     }, {
     	title: '地址',
-		field: '',
+		field: 'province',
 		type:'citySelect',
+		formatter: function (v, data) {
+          var result = ( data.province || "" ) + ( data.city || "" ) + ( data.area || "" );
+          return result || "-";
+         },
+		afterSet: function (v, data) {
+          if (view) {
+              $('#province').html(data.province);
+              data.city && $('#city').html(data.city);
+              data.area && $('#area').html(data.area);
+              }
+        },
 	    required:true,
-	    readonly:view
+	    readonly:view,
     }, {
+    	title:"详细地址",
+    	field:'address',
+    	maxlength:32,
+    	required:true,
+	    readonly:view,
+    },{
     	title:"联系人",
-		field:'',
+		field:'name',
 		required:true,
+		maxlength:32,
 	    readonly:view
     }, {
     	title:"联系方式",
-		field:'',
+		field:'contacts',
 		mobile:true,
 		required:true,
 	    readonly:view
     	
     },{
 		title:"所属地区",
-		field:'citySelect',
+		field:'district',
 		required:true,
+		listCode:'617127',
+		keyName:"code",
+		valueName:'{{county.DATA}}',
 		type:'select',
 	    readonly:view
 	},{
 		title: '',
-        field: 'nn',
+        field: 'bankList',
         type: 'o2m',
         editTable: true,
         addeditTable: true,
         readonly: view,
-        requird:true,
+        required:true,
         columns: [{
             field: '',
             title: '',
             checkbox: true
          }, {
-        	field: '',
+        	field: 'bank',
             title: '银行', 
-            type: 'select',
-            formatter: Dict.getNameForList('jb_bank'),
-            key:'jb_bank',
+            maxlength:32,
             required:true,
     	    readonly:view
         }, {
         	title:'开户行',
-        	field:'', 
+        	field:'branch', 
+        	maxlength:32,
         	required:true,
     	    readonly:view
         }, {
-        	field: '',
+        	field: 'accountName',
             title: '户名',
             maxlength:32, 
         	required:true,
     	    readonly:view
         }, {
-        	field: '',
+        	field: 'account',
             title: '账号',
-            idCard:true, 
+            bankCard:true, 
         	required:true,
     	    readonly:view
         }, {
-        	field: '',
+        	field: 'type',
             title: '类型', 
+            type:"select",
+            key:"zh_type",
+            formatter:Dict.getNameForList("zh_type"),
         	required:true,
     	    readonly:view
-        }, {
-            field: 'status',
-            title: '证信结果',
-            readonly: view,
-            required:true,
-            type: 'select',
-            key: 'audit_status'
         }]
     },{
     	title:'备注',
@@ -102,7 +120,9 @@ $(function () {
     var options = {
         fields: fields,
         code: code,
-        detailCode: ''
+        addCode:"617100",
+        detailCode:"617106",
+        editCode:"617102",   
     };
 
     options.buttons = [{
@@ -125,13 +145,13 @@ $(function () {
                     }
                 }
                 data['id'] = data['code'];
-                data["nn "] = $('# nn').bootstrapTable('getData');
-                if (!data["nn "].length) {
-                    toastr.info("账号信息不能为空");
+                data["bankList"] = $('#bankListList').bootstrapTable('getData');
+                if (!data["bankList"].length) {
+                    toastr.info("银行账户信息不能为空");
                     return;
                 }
                 reqApi({
-                    code: code,
+                    code: code ? "617102":"617100",
                     json: data
                 }).done(function () {
                     sucDetail();

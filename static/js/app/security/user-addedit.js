@@ -21,8 +21,12 @@ $(function() {
 		valueName: 'name'
 	}, {
 		title: '所属地区',
-		field: 'citySelect',
-		type: 'citySelect'
+		field: 'province',
+		listCode:"617127",
+        keyName:"code",
+        valueName:"{{county.DATA}}",
+        type: 'select',
+        required: true,
 	}, {
 		title: '备注',
 		field: 'remark',

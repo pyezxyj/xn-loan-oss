@@ -5,11 +5,18 @@ $(function() {
     var fields = [{
         title: '保险公司',
         field: 'company',
+        pageCode:"617115",
+        keyName:"code",
+        valueName:"{{salutation.DATA}}",
+        type:"select",
         readonly:view,
         required: true
     }, {
         field: 'type',
         title: '保险类型',
+        type:'select',
+		key:"zone_type",
+		formatter: Dict.getNameForList("zone_type"),
         required: true,
         readonly:view
     }, {
@@ -46,9 +53,12 @@ $(function() {
         }, {
             field: 'type',
             title: '险种',
+            type:"select",
+            listCode:"617117",
+            keyName:"code",
+            valueName:"{{dvalue.DATA}}",
             required: true,
             readonly: view,
-            maxlength: 32
         }, {
             field: 'amount',
             title: '金额',
