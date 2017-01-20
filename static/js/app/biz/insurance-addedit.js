@@ -14,18 +14,38 @@ $(function() {
     }, {
         field: 'type',
         title: '保险类型',
-        type:'select',
-		key:"zone_type",
-		formatter: Dict.getNameForList("zone_type"),
+        listCode: '617136',
+		params: {
+			type: 2
+		},
+		keyName: 'dkey',
+		valueName: 'dvalue',
+		type:'select',
         required: true,
+        readonly:view,
+     //   onChange:function(data){
+        	//  var type = $('#type');
+            //  if(!data){
+            //      type.renderDropdown2({});
+            //      return;
+            //  }
+            
+            //  type.renderDropdown({
+            //      listCode: "617136",
+            //      params: {
+            //          "dvalue": data
+            //      },
+            //      keyName: "code",
+            //      valueName: "dvalue"
+            //  });
+   //     }
+    },{
+    	title:"保单号",
+    	field:"orderNo",
+    	required: true,
         readonly:view
     }, {
-        title: '保单号',
-        field: 'orderNo',
-        required: true,
-        readonly:view
-    }, {
-        title: '起始日期',
+        title:"开始时间",
         field: 'startDatetime',
         type: 'date',
         required: true,
@@ -54,11 +74,16 @@ $(function() {
             field: 'type',
             title: '险种',
             type:"select",
-            listCode:"617117",
-            keyName:"code",
-            valueName:"{{dvalue.DATA}}",
+            // data:{},
+            listCode: '617136',
+    		params: {
+    			type: 1
+    		},
+    		keyName: 'dkey',
+    		valueName: 'dvalue',
             required: true,
             readonly: view,
+            insureTypeList: 'parentKey'
         }, {
             field: 'amount',
             title: '金额',

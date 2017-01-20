@@ -12,6 +12,18 @@ $(function() {
         title: '车辆型号',
         readonly: true
     }, {
+        field: 'area',
+        title: '上牌地',
+        readonly: view,
+        type: 'select',
+        pageCode:"617125",
+        params: {
+			type: "0"
+		},
+        keyName:"code",
+        valueName:"{{county.DATA}}",
+        required: true
+    }, {
         title: '车辆号码',
         field: 'licenseNo',
         required:true,

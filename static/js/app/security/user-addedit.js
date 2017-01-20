@@ -23,6 +23,9 @@ $(function() {
 		title: '所属地区',
 		field: 'province',
 		listCode:"617127",
+		params: {
+			type: "1"
+		},
         keyName:"code",
         valueName:"{{county.DATA}}",
         type: 'select',

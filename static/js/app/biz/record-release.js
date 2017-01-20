@@ -19,6 +19,14 @@ $(function() {
         field: 'licenseNo',
         readonly: true
     }, {
+        field: 'area',
+        title: '上牌地',
+        type: 'select',
+        listCode: '617127',
+        keyName: 'code',
+        valueName: "county",
+        readonly: true
+    }, {
         title: '车架号',
         field: 'chassisNo',
         readonly: true

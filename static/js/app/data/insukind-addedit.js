@@ -17,8 +17,12 @@ $(function(){
 		title:"类型",
 		field:"parentKey",
 		type:'select',
-		key:"zone_type",
-		formatter: Dict.getNameForList("zone_type"),
+		listCode: '617136',
+		params: {
+			type: 2
+		},
+		keyName: 'dkey',
+		valueName: 'dvalue',
 		required:true,
 		readonly:view
 	},{

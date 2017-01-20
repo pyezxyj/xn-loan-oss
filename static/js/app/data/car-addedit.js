@@ -29,13 +29,13 @@ $(function () {
           var result = ( data.province || "" ) + ( data.city || "" ) + ( data.area || "" );
           return result || "-";
          },
-		afterSet: function (v, data) {
-          if (view) {
-              $('#province').html(data.province);
-              data.city && $('#city').html(data.city);
-              data.area && $('#area').html(data.area);
-              }
-        },
+//		afterSet: function (v, data) {
+//          if (view) {
+//              $('#province').html(data.province);
+//              data.city && $('#city').html(data.city);
+//              data.area && $('#area').html(data.area);
+//              }
+//        },
 	    required:true,
 	    readonly:view,
     }, {
@@ -62,6 +62,9 @@ $(function () {
 		field:'district',
 		required:true,
 		listCode:'617127',
+        params: {
+			type: "1"
+		},
 		keyName:"code",
 		valueName:'{{county.DATA}}',
 		type:'select',

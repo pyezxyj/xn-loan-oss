@@ -1,6 +1,16 @@
 $(function () {
     var code = getQueryString('code');
-
+    var spd = {};
+    reqApi({
+        code: '617127',
+        json: {type: 0},
+        sync: true
+    }).then(function (data) {
+    	for(var i = 0; i < data.length; i++){
+    		spd[data[i]['code']] = data[i]['county'];
+    	}
+    })
+    
     var fields = [{
         field: 'realName',
         title: '借款人',
@@ -37,7 +47,9 @@ $(function () {
         field: 'carStore',
         title: '车行',
         type: 'select',
-        key: 'car_type',
+        listCode: "617107",
+        keyName: "code",
+        valueName: "benelux",
         readonly: true
     }, {
         title: '经办银行',
@@ -155,12 +167,20 @@ $(function () {
             $("#model").html(data.carList && data.carList.length ? data.carList[0].model : "");
         }
     }, {
+    	field: 'area',
+        title: '上牌地',
+        readonly: true,
+        type: 'select',
+        afterSet: function (v, data) {
+            $("#area").html(data.carList && data.carList.length ? spd[data.carList[0].area] : "");
+        }
+    },{
         field: 'price',
         title: '车价',
         amount: true,
         readonly: true,
         afterSet: function (v, data) {
-            $("#price").html(data.carList && data.carList.length ? data.carList[0].price : "");
+            $("#price").html(moneyFormat(data.carList && data.carList.length ? data.carList[0].price : ""));
         }
     }, {
         field: 'firstAmount',
@@ -168,7 +188,7 @@ $(function () {
         readonly: true,
         amount: true,
         afterSet: function (v, data) {
-            $("#firstAmount").html(data.carList && data.carList.length ? data.carList[0].firstAmount : "");
+            $("#firstAmount").html(moneyFormat(data.carList && data.carList.length ? data.carList[0].firstAmount : ""));
         }
     }, {
         field: 'firstRate',

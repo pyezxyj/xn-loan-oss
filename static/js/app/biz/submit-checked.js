@@ -112,12 +112,28 @@ $(function() {
         field: 'copier',
         required: true,
         type: 'select',
-        listCode: "805060",
-        keyName:'userId',
-        valueName: "loginName",
-        params: {
-            roleCode: "SR2017010713402529122",
-            status: "0"
+        data: {},
+        afterSet: function (v) {
+            var province = data.province;
+            var city = data.city;
+            var area = data.area;
+            var dcUser = $('#copier');
+            if(!province){
+                dcUser.renderDropdown2({});
+                return;
+            }
+            dcUser.renderDropdown({
+                listCode: "805060",
+                params: {
+                    roleCode: "SR2017010713402529122",
+                    status: "0",
+                    province: province,
+                    city: city,
+                    area: area
+                },
+                keyName: "userId",
+                valueName: "loginName"
+            });
         }
     },{
     	field:'approveNote',

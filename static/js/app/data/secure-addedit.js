@@ -59,6 +59,9 @@ $(function(){
 			title:"所属地区",
 			type:'select',
 		    listCode:"617127",
+			params: {
+				type: "1"
+			},
 		    keyName:"code",
 		    valueName:"{{county.DATA}}",
 			required:true,

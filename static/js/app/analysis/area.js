@@ -5,12 +5,12 @@ $(function() {
         title: '',
         checkbox: true
     },{
-        field: 'area',
+        field: 'province',
         title: '地区',
-        formatter: function (v, data) {
-            var result = ( data.province || "" ) + ( data.city || "" ) + ( data.area || "" );
-            return result || "-";
-        }
+        type: 'select',
+        listCode: '617127',
+        keyName: 'code',
+        valueName: "county",
     }, {
         field: 'num',
         title: '业务数量'

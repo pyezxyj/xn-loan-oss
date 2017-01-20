@@ -17,7 +17,9 @@ $(function () {
         field: 'carStore',
         title: '车行',
         type: 'select',
-        key: 'car_type',
+        listCode: "617107",
+        keyName: "code",
+        valueName: "benelux",
         readonly: true
     }, {
         title: '经办银行',
@@ -137,7 +139,7 @@ $(function () {
             }
         },
         afterSet: function (v, data) {
-            $("#price").val(data.carList && data.carList.length ? data.carList[0].price : "");
+            $("#price").val(moneyFormat(data.carList && data.carList.length ? data.carList[0].price : ""));
         }
     }, {
         field: 'firstAmount',
@@ -153,7 +155,7 @@ $(function () {
             }
         },
         afterSet: function (v, data) {
-            $("#firstAmount").val(data.carList && data.carList.length ? data.carList[0].firstAmount : "");
+            $("#firstAmount").val(moneyFormat(data.carList && data.carList.length ? data.carList[0].firstAmount : ""));
         }
     }, {
         field: 'firstRate',

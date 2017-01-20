@@ -3,6 +3,8 @@ $(function () {
     var view = !!getQueryString('v');
     var idKindList = Dict.getNameForList('id_kind');
     var sale;
+    var carStore;
+    var province;
     if (view) {
         sale = {
             title: '业务员',
@@ -17,23 +19,49 @@ $(function () {
                 status: "0"
             },
             readonly: view
-        };
-    } else {
-        sale = {
-            title: '业务员',
-            field: 'salesman',
-            required: true,
-            type: 'select',
-            data: {},
-            readonly: view
-        };
-    }
+          };
+        carStore={
+       		 field: 'carStore',
+       	     title: '车行',
+       	     type: 'select',
+       	     required: true,
+       	     readonly: view,
+       		 listCode: "617107",
+             keyName: "code",
+             valueName: "benelux"      		
+         };
 
-    var fields = [{
+    } else {
+            sale = {
+		            title: '业务员',
+		            field: 'salesman',
+		            required: true,
+		            type: 'select',
+		            data: {},
+		            readonly: view
+             };
+        	carStore = {
+                    title: '车行',
+                    field: 'carStore',
+                    required: true,
+                    type: 'select',
+                    data: {},
+                    readonly: view   	
+
+            };
+   	
+    }
+        	
+        	
+    var fields = [
+                  {
         title: "地区",
         field: "province",
         type: 'select',
-        pageCode:"617127",
+        pageCode:"617125",
+        params: {
+			type: "1"
+		},
         keyName:"code",
         valueName:"{{county.DATA}}",
         readonly: view,
@@ -65,21 +93,10 @@ $(function () {
                 valueName: "benelux"
             });
         },
-//        afterSet: function (v, data) {
-//            if (view) {
-//                $('#province').html(data.province);
-//                data.city && $('#city').html(data.city);
-//                data.area && $('#area').html(data.area);
-//            }
-//        }
-    }, sale, {
-        field: 'carStore',
-        title: '车行',
-        type: 'select',
-        data: {},
-        readonly: view,
-        required:true,
-    }, {
+    },
+    sale,
+    carStore,
+    {
         title: '经办银行',
         field: 'jbBank',
         type: 'select',

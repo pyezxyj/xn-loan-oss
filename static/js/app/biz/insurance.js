@@ -17,9 +17,13 @@ $(function() {
         title: '保险公司'
     }, {
         field: 'type',
-		key:"zone_type",
-		formatter: Dict.getNameForList("zone_type"),
-		type:'select',
+        listCode: '617136',
+		params: {
+			type: 2
+		},
+		keyName: 'dkey',
+		valueName: 'dvalue',
+        type:'select',
         title: '保险类型'
     },{
         field: 'orderNo',

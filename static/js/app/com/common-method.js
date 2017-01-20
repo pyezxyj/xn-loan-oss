@@ -1449,7 +1449,7 @@ function buildDetail(options) {
                                         data = (d && d.list) || d[0] && d || [d];
                                         for (var j = 0; j < data.length; j++) {
                                             if (data[j][i.keyName] == displayValue) {
-                                                $('#' + i.field).html(data[j][i.valueName]);
+                                                $('#' + i.field).html(data[j][i.valueName] || i.valueName.temp(data[j]) || i.defaultOption);
                                             }
                                         }
                                     } else {
@@ -1639,6 +1639,7 @@ function buildDetail(options) {
                             })(item);
                         }
                         data.city ? $('#city').trigger('change') : $('#province').trigger('change');
+                        data.area && $('#area').val(data.area);
                     } else if (item.type == "o2m" && item.editTable) {
                         var innerHtml = '';
                         if (item.addeditTable) {
@@ -2314,26 +2315,30 @@ function buildDetail1(options) {
         } else if (item.key) {
             data = $('#' + item.field + "-model").renderDropdown(Dict.getName(item.key), '', '', item.defaultOption ? '<option value="0">' + item.defaultOption + '</option>' : '');
         } else if (item.listCode) {
-            data = $('#' + item.field).renderDropdown($.extend({
+            if(item.insureTypeList){
+                var val = $("#" + item.insureTypeList).val();
+                item.params[item.insureTypeList] = val;
+            }
+            data = $('#' + item.field + "-model").renderDropdown($.extend({
                 listCode: item.listCode,
                 params: item.params,
                 keyName: item.keyName,
                 valueName: item.valueName
             }, (item.defaultOption ? {defaultOption: '<option value="0">' + item.defaultOption + '</option>'} : {})));
             if (item.pageCode) {
-                $('#' + item.field)[0].pageOptions = {
+                $('#' + item.field + "-model")[0].pageOptions = {
                     pageCode: item.pageCode,
                     keyName: item.keyName,
                     valueName: item.valueName,
                     dict: item.dict,
                     searchName: item.searchName
                 };
-                $('#' + item.field)[0].pageParams = {
+                $('#' + item.field + "-model")[0].pageParams = {
                     start: 1,
                     limit: 10
                 };
-                $.extend($('#' + item.field)[0].pageParams, item.params || {});
-                $('#' + item.field)[0].pageParams.start += 1;
+                $.extend($('#' + item.field + "-model")[0].pageParams, item.params || {});
+                $('#' + item.field + "-model")[0].pageParams.start += 1;
             }
         } else if (item.pageCode) {
             var pageParams = {
@@ -2341,22 +2346,22 @@ function buildDetail1(options) {
                 limit: 10
             };
             $.extend(pageParams, item.params || {});
-            data = $('#' + item.field).renderDropdown($.extend({
+            data = $('#' + item.field + "-model").renderDropdown($.extend({
                 listCode: item.pageCode,
                 params: pageParams,
                 keyName: item.keyName,
                 valueName: item.valueName,
                 dict: item.dict
             }, (item.defaultOption ? {defaultOption: '<option value="0">' + item.defaultOption + '</option>'} : {})));
-            $('#' + item.field)[0].pageOptions = {
+            $('#' + item.field + "-model")[0].pageOptions = {
                 pageCode: item.pageCode,
                 keyName: item.keyName,
                 valueName: item.valueName,
                 dict: item.dict,
                 searchName: item.searchName
             };
-            $('#' + item.field)[0].pageParams = pageParams;
-            $('#' + item.field)[0].pageParams.start += 1;
+            $('#' + item.field + "-model")[0].pageParams = pageParams;
+            $('#' + item.field + "-model")[0].pageParams.start += 1;
         }
         if (item.onChange) {
 

@@ -20,7 +20,10 @@ $(function () {
     }, {
         title: '车行',
         field: 'carStore',
-        formatter: Dict.getNameForList('car_type'),
+        type: 'select',
+        listCode: "617107",
+        keyName: "code",
+        valueName: "benelux",    
         readonly: true
     }, {
         title: '业务员',

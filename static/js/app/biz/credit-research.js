@@ -19,11 +19,13 @@ $(function () {
         },
         readonly: true
     }, {
-        field: 'carStore',
+        field: 'carStore',  
         title: '车行',
         type: 'select',
+        listCode: "617107",
+        keyName: "code",
+        valueName: "benelux",
         required: true,
-        key: 'car_type',
         readonly: true
     }, {
         title: '经办银行',
@@ -52,6 +54,9 @@ $(function () {
         title: "地区",
         field: "province",
         type: 'select',
+        listCode: '617127',
+        keyName: 'code',
+        valueName: "county",
         //key:"",
         readonly: true,
 //        afterSet: function (v, data) {

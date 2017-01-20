@@ -3,16 +3,18 @@ $(function () {
         field: '',
         title: '',
         checkbox: true
-    }, {
-    	field:'type',
-		title:'类型 ',
-		search:true,
-		pageList:"617127",
-		key:"zone_type",
-		formatter: Dict.getNameForList("zone_type"),
-		type:'select',
-		visible: false
-    },{
+    }, 
+//    {
+//    	field:'type',
+//		title:'类型 ',
+//		search:true,
+//		pageList:"617127",
+//		key:"zone_type",
+//		formatter: Dict.getNameForList("zone_type"),
+//		type:'select',
+//		visible: false
+//    },
+    {
         field: 'salutation',
         title: '名称',
     }, {
@@ -32,6 +34,7 @@ $(function () {
         title: '所属地区',
         listCode:"617127",
         keyName:"code",
+        search:true,
         valueName:"{{county.DATA}}",
         type: 'select'
     }, {

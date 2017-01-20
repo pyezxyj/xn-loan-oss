@@ -17,7 +17,9 @@ $(function () {
         field: 'carStore',
         title: '车行',
         type: 'select',
-        key: 'car_type',
+        listCode: "617107",
+        keyName: "code",
+        valueName: "benelux",
         readonly: true
     }, {
         title: '经办银行',

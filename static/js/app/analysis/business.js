@@ -10,10 +10,11 @@ $(function () {
     }, {
         field: 'province',
         title: '地区',
-        formatter: function (v, data) {
-            var result = ( data.province || "" ) + ( data.city || "" ) + ( data.area || "" );
-            return result || "-";
-        }
+        type: 'select',
+        listCode: '617127',
+        keyName: 'code',
+        valueName: "county",
+        search:true,
     }, {
         field: 'realName',
         title: '借款人',
@@ -42,12 +43,6 @@ $(function () {
         key: 'credit_status',
         formatter: Dict.getNameForList("credit_status"),
         type: "select",
-        search: true
-    }, {
-        field: 'citySelect',
-        title: '地区',
-        type: 'citySelect',
-        visible: false,
         search: true
     }];
 
